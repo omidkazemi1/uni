@@ -74,18 +74,6 @@ exports.createCode = catchAsync(async (req, res, next) => {
     return res.send(smsCode === code);
   }
 });
-// exports.teacherSignup = catchAsync(async (req, res, next) => {
-//   const newUser = await User.create({
-//     name: req.body.name,
-//     email: req.body.email,
-//     password: req.body.password,
-//     passwordConfirm: req.body.passwordConfirm,
-//     passwordChangeAt: req.body.passwordChangeAt,
-//     role: req.body.role,
-//   });
-
-//   createSendToken(newUser, 201, res);
-// });
 
 exports.login = catchAsync(async (req, res, next) => {
   const { email, password } = req.body;
@@ -111,6 +99,8 @@ exports.protect = catchAsync(async (req, res, next) => {
     req.headers.authorization.startsWith("Bearer")
   ) {
     token = req.headers.authorization.split(" ")[1];
+  } else if (req.cookie.jwt) {
+    token = req.cookie.jwt;
   }
 
   if (!token) {
