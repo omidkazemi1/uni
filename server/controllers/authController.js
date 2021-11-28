@@ -26,8 +26,6 @@ const createSendToken = (user, statusCode, res) => {
 
   res.cookie("jwt", token, cookieOptions);
 
-  user.password = undefined;
-
   res.status(statusCode).json({
     status: "success",
     token,
@@ -49,18 +47,45 @@ exports.restrictTo = (...role) => {
   };
 };
 
-exports.signup = catchAsync(async (req, res, next) => {
+exports.teacherSignup = catchAsync(async (req, res, next) => {
   const newUser = await User.create({
-    name: req.body.name,
-    email: req.body.email,
-    password: req.body.password,
-    passwordConfirm: req.body.passwordConfirm,
-    passwordChangeAt: req.body.passwordChangeAt,
-    role: req.body.role,
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    phoneNumber: req.body.phoneNumber,
+    nationalCode: req.body.nationalCode,
+    role: "teacher",
   });
 
   createSendToken(newUser, 201, res);
 });
+
+exports.createCode = catchAsync(async (req, res, next) => {
+  const { send, check, phoneNumber, code } = req.body;
+  if (send && !check) {
+    const setParams = { key: phoneNumber, ex: 120, value: randomize("0", 4) };
+    await this.redisClient("set", { ...setParams });
+    const smsCode = await this.redisClient("get", { key: phoneNumber });
+    console.log("phoneNumber, smsCode :>> ", phoneNumber, smsCode);
+    return;
+    // send sms
+  }
+  if (check && !send) {
+    const smsCode = await this.redisClient("get", { key: phoneNumber });
+    return res.send(smsCode === code);
+  }
+});
+// exports.teacherSignup = catchAsync(async (req, res, next) => {
+//   const newUser = await User.create({
+//     name: req.body.name,
+//     email: req.body.email,
+//     password: req.body.password,
+//     passwordConfirm: req.body.passwordConfirm,
+//     passwordChangeAt: req.body.passwordChangeAt,
+//     role: req.body.role,
+//   });
+
+//   createSendToken(newUser, 201, res);
+// });
 
 exports.login = catchAsync(async (req, res, next) => {
   const { email, password } = req.body;
