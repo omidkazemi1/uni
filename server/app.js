@@ -12,8 +12,8 @@ const AppError = require("./utils/appError");
 //$
 
 // $ Routes Modules
-const tourRouter = require("./Routes/tours");
-const userRouter = require("./Routes/users");
+const teacherRouter = require("./Routes/teachers");
+const studentRouter = require("./Routes/students");
 // $
 
 // $ Error Handler
@@ -55,8 +55,8 @@ app.use((req, res, next) => {
 });
 
 // route
-app.use("/api/v1/tours", tourRouter);
-app.use("/api/v1/users", userRouter);
+app.use("/api/v1/students", studentRouter);
+app.use("/api/v1/teachers", teacherRouter);
 
 app.all("*", (req, res, next) => {
   next(new AppError(`Cant find ${req.originalUrl} on this Server!`, 404));
