@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
     Button,
     FormHelperText,
@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import Countdown from "react-countdown";
+import { useTimer } from "use-timer";
 
 import { signup } from "../../actions/auth";
 import { Box } from "@mui/system";
@@ -121,13 +121,6 @@ const Register = () => {
                             <FormHelperText id="my-helper-text">
                                 Enter sent code
                             </FormHelperText>
-
-                            <Button variant="outlined" fullWidth sx={{ marginTop: "1rem" }}>
-                                <Countdown
-                                    date={Date.now() + 1000 * 120}
-                                    renderer={CountdownRender}
-                                />
-                            </Button>
                         </Box>
                     </FormStepper>
                 </Paper>
@@ -136,13 +129,24 @@ const Register = () => {
     );
 };
 
-const FormStepper = ({ children, formData, fromError, inputChangeHandler }) => {
+const FormStepper = ({ children, formData }) => {
     const childrenArray = React.Children.toArray(children);
     const [step, setStep] = useState(0);
-    const [stepLables, setStepLables] = useState(["Information", "Authorizion"]);
+    const [compeleteCountdown, setCompeleteCountdown] = useState(false);
     const currentChild = childrenArray[step];
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const { time, start, reset, pause, status } = useTimer({
+        autostart: false,
+        initialTime: 4,
+        timerType: "DECREMENTAL",
+        onTimeUpdate: () => {
+            if (time === 0) {
+                pause();
+                setCompeleteCountdown(true);
+            }
+        }
+    });
 
     function isLastStep() {
         return step === childrenArray.length - 1;
@@ -154,8 +158,28 @@ const FormStepper = ({ children, formData, fromError, inputChangeHandler }) => {
         if (isLastStep()) {
             dispatch(signup(formData, navigate));
         } else {
+            start();
             setStep(step => step + 1);
         }
+    };
+
+    const codeTimer = (time, reset) => {
+        let minutes = Math.floor(time / 60);
+        let seconds = time - minutes * 60;
+
+        if (time) {
+            return `Resend after: ${minutes < 10 ? "0" + minutes : minutes}:${
+                seconds < 10 ? "0" + seconds : seconds
+            }`;
+        } else {
+            return "Resend";
+        }
+    };
+
+    const countdownClickHandler = () => {
+        setCompeleteCountdown(false)
+        reset();
+        start();
     };
 
     return (
@@ -165,7 +189,7 @@ const FormStepper = ({ children, formData, fromError, inputChangeHandler }) => {
             </Typography>
 
             <Stepper activeStep={step} sx={{ marginBottom: "1rem" }}>
-                {stepLables.map((label, index) => (
+                {["Information", "Authorizion"].map((label, index) => (
                     <Step key={index}>
                         <StepLabel>{label}</StepLabel>
                     </Step>
@@ -175,6 +199,19 @@ const FormStepper = ({ children, formData, fromError, inputChangeHandler }) => {
             {currentChild}
 
             <Grid container spacing={2} marginTop="1rem">
+                {isLastStep() && (
+                    <Grid item xs={12}>
+                        <Button
+                            variant="outlined"
+                            fullWidth
+                            disabled={compeleteCountdown ? false : true}
+                            sx={{ marginTop: "1rem" }}
+                            onClick={countdownClickHandler}>
+                            {codeTimer(time, reset)}
+                        </Button>
+                    </Grid>
+                )}
+
                 {step > 0 ? (
                     <Grid item xs={6}>
                         <Button
@@ -186,6 +223,7 @@ const FormStepper = ({ children, formData, fromError, inputChangeHandler }) => {
                         </Button>
                     </Grid>
                 ) : null}
+
                 <Grid item xs={6}>
                     <Button variant="contained" color="primary" type="submit" fullWidth>
                         {isLastStep() ? "Submit" : "Next"}
@@ -194,22 +232,6 @@ const FormStepper = ({ children, formData, fromError, inputChangeHandler }) => {
             </Grid>
         </form>
     );
-};
-
-const CountdownRender = ({ minutes, seconds, completed }) => {
-    if (completed) {
-        // Render a complete state
-        return <span>Resend Again</span>;
-    } else {
-        // Render a countdown
-        return (
-            <span>
-                Resend after: &nbsp;
-                {minutes < 10 ? `0${minutes}` : minutes}:
-                {seconds < 10 ? `0${seconds}` : seconds}
-            </span>
-        );
-    }
 };
 
 export default Register;
