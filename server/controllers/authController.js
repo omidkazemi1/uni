@@ -1,5 +1,7 @@
+/* eslint-disable no-undef */
 const jwt = require("jsonwebtoken");
 const { promisify } = require("util");
+const randomize = require("randomatic");
 const User = require("../models/userModel");
 const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
@@ -57,22 +59,6 @@ exports.teacherSignup = catchAsync(async (req, res, next) => {
   createSendToken(newUser, 201, res);
 });
 
-exports.createCode = catchAsync(async (req, res, next) => {
-  const { send, check, phoneNumber, code } = req.body;
-  if (send && !check) {
-    const setParams = { key: phoneNumber, ex: 120, value: randomize("0", 4) };
-    await this.redisClient("set", { ...setParams });
-    const smsCode = await this.redisClient("get", { key: phoneNumber });
-    console.log("phoneNumber, smsCode :>> ", phoneNumber, smsCode);
-    return;
-    // send sms
-  }
-  if (check && !send) {
-    const smsCode = await this.redisClient("get", { key: phoneNumber });
-    return res.send(smsCode === code);
-  }
-});
-
 exports.login = catchAsync(async (req, res, next) => {
   const { email, password } = req.body;
   // 1) if email and password exist
@@ -126,4 +112,49 @@ exports.protect = catchAsync(async (req, res, next) => {
   // Grant access to protect route
   req.user = freshUser;
   next();
+});
+
+exports.createCode = catchAsync(async (req, res, next) => {
+  const { phoneNumber } = req.body;
+
+  const check = await redis.getAsync(phoneNumber);
+  if (check) {
+    const ttl = await redis.ttl(phoneNumber);
+    return res.status(405).json({
+      status: "failed",
+      message: `try again in ${ttl} seconds`,
+    });
+  }
+
+  const code = randomize("0", 4);
+  await redis.setex(phoneNumber, 120, code);
+
+  console.log("code for sms ==>", code);
+
+  res.status(201).json({
+    status: "success",
+  });
+});
+
+exports.resultCode = catchAsync(async (req, res, next) => {
+  const { phoneNumber, code } = req.body;
+
+  const orginalCode = await redis.getAsync(phoneNumber);
+  if (!orginalCode) {
+    return res.status(404).json({
+      status: "failed",
+      message: "for this number there is no code ",
+    });
+  }
+
+  if (orginalCode !== code) {
+    return res.status(403).json({
+      status: "failed",
+      message: "code is wrong",
+    });
+  }
+
+  res.status(202).json({
+    status: "success",
+  });
 });
