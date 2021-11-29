@@ -5,15 +5,15 @@ dotenv.config({ path: "./config.env" });
 
 const redisHandler = require("./utils/redis");
 
+// 1) start redis
 redisHandler.setRedis();
 const app = require("./app");
-// 1) start redis
-// $ connect to database
-const DB = process.env.DATABASE.replace(
-  "<PASSWORD>",
-  process.env.DATABASE_PASSWORD
-);
 
+// 2) connect to database
+// const DB = process.env.DATABASE.replace(
+//   "<PASSWORD>",
+//   process.env.DATABASE_PASSWORD
+// );
 mongoose
   .connect(process.env.DATABASE_LOCAL, {
     useCreateIndex: true,
@@ -23,10 +23,9 @@ mongoose
   })
   .then((connection) => console.log("connect to mongoose"));
 
-//$ listen on port
+// 3) listen on port
 const port = process.env.PORT || 3000;
 
 app.listen(port, () => {
   console.log("server is runnig in port: " + port);
 });
-//$

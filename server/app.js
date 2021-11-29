@@ -11,16 +11,13 @@ const cookieParser = require("cookie-parser");
 const app = express();
 const morgan = require("morgan");
 const AppError = require("./utils/appError");
-//$
 
 // $ Routes Modules
 const teacherRouter = require("./Routes/teachers");
 const studentRouter = require("./Routes/students");
-// $
 
 // $ Error Handler
 const globalErrorHandler = require("./controllers/errorController");
-//
 
 // 1) Global Middleware
 // set security http headers
