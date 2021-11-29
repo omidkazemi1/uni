@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
 import {
     AppBar,
     Avatar,
@@ -19,10 +20,14 @@ const pages = ["Home", "About Us", "Contact Us"];
 const settings = ["Profile", "Dashboard", "Logout"];
 
 function Nav() {
-    const [user, setUser] = useState(JSON.parse(localStorage.getItem("profile")));
+    // const [user, setUser] = useState(JSON.parse(localStorage.getItem("profile")));
     const [anchorElNav, setAnchorElNav] = useState(null);
     const [anchorElUser, setAnchorElUser] = useState(null);
     const location = useLocation();
+    const user = useSelector(state => {
+        console.log(state);
+        return state.auth;
+    });
 
     const handleOpenNavMenu = event => {
         setAnchorElNav(event.currentTarget);
@@ -41,8 +46,7 @@ function Nav() {
     };
 
     useEffect(() => {
-        setUser(JSON.parse(localStorage.getItem("profile")));
-        console.log(user);
+        console.log(user, 'user useEffect')
     }, [location]);
 
     return (
@@ -117,7 +121,7 @@ function Nav() {
                             <Tooltip title="Open settings">
                                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                                     <Avatar
-                                        alt={`${user.data.user.firstName} ${user.data.user.lastName}`}
+                                    // alt={`${user.data.user.firstName} ${user.data.user.lastName}`}
                                     />
                                 </IconButton>
                             </Tooltip>
@@ -140,9 +144,7 @@ function Nav() {
                                     // <MenuItem key={setting} onClick={handleCloseNavMenu}>
                                     //     <Typography textAlign="center">{setting}</Typography>
                                     // </MenuItem>
-                                    <MenuItem key={123}>
-                                        {`${user.data.user.firstName} ${user.data.user.lastName}`}
-                                    </MenuItem>
+                                    <MenuItem key={123}> </MenuItem>
                                 ))}
                             </Menu>
                         </Box>

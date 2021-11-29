@@ -1,14 +1,14 @@
 import { AUTH, LOGOUT } from "../constants/actionTypes";
 
-const auth = (state = { authData: null }, action) => {
+const auth = (user = { authData: null }, action) => {
     switch (action.type) {
         case AUTH:
-            return { ...state, authData: action?.data };
+            return { ...user, authData: action?.data };
         case LOGOUT:
             localStorage.clear();
-            return { ...state, authData: null };
+            return { ...user, authData: null };
         default:
-            return state;
+            return user;
     }
 };
 
