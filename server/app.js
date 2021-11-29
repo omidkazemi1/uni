@@ -5,6 +5,7 @@ const helmet = require("helmet");
 const mongoSanitize = require("express-mongo-sanitize");
 const xss = require("xss-clean");
 const hpp = require("hpp");
+const cors = require("cors");
 
 const app = express();
 const morgan = require("morgan");
@@ -22,6 +23,8 @@ const globalErrorHandler = require("./controllers/errorController");
 
 // 1) Global Middleware
 // set security http headers
+app.use(cors());
+
 app.use(helmet());
 // development logging
 if (process.env.NODE_ENV === "development") {

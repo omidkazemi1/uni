@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button, FormHelperText, Grid, Paper, TextField, Typography } from "@mui/material";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router";
+import { useNavigate, useLocation } from "react-router-dom";
 
 import { signup } from "../../actions/auth";
 
@@ -19,6 +19,7 @@ const Register = () => {
         phoneNumber: false
     });
     const dispatch = useDispatch();
+    const location = useLocation();
     const navigate = useNavigate();
 
     const inputChangeHandler = event => {
