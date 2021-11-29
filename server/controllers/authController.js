@@ -10,6 +10,11 @@ const signToken = (id) => {
   });
 };
 
+exports.test = catchAsync(async (req, res, next) => {
+  console.log(req);
+  console.log(req.cookie);
+});
+
 const createSendToken = (user, statusCode, res) => {
   const token = signToken(user._id);
 
