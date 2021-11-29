@@ -5,14 +5,16 @@ const userController = require("../controllers/userController");
 const authController = require("../controllers/authController");
 
 router.post("/signup", authController.teacherSignup);
-router.get("/test", authController.test);
-router.post("/login", authController.login);
-router.get("/code", authController.createCode);
+router.post("/login", authController.teacherLogin);
+
+router.post("/code", authController.createCode);
+router.post("/code/check", authController.resultCode);
 
 router
   .route("/")
   .get(userController.getAllUser)
   .post(userController.createUser);
+
 router
   .route("/:id")
   .get(userController.getUser)

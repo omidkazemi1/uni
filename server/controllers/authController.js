@@ -1,5 +1,8 @@
+/* eslint-disable no-undef */
 const jwt = require("jsonwebtoken");
 const { promisify } = require("util");
+const { digitsFaToEn } = require("@persian-tools/persian-tools");
+const randomize = require("randomatic");
 const User = require("../models/userModel");
 const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
@@ -9,11 +12,6 @@ const signToken = (id) => {
     expiresIn: process.env.JWT_EXPIRES_IN,
   });
 };
-
-exports.test = catchAsync(async (req, res, next) => {
-  console.log(req);
-  console.log(req.cookies);
-});
 
 const createSendToken = (user, statusCode, res) => {
   const token = signToken(user._id);
@@ -62,32 +60,16 @@ exports.teacherSignup = catchAsync(async (req, res, next) => {
   createSendToken(newUser, 201, res);
 });
 
-exports.createCode = catchAsync(async (req, res, next) => {
-  const { send, check, phoneNumber, code } = req.body;
-  if (send && !check) {
-    const setParams = { key: phoneNumber, ex: 120, value: randomize("0", 4) };
-    await this.redisClient("set", { ...setParams });
-    const smsCode = await this.redisClient("get", { key: phoneNumber });
-    console.log("phoneNumber, smsCode :>> ", phoneNumber, smsCode);
-    return;
-    // send sms
+exports.teacherLogin = catchAsync(async (req, res, next) => {
+  const { phoneNumber } = req.body;
+  // 1) if phoneNumber
+  if (!phoneNumber) {
+    return next(new AppError("please provide phoneNumber", 400));
   }
-  if (check && !send) {
-    const smsCode = await this.redisClient("get", { key: phoneNumber });
-    return res.send(smsCode === code);
-  }
-});
-
-exports.login = catchAsync(async (req, res, next) => {
-  const { email, password } = req.body;
-  // 1) if email and password exist
-  if (!email || !password) {
-    return next(new AppError("please provide email and password", 400));
-  }
-  // 2) check if user exists and password is correct
-  const user = await User.findOne({ email }).select("+password");
-  if (!user || !(await user.correctPassword(password, user.password))) {
-    return next(new AppError("Incorrect email and password", 401));
+  // 2) check if user exists
+  const user = await User.findOne({ phoneNumber });
+  if (!user || user.role !== "teacher") {
+    return next(new AppError("Incorrect phoneNumber", 401));
   }
 
   // 3) if everything ok send token to client
@@ -131,4 +113,44 @@ exports.protect = catchAsync(async (req, res, next) => {
   // Grant access to protect route
   req.user = freshUser;
   next();
+});
+
+exports.createCode = catchAsync(async (req, res, next) => {
+  let { phoneNumber } = req.body;
+  phoneNumber = digitsFaToEn(phoneNumber);
+
+  const check = await redis.getAsync(phoneNumber);
+  if (check) {
+    const ttl = await redis.ttl(phoneNumber);
+    return next(new AppError(`try again in ${ttl} seconds`, 405));
+  }
+
+  const code = randomize("0", 4);
+  await redis.setex(phoneNumber, 120, code);
+
+  console.log("code for sms ==>", code);
+
+  res.status(201).json({
+    status: "success",
+  });
+});
+
+exports.resultCode = catchAsync(async (req, res, next) => {
+  let { phoneNumber, code } = req.body;
+
+  phoneNumber = digitsFaToEn(phoneNumber);
+  code = digitsFaToEn(code);
+
+  const orginalCode = await redis.getAsync(phoneNumber);
+  if (!orginalCode) {
+    return next(new AppError("for this number there is no code", 404));
+  }
+
+  if (orginalCode !== code) {
+    return next(new AppError("code is wrong", 403));
+  }
+
+  res.status(202).json({
+    status: "success",
+  });
 });

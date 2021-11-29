@@ -1,8 +1,13 @@
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
-dotenv.config({ path: "./config.env" });
-const app = require("./app");
 
+dotenv.config({ path: "./config.env" });
+
+const redisHandler = require("./utils/redis");
+
+redisHandler.setRedis();
+const app = require("./app");
+// 1) start redis
 // $ connect to database
 const DB = process.env.DATABASE.replace(
   "<PASSWORD>",
