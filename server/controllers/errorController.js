@@ -14,10 +14,8 @@ const handleDuplicateFieldsDB = (err) => {
 
 const handleValidationErrorDB = (err) => {
   const errors = Object.values(err.errors).map((el) => el.message);
-
-  const message = `Invalid input data. ${errors.join(". ")}`;
-  console.log(message, "sds");
-  return new AppError(message, 400);
+  // const message = `Invalid input data. ${errors.join(". ")}`;
+  return new AppError(errors, 400);
 };
 
 const handleJWTError = () =>

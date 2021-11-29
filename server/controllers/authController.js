@@ -22,7 +22,6 @@ const createSendToken = (user, statusCode, res) => {
 
   if (process.env.NODE_ENV === "production") cookieOptions.secure = true;
 
-  user.fullName = `${this.firstName} ${this.lastName}`;
   res
     .cookie("jwt", token, cookieOptions)
     .status(statusCode)
