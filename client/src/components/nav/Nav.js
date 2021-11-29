@@ -40,10 +40,8 @@ function Nav() {
         setAnchorElUser(null);
     };
 
-    useEffect(async () => {
+    useEffect(() => {
         setUser(JSON.parse(localStorage.getItem("profile")));
-
-        
         console.log(user);
     }, [location]);
 

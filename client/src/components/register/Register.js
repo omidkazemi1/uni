@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
 
 import { signup } from "../../actions/auth";
+import { test } from "../../api";
 
 const Register = () => {
     const [formData, setFormData] = useState({
@@ -32,6 +33,7 @@ const Register = () => {
         event.preventDefault();
 
         dispatch(signup(formData, navigate));
+        dispatch(test())
     };
 
     return (
