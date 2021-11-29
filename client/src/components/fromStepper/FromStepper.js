@@ -1,12 +1,10 @@
 import React, { useState } from "react";
 import { Button, Grid, Step, StepLabel, Stepper, Typography } from "@mui/material";
-import { LoadingButton } from "@mui/lab";
-import { MdMailOutline } from "react-icons/md";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useTimer } from "use-timer";
 
-import { createCode, signup } from "../../actions/auth";
+import { signup } from "../../actions/auth";
 
 const FormStepper = ({ children, formData }) => {
     const childrenArray = React.Children.toArray(children);
@@ -15,11 +13,7 @@ const FormStepper = ({ children, formData }) => {
     const currentChild = childrenArray[step];
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const authState = useSelector(state => {
-        console.log(state);
-        return state;
-    });
-	
+
     const { time, start, reset, pause } = useTimer({
         autostart: false,
         initialTime: 4,
@@ -44,7 +38,6 @@ const FormStepper = ({ children, formData }) => {
         } else {
             start();
             setStep(step => step + 1);
-            dispatch(createCode(formData.confirmCode));
         }
     };
 
@@ -86,15 +79,14 @@ const FormStepper = ({ children, formData }) => {
             <Grid container spacing={2} marginTop="1rem">
                 {isLastStep() && (
                     <Grid item xs={12}>
-                        <LoadingButton
+                        <Button
                             variant="outlined"
-                            endIcon={<MdMailOutline />}
                             fullWidth
                             disabled={compeleteCountdown ? false : true}
                             sx={{ marginTop: "1rem" }}
                             onClick={countdownClickHandler}>
                             {codeTimer(time, reset)}
-                        </LoadingButton>
+                        </Button>
                     </Grid>
                 )}
 

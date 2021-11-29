@@ -21,16 +21,3 @@ export const signup = (formData, navigate) => async dispatch => {
         console.log(error);
     }
 };
-
-export const createCode = phoneNumber => async dispatch => {
-    try {
-        dispatch({ type: "CREATECODE_REQUEST" });
-        const { data } = await api.createCode(phoneNumber);
-
-        console.log(data);
-
-        dispatch({ type: "CREATECODE_RESPONSE" });
-    } catch (error) {
-        console.log(error);
-    }
-};
