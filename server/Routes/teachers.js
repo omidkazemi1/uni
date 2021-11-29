@@ -5,7 +5,6 @@ const userController = require("../controllers/userController");
 const authController = require("../controllers/authController");
 
 router.post("/signup", authController.teacherSignup);
-router.get("/test", authController.test);
 router.post("/login", authController.login);
 router.get("/code", authController.createCode);
 

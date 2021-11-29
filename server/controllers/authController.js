@@ -10,11 +10,6 @@ const signToken = (id) => {
   });
 };
 
-exports.test = catchAsync(async (req, res, next) => {
-  console.log(req);
-  console.log(req.cookies);
-});
-
 const createSendToken = (user, statusCode, res) => {
   const token = signToken(user._id);
 
@@ -27,6 +22,7 @@ const createSendToken = (user, statusCode, res) => {
 
   if (process.env.NODE_ENV === "production") cookieOptions.secure = true;
 
+  user.fullName = `${this.firstName} ${this.lastName}`;
   res
     .cookie("jwt", token, cookieOptions)
     .status(statusCode)
