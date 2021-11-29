@@ -19,7 +19,6 @@ const Register = () => {
         phoneNumber: false
     });
     const dispatch = useDispatch();
-    const location = useLocation();
     const navigate = useNavigate();
 
     const inputChangeHandler = event => {

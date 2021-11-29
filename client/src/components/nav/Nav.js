@@ -40,9 +40,10 @@ function Nav() {
         setAnchorElUser(null);
     };
 
-    useEffect(() => {
+    useEffect(async () => {
         setUser(JSON.parse(localStorage.getItem("profile")));
 
+        
         console.log(user);
     }, [location]);
 
@@ -138,8 +139,11 @@ function Nav() {
                                 open={Boolean(anchorElUser)}
                                 onClose={handleCloseUserMenu}>
                                 {settings.map(setting => (
-                                    <MenuItem key={setting} onClick={handleCloseNavMenu}>
-                                        <Typography textAlign="center">{setting}</Typography>
+                                    // <MenuItem key={setting} onClick={handleCloseNavMenu}>
+                                    //     <Typography textAlign="center">{setting}</Typography>
+                                    // </MenuItem>
+                                    <MenuItem key={123}>
+                                        {`${user.data.user.firstName} ${user.data.user.lastName}`}
                                     </MenuItem>
                                 ))}
                             </Menu>
