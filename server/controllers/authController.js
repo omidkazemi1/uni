@@ -60,16 +60,16 @@ exports.teacherSignup = catchAsync(async (req, res, next) => {
   createSendToken(newUser, 201, res);
 });
 
-exports.login = catchAsync(async (req, res, next) => {
-  const { email, password } = req.body;
-  // 1) if email and password exist
-  if (!email || !password) {
-    return next(new AppError("please provide email and password", 400));
+exports.teacherLogin = catchAsync(async (req, res, next) => {
+  const { phoneNumber } = req.body;
+  // 1) if phoneNumber
+  if (!phoneNumber) {
+    return next(new AppError("please provide phoneNumber", 400));
   }
-  // 2) check if user exists and password is correct
-  const user = await User.findOne({ email }).select("+password");
-  if (!user || !(await user.correctPassword(password, user.password))) {
-    return next(new AppError("Incorrect email and password", 401));
+  // 2) check if user exists
+  const user = await User.findOne({ phoneNumber });
+  if (!user || user.role !== "teacher") {
+    return next(new AppError("Incorrect phoneNumber", 401));
   }
 
   // 3) if everything ok send token to client

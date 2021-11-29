@@ -5,7 +5,7 @@ const userController = require("../controllers/userController");
 const authController = require("../controllers/authController");
 
 router.post("/signup", authController.teacherSignup);
-router.post("/login", authController.login);
+router.post("/login", authController.teacherLogin);
 
 router.post("/code", authController.createCode);
 router.post("/code/check", authController.resultCode);
