@@ -30,6 +30,7 @@ const createSendToken = (user, statusCode, res) => {
     .status(statusCode)
     .json({
       status: "success",
+      token,
       data: {
         user: user,
       },
@@ -79,13 +80,8 @@ exports.teacherLogin = catchAsync(async (req, res, next) => {
 exports.protect = catchAsync(async (req, res, next) => {
   // 1) get jwt token and check it
   let token;
-  if (
-    req.headers.authorization &&
-    req.headers.authorization.startsWith("Bearer")
-  ) {
-    token = req.headers.authorization.split(" ")[1];
-  } else if (req.cookie.jwt) {
-    token = req.cookie.jwt;
+  if (req.cookies.jwt) {
+    token = req.cookies.jwt;
   }
 
   if (!token) {
@@ -100,13 +96,7 @@ exports.protect = catchAsync(async (req, res, next) => {
   const freshUser = await User.findById(decoded.id);
   if (!freshUser) {
     return next(
-      new AppError("the token belonging to this user does not exist ", 401)
-    );
-  }
-  // 4) check if user changed password jwt issue
-  if (await freshUser.changePasswordAfter(decoded.iat)) {
-    return next(
-      new AppError("You recently change Password please log in again!", 401)
+      new AppError("the token belonging to this user does not exist", 401)
     );
   }
 
