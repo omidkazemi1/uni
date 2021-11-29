@@ -1,5 +1,5 @@
 import axios from "axios";
-
+axios.defaults.withCredentials = true
 const API = axios.create({ baseURL: "http://localhost:4000" });
 
 API.interceptors.request.use(req => {
@@ -12,6 +12,6 @@ API.interceptors.request.use(req => {
     return req;
 });
 
-export const signIn = formData => API.post("/api/v1/teachers/signin", formData);
+export const signIn = formData => API.post("/api/v1/teachers/signin", formData );
 export const signUp = formData => API.post("/api/v1/teachers/signup", formData);
 export const test = formData => API.get("/api/v1/teachers/test");

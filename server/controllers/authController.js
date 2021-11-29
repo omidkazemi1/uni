@@ -12,7 +12,7 @@ const signToken = (id) => {
 
 exports.test = catchAsync(async (req, res, next) => {
   console.log(req);
-  console.log(req.cookie);
+  console.log(req.cookies);
 });
 
 const createSendToken = (user, statusCode, res) => {
@@ -27,14 +27,15 @@ const createSendToken = (user, statusCode, res) => {
 
   if (process.env.NODE_ENV === "production") cookieOptions.secure = true;
 
-  res.cookie("jwt", token, cookieOptions);
-
-  res.status(statusCode).json({
-    status: "success",
-    data: {
-      user: user,
-    },
-  });
+  res
+    .cookie("jwt", token, cookieOptions)
+    .status(statusCode)
+    .json({
+      status: "success",
+      data: {
+        user: user,
+      },
+    });
 };
 
 exports.restrictTo = (...role) => {

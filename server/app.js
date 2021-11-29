@@ -24,7 +24,7 @@ const globalErrorHandler = require("./controllers/errorController");
 
 // 1) Global Middleware
 // set security http headers
-app.use(cors());
+app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
 
 app.use(helmet());
 // development logging
