@@ -1,6 +1,7 @@
 /* eslint-disable no-undef */
 const jwt = require("jsonwebtoken");
 const { promisify } = require("util");
+const { digitsFaToEn } = require("@persian-tools/persian-tools");
 const randomize = require("randomatic");
 const User = require("../models/userModel");
 const catchAsync = require("../utils/catchAsync");
@@ -115,15 +116,13 @@ exports.protect = catchAsync(async (req, res, next) => {
 });
 
 exports.createCode = catchAsync(async (req, res, next) => {
-  const { phoneNumber } = req.body;
+  let { phoneNumber } = req.body;
+  phoneNumber = digitsFaToEn(phoneNumber);
 
   const check = await redis.getAsync(phoneNumber);
   if (check) {
     const ttl = await redis.ttl(phoneNumber);
-    return res.status(405).json({
-      status: "failed",
-      message: `try again in ${ttl} seconds`,
-    });
+    return next(new AppError(`try again in ${ttl} seconds`, 405));
   }
 
   const code = randomize("0", 4);
@@ -137,21 +136,18 @@ exports.createCode = catchAsync(async (req, res, next) => {
 });
 
 exports.resultCode = catchAsync(async (req, res, next) => {
-  const { phoneNumber, code } = req.body;
+  let { phoneNumber, code } = req.body;
+
+  phoneNumber = digitsFaToEn(phoneNumber);
+  code = digitsFaToEn(code);
 
   const orginalCode = await redis.getAsync(phoneNumber);
   if (!orginalCode) {
-    return res.status(404).json({
-      status: "failed",
-      message: "for this number there is no code ",
-    });
+    return next(new AppError("for this number there is no code", 404));
   }
 
   if (orginalCode !== code) {
-    return res.status(403).json({
-      status: "failed",
-      message: "code is wrong",
-    });
+    return next(new AppError("code is wrong", 403));
   }
 
   res.status(202).json({
