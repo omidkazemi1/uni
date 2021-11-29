@@ -13,10 +13,12 @@ const userSchema = new mongoose.Schema({
   phoneNumber: {
     type: String,
     select: false,
+    unique: true,
   },
   nationalCode: {
     type: String,
     select: false,
+    unique: true,
     required: [true, "لطفا کدملی خود را وارد کنید"],
   },
   role: {

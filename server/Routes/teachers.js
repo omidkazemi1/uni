@@ -8,9 +8,6 @@ router.post("/signup", authController.teacherSignup);
 router.post("/login", authController.login);
 router.get("/code", authController.createCode);
 
-router.patch("/updateMe", authController.protect, userController.updateMe);
-router.delete("/deleteMe", authController.protect, userController.deleteMe);
-
 router
   .route("/")
   .get(userController.getAllUser)

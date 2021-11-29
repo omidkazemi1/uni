@@ -6,6 +6,7 @@ const mongoSanitize = require("express-mongo-sanitize");
 const xss = require("xss-clean");
 const hpp = require("hpp");
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
 
 const app = express();
 const morgan = require("morgan");
@@ -41,7 +42,7 @@ app.use("/api", limiter);
 
 // body parser, reading data from body into req.body
 app.use(express.json({ limit: "10kb" }));
-
+app.use(cookieParser());
 // data sanitization against no sql injection
 app.use(mongoSanitize());
 // data sanitization against xss
