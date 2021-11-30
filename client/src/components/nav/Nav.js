@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation, Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -20,9 +20,7 @@ import { HiOutlineMenu } from "react-icons/hi";
 function Nav() {
     const [anchorElNav, setAnchorElNav] = useState(null);
     const [anchorElUser, setAnchorElUser] = useState(null);
-    const location = useLocation();
-    const dispatch = useDispatch();
-    const user = useSelector(state => state.auth.authData);
+    const { user, error } = useSelector(state => state.auth);
 
     const handleOpenNavMenu = event => {
         setAnchorElNav(event.currentTarget);
@@ -144,7 +142,6 @@ function Nav() {
                             </Link>
                             <Link to="auth/register">
                                 <Button
-                                    LinkComponent
                                     variant="contained"
                                     color="secondary"
                                     sx={{ color: "white" }}>

@@ -1,21 +1,27 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Grid, Step, StepLabel, Stepper, Typography } from "@mui/material";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useTimer } from "use-timer";
 import { useSnackbar } from "notistack";
 
 import * as api from "../../api";
-import { login, register } from "../../actions/auth";
+import { login, register, setErrorEmpty } from "../../actions/auth";
 
 const FormStepper = ({ children, formData, formAction, fromTitle }) => {
     const childrenArray = React.Children.toArray(children);
     const [step, setStep] = useState(0);
     const [compeleteCountdown, setCompeleteCountdown] = useState(false);
     const currentChild = childrenArray[step];
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
     const { enqueueSnackbar } = useSnackbar();
+    const dispatch = useDispatch();
+    const { user, error } = useSelector(state => state.auth);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        dispatch(setErrorEmpty());
+        user && navigate("/", { replace: false });
+    }, [user, navigate]);
 
     const {
         time: timer,
@@ -57,15 +63,11 @@ const FormStepper = ({ children, formData, formAction, fromTitle }) => {
         event.preventDefault();
 
         if (isLastStep()) {
-            console.log('last step');
-            console.log(formAction)
-            if (formAction === 'LOGIN') {
-                console.log('login in')
-                dispatch(login(formData, navigate))
-            } else if (formAction === 'REGISTER') {
-                dispatch(register(formData, navigate));
+            if (formAction === "LOGIN") {
+                dispatch(login(formData));
+            } else if (formAction === "REGISTER") {
+                dispatch(register(formData));
             }
-
         } else {
             if (timerStaus === "STOPPED") {
                 startTimer();

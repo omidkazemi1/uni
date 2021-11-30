@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, FormHelperText, Grid, Paper, TextField, Typography } from "@mui/material";
+import { FormHelperText, Grid, Paper, TextField } from "@mui/material";
 import { SnackbarProvider } from "notistack";
 
 import FormStepper from "../fromStepper/FromStepper";
@@ -15,14 +15,10 @@ const Login = () => {
         }));
     };
 
-    const submitHandler = event => {
-        event.preventDefault();
-    };
-
     return (
         <SnackbarProvider>
             <Grid container justifyContent="center" alignItems="center" height="100vh">
-                <Grid item xs="12" sm="9" md="6" lg="4">
+                <Grid item xs={12} sm={9} md={6} lg={4}>
                     <Paper sx={{ padding: "20px" }}>
                         <FormStepper
                             formData={formData}

@@ -1,4 +1,3 @@
-import { useScrollTrigger } from "@mui/material";
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -9,8 +8,7 @@ const Logout = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        dispatch(logout());
-        navigate("/", { replace: true });
+        dispatch(logout(navigate));
     });
 
     return <></>;

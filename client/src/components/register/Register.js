@@ -23,7 +23,7 @@ const Register = () => {
     return (
         <SnackbarProvider>
             <Grid container justifyContent="center" alignItems="center" marginTop="4rem">
-                <Grid item xs="12" sm="9" md="6" lg="4">
+                <Grid item xs={12} sm={9} md={6} lg={4}>
                     <Paper sx={{ padding: "20px" }}>
                         <FormStepper
                             formData={formData}
