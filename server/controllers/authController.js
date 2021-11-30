@@ -25,16 +25,12 @@ const createSendToken = (user, statusCode, res) => {
 
   if (process.env.NODE_ENV === "production") cookieOptions.secure = true;
 
-  res
-    .cookie("jwt", token, cookieOptions)
-    .status(statusCode)
-    .json({
-      status: "success",
-      token,
-      data: {
-        user: user,
-      },
-    });
+  res.cookie("jwt", token, cookieOptions).status(statusCode).json({
+    status: "success",
+    data: {
+      user,
+    },
+  });
 };
 
 exports.restrictTo = (...role) => {
@@ -50,6 +46,19 @@ exports.restrictTo = (...role) => {
 };
 
 exports.teacherSignup = catchAsync(async (req, res, next) => {
+  let { phoneNumber, code } = req.body;
+
+  phoneNumber = digitsFaToEn(phoneNumber);
+  code = digitsFaToEn(code);
+
+  const orginalCode = await redis.getAsync(phoneNumber);
+  if (!orginalCode) {
+    return next(new AppError("for this number there is no code", 404));
+  }
+
+  if (orginalCode !== code) {
+    return next(new AppError("code is wrong", 403));
+  }
   const newUser = await User.create({
     firstName: req.body.firstName,
     lastName: req.body.lastName,
@@ -121,26 +130,6 @@ exports.createCode = catchAsync(async (req, res, next) => {
   console.log("code for sms ==>", code);
 
   res.status(201).json({
-    status: "success",
-  });
-});
-
-exports.resultCode = catchAsync(async (req, res, next) => {
-  let { phoneNumber, code } = req.body;
-
-  phoneNumber = digitsFaToEn(phoneNumber);
-  code = digitsFaToEn(code);
-
-  const orginalCode = await redis.getAsync(phoneNumber);
-  if (!orginalCode) {
-    return next(new AppError("for this number there is no code", 404));
-  }
-
-  if (orginalCode !== code) {
-    return next(new AppError("code is wrong", 403));
-  }
-
-  res.status(202).json({
     status: "success",
   });
 });
