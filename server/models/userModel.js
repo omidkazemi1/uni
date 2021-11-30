@@ -13,6 +13,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, "لطفا نام خانوادگی خود را وارد کنید"],
   },
+  class: [{ type: mongoose.Schema.ObjectId, ref: "Class" }],
   fullName: String,
   phoneNumber: {
     type: String,
@@ -49,20 +50,30 @@ const userSchema = new mongoose.Schema({
   },
 });
 
+// 1) pre find(any) say just active user
 userSchema.pre(/^find/, function (next) {
   this.find({ active: { $ne: false } });
   next();
 });
 
+// 2) make fullName feild with firstName and fullName
 userSchema.pre("save", async function (next) {
   this.fullName = `${this.firstName} ${this.lastName}`;
   next();
 });
 
+// 3) convert persian to english phoneNumber and nationalCode
 userSchema.pre("save", async function (next) {
   this.phoneNumber = digitsFaToEn(this.phoneNumber);
   this.nationalCode = digitsFaToEn(this.nationalCode);
   next();
+});
+
+// 4) remove class array in schema for teacher
+userSchema.pre("save", async function (next) {
+  if (this.role === "teacher") {
+    this.class = undefined;
+  }
 });
 
 const User = mongoose.model("User", userSchema);

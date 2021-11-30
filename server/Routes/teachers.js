@@ -41,7 +41,7 @@ router
   );
 
 router
-  .route("/class/student")
+  .route("/student")
   .post(
     authController.protect,
     authController.restrictTo("teacher"),

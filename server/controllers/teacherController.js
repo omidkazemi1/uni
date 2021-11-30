@@ -12,6 +12,16 @@ const filterObj = (obj, ...allowdFields) => {
   return newObj;
 };
 
+const findStudentInClass = (classList, student) => {
+  for (let index = 0; index < classList.length; index++) {
+    if (classList[index].toString() === student.toString()) {
+      return true;
+    }
+  }
+
+  return false;
+};
+
 exports.getAllUser = catchAsync(async (req, res) => {
   const users = await User.find();
 
@@ -59,12 +69,49 @@ exports.deleteMe = catchAsync(async (req, res, next) => {
 });
 
 exports.addStudent = catchAsync(async (req, res, next) => {
-  const newStudent = await User.create({
-    firstName: req.body.firstName,
-    lastName: req.body.lastName,
-    phoneNumber: req.body.phoneNumber,
-    nationalCode: req.body.nationalCode,
+  const { classId } = req.body;
+
+  const classDoc = await Class.findById(classId);
+
+  if (!classDoc) {
+    return next(new AppError("the id belonging to class does not exist", 401));
+  }
+
+  const { phoneNumber, nationalCode } = req.body;
+
+  let student = await User.findOne({
+    phoneNumber,
+    nationalCode,
     role: "student",
+  });
+
+  if (!student) {
+    student = await User.create({
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      phoneNumber,
+      class: [classDoc._id],
+      nationalCode,
+      role: "student",
+    });
+  } else {
+    const status = findStudentInClass(classDoc.students, student._id);
+    if (status) {
+      return next(new AppError("this student already added in class", 403));
+    }
+
+    await User.updateOne(
+      { _id: student._id },
+      { $push: { class: classDoc._id } }
+    );
+  }
+
+  classDoc.students.push(student._id);
+  await classDoc.save();
+
+  res.status(201).json({
+    status: "success",
+    data: student,
   });
 });
 
