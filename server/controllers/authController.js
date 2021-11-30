@@ -46,7 +46,7 @@ exports.restrictTo = (...role) => {
 };
 
 exports.teacherSignup = catchAsync(async (req, res, next) => {
-  let { phoneNumber, code } = req.body;
+  let { phoneNumber, confirmCode: code } = req.body;
 
   phoneNumber = digitsFaToEn(phoneNumber);
   code = digitsFaToEn(code);
@@ -71,7 +71,7 @@ exports.teacherSignup = catchAsync(async (req, res, next) => {
 });
 
 exports.teacherLogin = catchAsync(async (req, res, next) => {
-  let { phoneNumber, code } = req.body;
+  let { phoneNumber, confirmCode: code } = req.body;
 
   // 1) fa to eng phoneNumber and code
   phoneNumber = digitsFaToEn(phoneNumber);

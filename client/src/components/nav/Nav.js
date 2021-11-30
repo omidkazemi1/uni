@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useLocation, Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import {
     AppBar,
     Avatar,
@@ -17,13 +17,11 @@ import { deepOrange } from "@mui/material/colors";
 import { Box } from "@mui/system";
 import { HiOutlineMenu } from "react-icons/hi";
 
-const pages = ["Home", "About Us", "Contact Us"];
-const settings = ["Profile", "Dashboard", "Logout"];
-
 function Nav() {
     const [anchorElNav, setAnchorElNav] = useState(null);
     const [anchorElUser, setAnchorElUser] = useState(null);
     const location = useLocation();
+    const dispatch = useDispatch();
     const user = useSelector(state => state.auth.authData);
 
     const handleOpenNavMenu = event => {
@@ -41,10 +39,6 @@ function Nav() {
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
     };
-
-    useEffect(() => {
-        console.log(user, "useEffect");
-    }, [location]);
 
     return (
         <AppBar position="static">
@@ -86,11 +80,9 @@ function Nav() {
                             sx={{
                                 display: { xs: "block", md: "none" }
                             }}>
-                            {pages.map(page => (
-                                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                                    <Typography textAlign="center">{page}</Typography>
-                                </MenuItem>
-                            ))}
+                            <MenuItem onClick={handleCloseNavMenu}>
+                                <Link to="/">Home</Link>
+                            </MenuItem>
                         </Menu>
                     </Box>
 
@@ -103,14 +95,11 @@ function Nav() {
                     </Typography>
 
                     <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-                        {pages.map(page => (
-                            <Button
-                                key={page}
-                                onClick={handleCloseNavMenu}
-                                sx={{ my: 2, color: "white", display: "block" }}>
-                                {page}
-                            </Button>
-                        ))}
+                        <Button
+                            onClick={handleCloseNavMenu}
+                            sx={{ my: 2, color: "white", display: "block" }}>
+                            Home
+                        </Button>
                     </Box>
 
                     {user ? (
@@ -138,12 +127,12 @@ function Nav() {
                                 }}
                                 open={Boolean(anchorElUser)}
                                 onClose={handleCloseUserMenu}>
-                                {settings.map((setting, index) => (
-                                    <MenuItem key={index} onClick={handleCloseNavMenu}>
-                                        <Link to={`/user/${setting}`} >{setting}</Link>
-                                    </MenuItem>
-
-                                ))}
+                                <MenuItem onClick={handleCloseNavMenu}>
+                                    <Link to="user/profile">Profile</Link>
+                                </MenuItem>
+                                <MenuItem onClick={handleCloseNavMenu}>
+                                    <Link to="logout">Logout</Link>
+                                </MenuItem>
                             </Menu>
                         </Box>
                     ) : (
