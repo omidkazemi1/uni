@@ -22,6 +22,15 @@ const findStudentInClass = (classList, student) => {
   return false;
 };
 
+const removeStudentFromClass = (classList, student) => {
+  for (let index = 0; index < classList.length; index++) {
+    if (classList[index].toString() === student.toString()) {
+      classList.splice(index, 1);
+    }
+  }
+  return classList;
+};
+
 exports.getAllUser = catchAsync(async (req, res) => {
   const users = await User.find();
 
@@ -122,6 +131,28 @@ exports.addStudent = catchAsync(async (req, res, next) => {
     status: "success",
     data: student,
   });
+});
+
+exports.removeStudent = catchAsync(async (req, res, next) => {
+  const { classId, studentId } = req.params;
+
+  const classDoc = await Class.findById(classId);
+
+  if (!classDoc) {
+    return next(new AppError("the id belonging to class does not exist", 401));
+  }
+
+  const student = await User.findById(studentId);
+
+  if (!student) {
+    return next(
+      new AppError("the id belonging to stuedent does not exist", 401)
+    );
+  }
+
+  removeStudentFromClass(classDoc.students, student._id);
+
+  await classDoc.save({});
 });
 
 exports.addClass = catchAsync(async (req, res, next) => {

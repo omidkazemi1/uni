@@ -71,18 +71,31 @@ exports.teacherSignup = catchAsync(async (req, res, next) => {
 });
 
 exports.teacherLogin = catchAsync(async (req, res, next) => {
-  const { phoneNumber } = req.body;
-  // 1) if phoneNumber
+  let { phoneNumber, code } = req.body;
+
+  // 1) fa to eng phoneNumber and code
+  phoneNumber = digitsFaToEn(phoneNumber);
+  code = digitsFaToEn(code);
+  // 2) check code exist
+  const orginalCode = await redis.getAsync(phoneNumber);
+  if (!orginalCode) {
+    return next(new AppError("for this number there is no code", 404));
+  }
+  // 3) check code verfication
+  if (orginalCode !== code) {
+    return next(new AppError("code is wrong", 403));
+  }
+  // 4) if phoneNumber
   if (!phoneNumber) {
     return next(new AppError("please provide phoneNumber", 400));
   }
-  // 2) check if user exists
+  // 5) check if user exists
   const user = await User.findOne({ phoneNumber });
   if (!user || user.role !== "teacher") {
     return next(new AppError("Incorrect phoneNumber", 401));
   }
 
-  // 3) if everything ok send token to client
+  // 6) if everything ok send token to client
   createSendToken(user, 200, res);
 });
 

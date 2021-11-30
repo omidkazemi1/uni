@@ -8,7 +8,20 @@ router.post("/signup", authController.teacherSignup);
 router.post("/login", authController.teacherLogin);
 router.post("/code", authController.createCode);
 
-router.get("/", authController.protect, teacherController.showMe);
+router.delete(
+  "/class/:classId/:studentId",
+  authController.protect,
+  authController.restrictTo("teacher"),
+  teacherController.removeStudent
+);
+
+router.get(
+  "/",
+  authController.protect,
+  authController.restrictTo("teacher"),
+  teacherController.showMe
+);
+
 router
   .route("/class")
   .post(
