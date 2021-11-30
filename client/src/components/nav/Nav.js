@@ -20,12 +20,10 @@ const pages = ["Home", "About Us", "Contact Us"];
 const settings = ["Profile", "Dashboard", "Logout"];
 
 function Nav() {
-    // const [user, setUser] = useState(JSON.parse(localStorage.getItem("profile")));
     const [anchorElNav, setAnchorElNav] = useState(null);
     const [anchorElUser, setAnchorElUser] = useState(null);
     const location = useLocation();
     const user = useSelector(state => {
-        console.log(state);
         return state.auth;
     });
 
@@ -46,7 +44,7 @@ function Nav() {
     };
 
     useEffect(() => {
-        console.log(user, 'user useEffect')
+        // console.log(user, 'user useEffect')
     }, [location]);
 
     return (
