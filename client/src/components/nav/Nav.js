@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import {
     AppBar,
@@ -13,6 +13,7 @@ import {
     Tooltip,
     Typography
 } from "@mui/material";
+import { deepOrange } from "@mui/material/colors";
 import { Box } from "@mui/system";
 import { HiOutlineMenu } from "react-icons/hi";
 
@@ -23,9 +24,7 @@ function Nav() {
     const [anchorElNav, setAnchorElNav] = useState(null);
     const [anchorElUser, setAnchorElUser] = useState(null);
     const location = useLocation();
-    const user = useSelector(state => {
-        return state.auth;
-    });
+    const user = useSelector(state => state.auth.authData);
 
     const handleOpenNavMenu = event => {
         setAnchorElNav(event.currentTarget);
@@ -44,7 +43,7 @@ function Nav() {
     };
 
     useEffect(() => {
-        // console.log(user, 'user useEffect')
+        console.log(user, "useEffect");
     }, [location]);
 
     return (
@@ -114,13 +113,14 @@ function Nav() {
                         ))}
                     </Box>
 
-                    {user.authData ? (
+                    {user ? (
                         <Box sx={{ flexGrow: 0 }}>
                             <Tooltip title="Open settings">
                                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                    <Avatar
-                                    // alt={`${user.data.user.firstName} ${user.data.user.lastName}`}
-                                    />
+                                    <Avatar sx={{ bgcolor: deepOrange[500] }}>
+                                        {user.firstName.charAt(0)}
+                                        {user.lastName.charAt(0)}
+                                    </Avatar>
                                 </IconButton>
                             </Tooltip>
                             <Menu
@@ -138,20 +138,31 @@ function Nav() {
                                 }}
                                 open={Boolean(anchorElUser)}
                                 onClose={handleCloseUserMenu}>
-                                {settings.map(setting => (
-                                    // <MenuItem key={setting} onClick={handleCloseNavMenu}>
-                                    //     <Typography textAlign="center">{setting}</Typography>
-                                    // </MenuItem>
-                                    <MenuItem key={123}> </MenuItem>
+                                {settings.map((setting, index) => (
+                                    <MenuItem key={index} onClick={handleCloseNavMenu}>
+                                        <Link to={`/user/${setting}`} >{setting}</Link>
+                                    </MenuItem>
+
                                 ))}
                             </Menu>
                         </Box>
                     ) : (
-                        <div>
-                            <Button variant="outlined" sx={{ color: "white" }}>
-                                Login
-                            </Button>
-                        </div>
+                        <>
+                            <Link to="auth/login">
+                                <Button variant="text" sx={{ color: "white" }}>
+                                    Login
+                                </Button>
+                            </Link>
+                            <Link to="auth/register">
+                                <Button
+                                    LinkComponent
+                                    variant="contained"
+                                    color="secondary"
+                                    sx={{ color: "white" }}>
+                                    Register
+                                </Button>
+                            </Link>
+                        </>
                     )}
                 </Toolbar>
             </Container>
