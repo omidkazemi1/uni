@@ -68,6 +68,15 @@ exports.deleteMe = catchAsync(async (req, res, next) => {
   });
 });
 
+exports.showMe = catchAsync(async (req, res, next) => {
+  res.status(200).json({
+    status: "success",
+    data: {
+      user: req.user,
+    },
+  });
+});
+
 exports.addStudent = catchAsync(async (req, res, next) => {
   const { classId } = req.body;
 

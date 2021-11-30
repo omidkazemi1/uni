@@ -8,6 +8,7 @@ router.post("/signup", authController.teacherSignup);
 router.post("/login", authController.teacherLogin);
 router.post("/code", authController.createCode);
 
+router.get("/", authController.protect, teacherController.showMe);
 router
   .route("/class")
   .post(
