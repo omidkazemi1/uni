@@ -99,6 +99,40 @@ exports.teacherLogin = catchAsync(async (req, res, next) => {
   createSendToken(user, 200, res);
 });
 
+exports.logout = (req, res) => {
+  res.clearCookie("jwt");
+  res.status(200).json({
+    status: "success",
+  });
+};
+
+exports.isLoggedIn = catchAsync(async (req, res, next) => {
+  if (req.cookies.jwt) {
+    // 1) verify token
+    const decoded = await promisify(jwt.verify)(
+      req.cookies.jwt,
+      process.env.JWT_SECRET
+    );
+
+    // 2) Check if user still exists
+    const currentUser = await User.findById(decoded.id);
+    if (!currentUser) {
+      return next(new AppError("this user doesnt exists", 404));
+    }
+
+    res.status(200).json({
+      status: "success",
+      data: {
+        user: currentUser,
+      },
+    });
+  } else {
+    return next(
+      new AppError("You are not logged in! please log into to get access.", 401)
+    );
+  }
+});
+
 exports.protect = catchAsync(async (req, res, next) => {
   // 1) get jwt token and check it
   let token;
