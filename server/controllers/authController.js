@@ -25,16 +25,12 @@ const createSendToken = (user, statusCode, res) => {
 
   if (process.env.NODE_ENV === "production") cookieOptions.secure = true;
 
-  res
-    .cookie("jwt", token, cookieOptions)
-    .status(statusCode)
-    .json({
-      status: "success",
-      token,
-      data: {
-        user: user,
-      },
-    });
+  res.cookie("jwt", token, cookieOptions).status(statusCode).json({
+    status: "success",
+    data: {
+      user,
+    },
+  });
 };
 
 exports.restrictTo = (...role) => {
@@ -50,6 +46,19 @@ exports.restrictTo = (...role) => {
 };
 
 exports.teacherSignup = catchAsync(async (req, res, next) => {
+  let { phoneNumber, code } = req.body;
+
+  phoneNumber = digitsFaToEn(phoneNumber);
+  code = digitsFaToEn(code);
+
+  const orginalCode = await redis.getAsync(phoneNumber);
+  if (!orginalCode) {
+    return next(new AppError("for this number there is no code", 404));
+  }
+
+  if (orginalCode !== code) {
+    return next(new AppError("code is wrong", 403));
+  }
   const newUser = await User.create({
     firstName: req.body.firstName,
     lastName: req.body.lastName,
@@ -62,19 +71,66 @@ exports.teacherSignup = catchAsync(async (req, res, next) => {
 });
 
 exports.teacherLogin = catchAsync(async (req, res, next) => {
-  const { phoneNumber } = req.body;
-  // 1) if phoneNumber
+  let { phoneNumber, code } = req.body;
+
+  // 1) fa to eng phoneNumber and code
+  phoneNumber = digitsFaToEn(phoneNumber);
+  code = digitsFaToEn(code);
+  // 2) check code exist
+  const orginalCode = await redis.getAsync(phoneNumber);
+  if (!orginalCode) {
+    return next(new AppError("for this number there is no code", 404));
+  }
+  // 3) check code verfication
+  if (orginalCode !== code) {
+    return next(new AppError("code is wrong", 403));
+  }
+  // 4) if phoneNumber
   if (!phoneNumber) {
     return next(new AppError("please provide phoneNumber", 400));
   }
-  // 2) check if user exists
+  // 5) check if user exists
   const user = await User.findOne({ phoneNumber });
   if (!user || user.role !== "teacher") {
     return next(new AppError("Incorrect phoneNumber", 401));
   }
 
-  // 3) if everything ok send token to client
+  // 6) if everything ok send token to client
   createSendToken(user, 200, res);
+});
+
+exports.logout = (req, res) => {
+  res.clearCookie("jwt");
+  res.status(200).json({
+    status: "success",
+  });
+};
+
+exports.isLoggedIn = catchAsync(async (req, res, next) => {
+  if (req.cookies.jwt) {
+    // 1) verify token
+    const decoded = await promisify(jwt.verify)(
+      req.cookies.jwt,
+      process.env.JWT_SECRET
+    );
+
+    // 2) Check if user still exists
+    const currentUser = await User.findById(decoded.id);
+    if (!currentUser) {
+      return next(new AppError("this user doesnt exists", 404));
+    }
+
+    res.status(200).json({
+      status: "success",
+      data: {
+        user: currentUser,
+      },
+    });
+  } else {
+    return next(
+      new AppError("You are not logged in! please log into to get access.", 401)
+    );
+  }
 });
 
 exports.protect = catchAsync(async (req, res, next) => {
@@ -121,26 +177,6 @@ exports.createCode = catchAsync(async (req, res, next) => {
   console.log("code for sms ==>", code);
 
   res.status(201).json({
-    status: "success",
-  });
-});
-
-exports.resultCode = catchAsync(async (req, res, next) => {
-  let { phoneNumber, code } = req.body;
-
-  phoneNumber = digitsFaToEn(phoneNumber);
-  code = digitsFaToEn(code);
-
-  const orginalCode = await redis.getAsync(phoneNumber);
-  if (!orginalCode) {
-    return next(new AppError("for this number there is no code", 404));
-  }
-
-  if (orginalCode !== code) {
-    return next(new AppError("code is wrong", 403));
-  }
-
-  res.status(202).json({
     status: "success",
   });
 });

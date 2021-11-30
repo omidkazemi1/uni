@@ -6,8 +6,23 @@ const authController = require("../controllers/authController");
 
 router.post("/signup", authController.teacherSignup);
 router.post("/login", authController.teacherLogin);
+router.get("/logout", authController.logout);
+router.get("/auth", authController.isLoggedIn);
 router.post("/code", authController.createCode);
-router.post("/code/check", authController.resultCode);
+
+router.delete(
+  "/class/:classId/:studentId",
+  authController.protect,
+  authController.restrictTo("teacher"),
+  teacherController.removeStudent
+);
+
+router.get(
+  "/",
+  authController.protect,
+  authController.restrictTo("teacher"),
+  teacherController.showMe
+);
 
 router
   .route("/class")
@@ -41,7 +56,7 @@ router
   );
 
 router
-  .route("/class/student")
+  .route("/student")
   .post(
     authController.protect,
     authController.restrictTo("teacher"),
