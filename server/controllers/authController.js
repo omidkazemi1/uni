@@ -158,7 +158,7 @@ exports.createCode = catchAsync(async (req, res, next) => {
   const check = await redis.getAsync(phoneNumber);
   if (check) {
     const ttl = await redis.ttl(phoneNumber);
-    return next(new AppError(`try again in ${ttl} seconds`, 405));
+    return next(new AppError(`لطفا ${ttl} ثانیه دیکر تلاش کنید`, 405));
   }
 
   const code = randomize("0", 4);
