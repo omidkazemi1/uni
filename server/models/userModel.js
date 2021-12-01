@@ -62,7 +62,6 @@ userSchema.pre("save", async function (next) {
 
 // 3) convert persian to english phoneNumber and nationalCode
 userSchema.pre("save", async function (next) {
-  console.log(this);
   this.phoneNumber = digitsFaToEn(this.phoneNumber);
   this.nationalCode = digitsFaToEn(this.nationalCode);
   next();
