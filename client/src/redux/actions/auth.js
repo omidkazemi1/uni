@@ -1,4 +1,4 @@
-import * as api from "../api";
+import * as api from "../../api";
 import {
     AUTH_ERROR,
     AUTH_REQUEST,
@@ -7,7 +7,7 @@ import {
     LOGOUT_ERROR,
     LOGOUT_REQUEST,
     LOGOUT_RESPONSE
-} from "../constants/actionTypes";
+} from "../../constants/actionTypes";
 
 export const auth = () => async dispatch => {
     try {
@@ -53,4 +53,4 @@ export const register = formData => async dispatch => {
     }
 };
 
-export const setErrorEmpty = () => ({ type: ERROR_EMPTY })
+export const setErrorEmpty = () => ({ type: ERROR_EMPTY });

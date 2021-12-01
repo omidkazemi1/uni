@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { useLocation, Link } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 import {
     AppBar,
     Avatar,
@@ -14,7 +14,7 @@ import {
     Typography
 } from "@mui/material";
 import { deepOrange } from "@mui/material/colors";
-import { Box } from "@mui/system";
+import { Box, margin } from "@mui/system";
 import { HiOutlineMenu } from "react-icons/hi";
 
 function Nav() {
@@ -47,7 +47,7 @@ function Nav() {
                         noWrap
                         component="div"
                         sx={{ mr: 2, display: { xs: "none", md: "flex" } }}>
-                        Maktab Chi
+                        مکتب چی
                     </Typography>
 
                     <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
@@ -78,8 +78,14 @@ function Nav() {
                             sx={{
                                 display: { xs: "block", md: "none" }
                             }}>
-                            <MenuItem onClick={handleCloseNavMenu}>
-                                <Link to="/">Home</Link>
+                            <MenuItem component={Link} to="/" onClick={handleCloseNavMenu}>
+                                خانه
+                            </MenuItem>
+                            <MenuItem component={Link} to="/" onClick={handleCloseNavMenu}>
+                                دوره های آموزشی
+                            </MenuItem>
+                            <MenuItem component={Link} to="/" onClick={handleCloseNavMenu}>
+                                ارتباط با ما
                             </MenuItem>
                         </Menu>
                     </Box>
@@ -89,14 +95,30 @@ function Nav() {
                         noWrap
                         component="div"
                         sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
-                        Maktab Chi
+                        مکتب چی
                     </Typography>
 
                     <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
                         <Button
+                            component={Link}
+                            to="/"
                             onClick={handleCloseNavMenu}
                             sx={{ my: 2, color: "white", display: "block" }}>
-                            Home
+                            خانه
+                        </Button>
+                        <Button
+                            component={Link}
+                            to="/"
+                            onClick={handleCloseNavMenu}
+                            sx={{ my: 2, color: "white", display: "block" }}>
+                            دوره های آموزشی
+                        </Button>
+                        <Button
+                            component={Link}
+                            to="/"
+                            onClick={handleCloseNavMenu}
+                            sx={{ my: 2, color: "white", display: "block" }}>
+                            ارتباط با ما
                         </Button>
                     </Box>
 
@@ -125,29 +147,38 @@ function Nav() {
                                 }}
                                 open={Boolean(anchorElUser)}
                                 onClose={handleCloseUserMenu}>
-                                <MenuItem onClick={handleCloseNavMenu}>
-                                    <Link to="user/profile">Profile</Link>
+                                <MenuItem
+                                    component={Link}
+                                    to="user/profile"
+                                    onClick={handleCloseNavMenu}>
+                                    پروفایل
                                 </MenuItem>
-                                <MenuItem onClick={handleCloseNavMenu}>
-                                    <Link to="logout">Logout</Link>
+                                <MenuItem
+                                    component={Link}
+                                    to="logout"
+                                    onClick={handleCloseNavMenu}>
+                                    خروج
                                 </MenuItem>
                             </Menu>
                         </Box>
                     ) : (
                         <>
-                            <Link to="auth/login">
-                                <Button variant="text" sx={{ color: "white" }}>
-                                    Login
-                                </Button>
-                            </Link>
-                            <Link to="auth/register">
-                                <Button
-                                    variant="contained"
-                                    color="secondary"
-                                    sx={{ color: "white" }}>
-                                    Register
-                                </Button>
-                            </Link>
+                            <Button
+                                component={Link}
+                                to="auth/login"
+                                variant="outlined"
+                                sx={{ color: "white", marginRight: "1rem" }}>
+                                ورود
+                            </Button>
+                            <Button
+                                component={Link}
+                                to="auth/register"
+                                variant="contained"
+                                href="auth/register"
+                                color="secondary"
+                                sx={{ color: "white" }}>
+                                ثبت نام
+                            </Button>
                         </>
                     )}
                 </Toolbar>

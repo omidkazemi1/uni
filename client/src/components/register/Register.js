@@ -13,11 +13,21 @@ const Register = () => {
         confirmCode: ""
     });
 
+    const [formError, setFormError] = useState({
+        firstName: false,
+        lastName: false,
+        nationalCode: false,
+        phoneNumber: false,
+        confirmCode: false
+    });
+
     const inputChangeHandler = event => {
         setFormData(prevState => ({
             ...prevState,
             [event.target.name]: event.target.value
         }));
+
+        setFormError(prevState => ({ ...prevState, [event.target.name]: false }));
     };
 
     return (
@@ -27,76 +37,81 @@ const Register = () => {
                     <Paper sx={{ padding: "20px" }}>
                         <FormStepper
                             formData={formData}
-                            fromTitle="Register"
+                            errorHandler={setFormError}
+                            fromTitle="ثبت نام"
                             formAction="REGISTER"
                             inputChangeHandler={inputChangeHandler}>
-
                             <Box>
                                 <TextField
                                     name="firstName"
-                                    label="Frist Name"
+                                    label="نام"
                                     type="text"
                                     fullWidth
                                     margin="normal"
                                     value={formData.firstName}
+                                    error={formError.firstName}
                                     onChange={inputChangeHandler}
                                 />
-                                <FormHelperText id="my-helper-text">
-                                    Enter your first name
+                                <FormHelperText error={formError.firstName}>
+                                    نام خود را وارد کنید
                                 </FormHelperText>
 
                                 <TextField
                                     name="lastName"
-                                    label="Last Name"
+                                    label="نام خانوادگی"
                                     type="text"
                                     fullWidth
                                     margin="normal"
                                     value={formData.lastName}
+                                    error={formError.lastName}
                                     onChange={inputChangeHandler}
                                 />
-                                <FormHelperText id="my-helper-text">
-                                    Enter your last name
+                                <FormHelperText error={formError.lastName}>
+                                    نام خانوادگی خود را وارد کنید
                                 </FormHelperText>
 
                                 <TextField
                                     name="nationalCode"
-                                    label="National Code"
+                                    label="کد ملی"
                                     type="text"
                                     fullWidth
                                     margin="normal"
-                                    value={formData.natinalCode}
+                                    value={formData.nationalCode}
+                                    error={formError.nationalCode}
                                     onChange={inputChangeHandler}
                                 />
-                                <FormHelperText id="my-helper-text">
-                                    Enter your national code
+                                <FormHelperText error={formError.nationalCode}>
+                                    کد ملی را وارد کنید
                                 </FormHelperText>
 
                                 <TextField
                                     name="phoneNumber"
-                                    label="Phone Number"
+                                    label="شماره مبایل"
                                     type="text"
                                     fullWidth
                                     margin="normal"
                                     value={formData.phoneNumber}
+                                    error={formError.phoneNumber}
                                     onChange={inputChangeHandler}
                                 />
-                                <FormHelperText id="my-helper-text">
-                                    Enter your phone number
+                                <FormHelperText error={formError.phoneNumber}>
+                                    شماره مبایل خود را وارد کنید
                                 </FormHelperText>
                             </Box>
 
                             <Box>
                                 <TextField
                                     name="confirmCode"
-                                    label="Confirm Code"
+                                    label="کد تأیید"
                                     type="text"
                                     fullWidth
                                     margin="normal"
                                     value={formData.confirmCode}
+                                    error={formError.confirmCode}
                                     onChange={inputChangeHandler}
                                 />
-                                <FormHelperText id="my-helper-text">
-                                    Enter sent code
+                                <FormHelperText error={formError.confirmCode}>
+                                    کد ارسال شده را وارد کنید
                                 </FormHelperText>
                             </Box>
                         </FormStepper>

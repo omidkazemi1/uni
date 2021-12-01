@@ -6,7 +6,7 @@ import {
     LOGOUT_ERROR,
     LOGOUT_REQUEST,
     LOGOUT_RESPONSE
-} from "../constants/actionTypes";
+} from "../../constants/actionTypes";
 
 const initialState = {
     user: null,

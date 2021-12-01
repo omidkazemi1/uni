@@ -7,21 +7,30 @@ import Login from "./components/login/Login";
 import Register from "./components/register/Register";
 import Profile from "./components/user/profile/Profile";
 
+import "./assets/fonts/css/style.css";
+import { customTheme, RTL } from "./assets/theme";
+import { ThemeProvider } from "@mui/material/styles";
+import { CssBaseline } from "@mui/material";
+
 const App = () => {
     return (
-        <>
-            <nav>
-                <Nav />
-            </nav>
+        <RTL>
+            <ThemeProvider theme={customTheme}>
+                <CssBaseline />
 
-            <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="logout" element={<Logout />} />
-                <Route path="auth/login" element={<Login />} />
-                <Route path="auth/register" element={<Register />} />
-                <Route path="user/profile" element={<Profile />} />
-            </Routes>
-        </>
+                <nav>
+                    <Nav />
+                </nav>
+
+                <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="logout" element={<Logout />} />
+                    <Route path="auth/login" element={<Login />} />
+                    <Route path="auth/register" element={<Register />} />
+                    <Route path="user/profile" element={<Profile />} />
+                </Routes>
+            </ThemeProvider>
+        </RTL>
     );
 };
 

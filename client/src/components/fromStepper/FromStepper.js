@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { Button, Grid, Step, StepLabel, Stepper, Typography } from "@mui/material";
+import { Button, Grid, Grow, Step, StepLabel, Stepper, Typography } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useTimer } from "use-timer";
 import { useSnackbar } from "notistack";
 
 import * as api from "../../api";
-import { login, register, setErrorEmpty } from "../../actions/auth";
+import { login, register, setErrorEmpty } from "../../redux/actions/auth";
 
-const FormStepper = ({ children, formData, formAction, fromTitle }) => {
+const FormStepper = ({ children, formData, errorHandler, formAction, fromTitle }) => {
     const childrenArray = React.Children.toArray(children);
     const [step, setStep] = useState(0);
     const [compeleteCountdown, setCompeleteCountdown] = useState(false);
@@ -21,7 +21,7 @@ const FormStepper = ({ children, formData, formAction, fromTitle }) => {
     useEffect(() => {
         dispatch(setErrorEmpty());
         user && navigate("/", { replace: false });
-    }, [user, navigate]);
+    }, [user, navigate, dispatch]);
 
     const {
         time: timer,
@@ -49,12 +49,20 @@ const FormStepper = ({ children, formData, formAction, fromTitle }) => {
         try {
             const data = await api.createCode(phoneNumber);
             if (data.status === 201) {
-                enqueueSnackbar("Sent Code", { variant: "success" });
+                enqueueSnackbar("کد شما ارسال شد", {
+                    variant: "success",
+                    anchorOrigin: { vertical: "bottom", horizontal: "left" },
+                    TransitionComponent: Grow
+                });
             }
         } catch (err) {
             if (err.response.status === 405) {
                 console.log(err.response.data.message);
-                enqueueSnackbar(err.response.data.message, { variant: "error" });
+                enqueueSnackbar(err.response.data.message, {
+                    variant: "error",
+                    anchorOrigin: { vertical: "bottom", horizontal: "left" },
+                    TransitionComponent: Grow
+                });
             }
         }
     }
@@ -69,12 +77,21 @@ const FormStepper = ({ children, formData, formAction, fromTitle }) => {
                 dispatch(register(formData));
             }
         } else {
-            if (timerStaus === "STOPPED") {
-                startTimer();
-                createCode({ phoneNumber: formData.phoneNumber });
+            let hasError = false;
+            for (const input in formData) {
+                if (formData[input] === "" && input !== "confirmCode") {
+                    errorHandler(prevState => ({ ...prevState, [input]: true }));
+                    hasError = true;
+                }
             }
 
-            setStep(step => step + 1);
+            if (!hasError) {
+                setStep(step => step + 1);
+                if (timerStaus === "STOPPED") {
+                    startTimer();
+                    createCode({ phoneNumber: formData.phoneNumber });
+                }
+            }
         }
     };
 
@@ -83,11 +100,11 @@ const FormStepper = ({ children, formData, formAction, fromTitle }) => {
         let seconds = time - minutes * 60;
 
         if (time) {
-            return `Resend after: ${minutes < 10 ? "0" + minutes : minutes}:${
+            return `ارسال مجدد: ${minutes < 10 ? "0" + minutes : minutes}:${
                 seconds < 10 ? "0" + seconds : seconds
             }`;
         } else {
-            return "Resend";
+            return "ارسال مجدد";
         }
     };
 
@@ -105,7 +122,7 @@ const FormStepper = ({ children, formData, formAction, fromTitle }) => {
             </Typography>
 
             <Stepper activeStep={step} sx={{ marginBottom: "1rem" }}>
-                {["Information", "Authorizion"].map((label, index) => (
+                {["اطلاعات شما", "اهراز حویت"].map((label, index) => (
                     <Step key={index}>
                         <StepLabel>{label}</StepLabel>
                     </Step>
@@ -135,14 +152,14 @@ const FormStepper = ({ children, formData, formAction, fromTitle }) => {
                             color="primary"
                             fullWidth
                             onClick={() => setStep(step => step - 1)}>
-                            Back
+                            برگشت
                         </Button>
                     </Grid>
                 ) : null}
 
                 <Grid item xs={6}>
                     <Button variant="contained" color="primary" type="submit" fullWidth>
-                        {isLastStep() ? fromTitle : "Next"}
+                        {isLastStep() ? fromTitle : "بعدی"}
                     </Button>
                 </Grid>
             </Grid>
