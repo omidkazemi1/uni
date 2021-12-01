@@ -46,7 +46,7 @@ exports.restrictTo = (...role) => {
 };
 
 exports.teacherSignup = catchAsync(async (req, res, next) => {
-  let { phoneNumber, code } = req.body;
+  let { phoneNumber, confirmCode: code } = req.body;
 
   if (!phoneNumber || !code) {
     return next(new AppError("please give phoneNumber and code", 400));
@@ -79,7 +79,7 @@ exports.teacherSignup = catchAsync(async (req, res, next) => {
 });
 
 exports.teacherLogin = catchAsync(async (req, res, next) => {
-  let { phoneNumber, code } = req.body;
+  let { phoneNumber, confirmCode: code } = req.body;
 
   // 0) check code and phoneNumber
   if (!phoneNumber || !code) {

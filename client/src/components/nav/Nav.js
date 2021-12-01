@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useLocation, Link } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 import {
     AppBar,
     Avatar,
@@ -13,19 +13,14 @@ import {
     Tooltip,
     Typography
 } from "@mui/material";
+import { deepOrange } from "@mui/material/colors";
 import { Box } from "@mui/system";
 import { HiOutlineMenu } from "react-icons/hi";
-
-const pages = ["Home", "About Us", "Contact Us"];
-const settings = ["Profile", "Dashboard", "Logout"];
 
 function Nav() {
     const [anchorElNav, setAnchorElNav] = useState(null);
     const [anchorElUser, setAnchorElUser] = useState(null);
-    const location = useLocation();
-    const user = useSelector(state => {
-        return state.auth;
-    });
+    const { user, error } = useSelector(state => state.auth);
 
     const handleOpenNavMenu = event => {
         setAnchorElNav(event.currentTarget);
@@ -42,10 +37,6 @@ function Nav() {
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
     };
-
-    useEffect(() => {
-        // console.log(user, 'user useEffect')
-    }, [location]);
 
     return (
         <AppBar position="static">
@@ -87,11 +78,9 @@ function Nav() {
                             sx={{
                                 display: { xs: "block", md: "none" }
                             }}>
-                            {pages.map(page => (
-                                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                                    <Typography textAlign="center">{page}</Typography>
-                                </MenuItem>
-                            ))}
+                            <MenuItem onClick={handleCloseNavMenu}>
+                                <Link to="/">Home</Link>
+                            </MenuItem>
                         </Menu>
                     </Box>
 
@@ -104,23 +93,21 @@ function Nav() {
                     </Typography>
 
                     <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-                        {pages.map(page => (
-                            <Button
-                                key={page}
-                                onClick={handleCloseNavMenu}
-                                sx={{ my: 2, color: "white", display: "block" }}>
-                                {page}
-                            </Button>
-                        ))}
+                        <Button
+                            onClick={handleCloseNavMenu}
+                            sx={{ my: 2, color: "white", display: "block" }}>
+                            Home
+                        </Button>
                     </Box>
 
-                    {user.authData ? (
+                    {user ? (
                         <Box sx={{ flexGrow: 0 }}>
                             <Tooltip title="Open settings">
                                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                    <Avatar
-                                    // alt={`${user.data.user.firstName} ${user.data.user.lastName}`}
-                                    />
+                                    <Avatar sx={{ bgcolor: deepOrange[500] }}>
+                                        {user.firstName.charAt(0)}
+                                        {user.lastName.charAt(0)}
+                                    </Avatar>
                                 </IconButton>
                             </Tooltip>
                             <Menu
@@ -138,20 +125,30 @@ function Nav() {
                                 }}
                                 open={Boolean(anchorElUser)}
                                 onClose={handleCloseUserMenu}>
-                                {settings.map(setting => (
-                                    // <MenuItem key={setting} onClick={handleCloseNavMenu}>
-                                    //     <Typography textAlign="center">{setting}</Typography>
-                                    // </MenuItem>
-                                    <MenuItem key={123}> </MenuItem>
-                                ))}
+                                <MenuItem onClick={handleCloseNavMenu}>
+                                    <Link to="user/profile">Profile</Link>
+                                </MenuItem>
+                                <MenuItem onClick={handleCloseNavMenu}>
+                                    <Link to="logout">Logout</Link>
+                                </MenuItem>
                             </Menu>
                         </Box>
                     ) : (
-                        <div>
-                            <Button variant="outlined" sx={{ color: "white" }}>
-                                Login
-                            </Button>
-                        </div>
+                        <>
+                            <Link to="auth/login">
+                                <Button variant="text" sx={{ color: "white" }}>
+                                    Login
+                                </Button>
+                            </Link>
+                            <Link to="auth/register">
+                                <Button
+                                    variant="contained"
+                                    color="secondary"
+                                    sx={{ color: "white" }}>
+                                    Register
+                                </Button>
+                            </Link>
+                        </>
                     )}
                 </Toolbar>
             </Container>
