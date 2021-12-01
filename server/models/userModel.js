@@ -17,7 +17,6 @@ const userSchema = new mongoose.Schema({
   fullName: String,
   phoneNumber: {
     type: String,
-    select: false,
     unique: true,
     validate: {
       validator: function (phoneNumber) {
@@ -28,7 +27,6 @@ const userSchema = new mongoose.Schema({
   },
   nationalCode: {
     type: String,
-    select: false,
     unique: true,
     required: [true, "لطفا کدملی خود را وارد کنید"],
     validate: {

@@ -1,14 +1,13 @@
 {
-  "name": "natours",
+  "name": "maktabchi",
   "version": "1.0.0",
-  "description": "learn node, express, mongoDB",
+  "description": "platform for learn lesson",
   "main": "app.js",
   "scripts": {
     "start:prod": "NODE_ENV=production nodemon server.js",
-    "start": "NODE_ENV=development nodemon server.js",
-    "debug": "ndb server.js"
+    "start": "NODE_ENV=development nodemon server.js"
   },
-  "author": "amir hasanzadeh",
+  "author": "amir hasanzadeh, omid kazemi",
   "license": "ISC",
   "dependencies": {
     "@persian-tools/persian-tools": "^3.0.1",
@@ -21,13 +20,9 @@
     "express-rate-limit": "^5.5.1",
     "helmet": "^4.6.0",
     "hpp": "^0.2.3",
-    "ioredis": "^4.28.1",
     "jsonwebtoken": "^8.5.1",
-    "models": "file:models",
     "mongoose": "^5.13.11",
     "morgan": "^1.10.0",
-    "ndb": "^1.1.5",
-    "nodemailer": "^6.7.1",
     "randomatic": "^3.1.1",
     "redis": "^3.1.2",
     "validator": "^13.6.0",

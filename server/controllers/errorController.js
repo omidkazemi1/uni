@@ -1,4 +1,5 @@
-const AppError = require("./../utils/appError");
+/* eslint-disable node/no-unsupported-features/es-syntax */
+const AppError = require("../utils/appError");
 
 const handleCastErrorDB = (err) => {
   const message = `Invalid ${err.path}: ${err.value}.`;
@@ -12,10 +13,14 @@ const handleDuplicateFieldsDB = (err) => {
   return new AppError(message, 400);
 };
 
-const handleValidationErrorDB = (err) => {
+const handleValidationErrorDB = (err, res) => {
   const errors = Object.values(err.errors).map((el) => el.message);
   // const message = `Invalid input data. ${errors.join(". ")}`;
-  return new AppError(errors, 400);
+  // return new AppError(errors, 400);
+  return res.status(400).json({
+    status: "fail",
+    message: errors,
+  });
 };
 
 const handleJWTError = () =>
@@ -93,7 +98,8 @@ module.exports = (err, req, res, next) => {
 
     if (err.name === "CastError") error = handleCastErrorDB(error);
     if (err.code === 11000) error = handleDuplicateFieldsDB(error);
-    if (err.name === "ValidationError") error = handleValidationErrorDB(error);
+    if (err.name === "ValidationError")
+      return handleValidationErrorDB(error, res);
     if (err.name === "JsonWebTokenError") error = handleJWTError();
     if (err.name === "TokenExpiredError") error = handleJWTExpiredError();
 

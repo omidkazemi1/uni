@@ -22,9 +22,18 @@ const findStudentInClass = (classList, student) => {
   return false;
 };
 
-const removeStudentFromClass = (classList, student) => {
+const removeStudentFromClass = (studentList, student) => {
+  for (let index = 0; index < studentList.length; index++) {
+    if (studentList[index].toString() === student.toString()) {
+      studentList.splice(index, 1);
+    }
+  }
+  return studentList;
+};
+
+const removeClassFromStudent = (classList, classId) => {
   for (let index = 0; index < classList.length; index++) {
-    if (classList[index].toString() === student.toString()) {
+    if (classList[index].toString() === classId.toString()) {
       classList.splice(index, 1);
     }
   }
@@ -134,25 +143,49 @@ exports.addStudent = catchAsync(async (req, res, next) => {
 });
 
 exports.removeStudent = catchAsync(async (req, res, next) => {
+  // 1) get classId and studentId in params
   const { classId, studentId } = req.params;
 
+  // 2) find class by id
   const classDoc = await Class.findById(classId);
 
+  // 3) error if class doesnt exist
   if (!classDoc) {
     return next(new AppError("the id belonging to class does not exist", 401));
   }
 
+  // 4) find student by id
   const student = await User.findById(studentId);
 
+  // 5) error if student doesnt exist
   if (!student) {
     return next(
-      new AppError("the id belonging to stuedent does not exist", 401)
+      new AppError("the id belonging to student does not exist", 401)
     );
   }
 
+  // 6) remove studentId from studentlist in class
   removeStudentFromClass(classDoc.students, student._id);
+  // 7) remove classId from classList in student
+  removeClassFromStudent(student.class, classDoc._id);
 
-  await classDoc.save({});
+  // 8) if student doesnt have any class remove student from DB
+  if (student.class.length === 0) {
+    await User.findByIdAndDelete(student._id);
+  } else {
+    await student.save();
+  }
+
+  // 9) save doc class
+  await classDoc.save();
+
+  // 10) response
+  res.status(202).json({
+    status: "success",
+    data: {
+      class: classDoc,
+    },
+  });
 });
 
 exports.addClass = catchAsync(async (req, res, next) => {
