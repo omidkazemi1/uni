@@ -47,7 +47,7 @@ app.use(xss());
 // prevent parameters polution
 app.use(hpp());
 // serving static files
-app.use(express.static(`${__dirname}/public`));
+// app.use(express.static(`${__dirname}/public`));
 
 // time middleware (just test :)
 app.use((req, res, next) => {

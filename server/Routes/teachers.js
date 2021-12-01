@@ -7,7 +7,6 @@ const authController = require("../controllers/authController");
 router.post("/signup", authController.teacherSignup);
 router.post("/login", authController.teacherLogin);
 router.get("/logout", authController.logout);
-router.get("/auth", authController.isLoggedIn);
 router.post("/code", authController.createCode);
 
 router.delete(

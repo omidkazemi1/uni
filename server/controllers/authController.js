@@ -48,6 +48,14 @@ exports.restrictTo = (...role) => {
 exports.teacherSignup = catchAsync(async (req, res, next) => {
   let { phoneNumber, code } = req.body;
 
+  if (!phoneNumber || !code) {
+    return next(new AppError("please give phoneNumber and code", 400));
+  }
+
+  if (!phoneNumber.trim() || !code.trim()) {
+    return next(new AppError("please give phoneNumber and code", 400));
+  }
+
   phoneNumber = digitsFaToEn(phoneNumber);
   code = digitsFaToEn(code);
 
@@ -72,6 +80,15 @@ exports.teacherSignup = catchAsync(async (req, res, next) => {
 
 exports.teacherLogin = catchAsync(async (req, res, next) => {
   let { phoneNumber, code } = req.body;
+
+  // 0) check code and phoneNumber
+  if (!phoneNumber || !code) {
+    return next(new AppError("please give phoneNumber and code", 400));
+  }
+
+  if (!phoneNumber.trim() || !code.trim()) {
+    return next(new AppError("please give phoneNumber and code", 400));
+  }
 
   // 1) fa to eng phoneNumber and code
   phoneNumber = digitsFaToEn(phoneNumber);
@@ -105,33 +122,6 @@ exports.logout = (req, res) => {
     status: "success",
   });
 };
-
-exports.isLoggedIn = catchAsync(async (req, res, next) => {
-  if (req.cookies.jwt) {
-    // 1) verify token
-    const decoded = await promisify(jwt.verify)(
-      req.cookies.jwt,
-      process.env.JWT_SECRET
-    );
-
-    // 2) Check if user still exists
-    const currentUser = await User.findById(decoded.id);
-    if (!currentUser) {
-      return next(new AppError("this user doesnt exists", 404));
-    }
-
-    res.status(200).json({
-      status: "success",
-      data: {
-        user: currentUser,
-      },
-    });
-  } else {
-    return next(
-      new AppError("You are not logged in! please log into to get access.", 401)
-    );
-  }
-});
 
 exports.protect = catchAsync(async (req, res, next) => {
   // 1) get jwt token and check it
