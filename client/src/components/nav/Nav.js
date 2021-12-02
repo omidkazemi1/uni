@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import {
     AppBar,
+    Box,
     Avatar,
     Button,
     Container,
@@ -14,13 +15,12 @@ import {
     Typography
 } from "@mui/material";
 import { deepOrange } from "@mui/material/colors";
-import { Box, margin } from "@mui/system";
 import { HiOutlineMenu } from "react-icons/hi";
 
 function Nav() {
     const [anchorElNav, setAnchorElNav] = useState(null);
     const [anchorElUser, setAnchorElUser] = useState(null);
-    const { user, error } = useSelector(state => state.auth);
+    const { user } = useSelector(state => state.auth);
 
     const handleOpenNavMenu = event => {
         setAnchorElNav(event.currentTarget);
@@ -39,7 +39,7 @@ function Nav() {
     };
 
     return (
-        <AppBar position="static">
+        <AppBar position="fixed" sx={{ zIndex: theme => theme.zIndex.drawer + 1 }}>
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
                     <Typography
@@ -103,21 +103,21 @@ function Nav() {
                             component={Link}
                             to="/"
                             onClick={handleCloseNavMenu}
-                            sx={{ my: 2, color: "white", display: "block" }}>
+                            sx={{ my: 2, color: "white" }}>
                             خانه
                         </Button>
                         <Button
                             component={Link}
                             to="/"
                             onClick={handleCloseNavMenu}
-                            sx={{ my: 2, color: "white", display: "block" }}>
+                            sx={{ my: 2, color: "white" }}>
                             دوره های آموزشی
                         </Button>
                         <Button
                             component={Link}
                             to="/"
                             onClick={handleCloseNavMenu}
-                            sx={{ my: 2, color: "white", display: "block" }}>
+                            sx={{ my: 2, color: "white" }}>
                             ارتباط با ما
                         </Button>
                     </Box>
@@ -149,7 +149,7 @@ function Nav() {
                                 onClose={handleCloseUserMenu}>
                                 <MenuItem
                                     component={Link}
-                                    to="user/profile"
+                                    to="/user/profile"
                                     onClick={handleCloseNavMenu}>
                                     پروفایل
                                 </MenuItem>

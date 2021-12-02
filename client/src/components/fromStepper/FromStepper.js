@@ -15,7 +15,7 @@ const FormStepper = ({ children, formData, errorHandler, formAction, fromTitle }
     const currentChild = childrenArray[step];
     const { enqueueSnackbar } = useSnackbar();
     const dispatch = useDispatch();
-    const { user, error } = useSelector(state => state.auth);
+    const { user } = useSelector(state => state.auth);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -117,12 +117,12 @@ const FormStepper = ({ children, formData, errorHandler, formAction, fromTitle }
 
     return (
         <form onSubmit={submitHandler} noValidate>
-            <Typography variant="h3" textAlign="center" marginBottom="3rem">
+            <Typography variant="h3" fontWeight="bold" textAlign="center" marginBottom="3rem">
                 {fromTitle}
             </Typography>
 
             <Stepper activeStep={step} sx={{ marginBottom: "1rem" }}>
-                {["اطلاعات شما", "اهراز حویت"].map((label, index) => (
+                {["اطلاعات شما", "احراز هویت"].map((label, index) => (
                     <Step key={index}>
                         <StepLabel>{label}</StepLabel>
                     </Step>

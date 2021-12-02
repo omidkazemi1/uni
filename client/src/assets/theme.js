@@ -7,6 +7,9 @@ export const customTheme = createTheme({
     direction: "rtl",
     typography: {
         fontFamily: "iranyekan"
+    },
+    shape: {
+        borderRadius: 8
     }
 });
 

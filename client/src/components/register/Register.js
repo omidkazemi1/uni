@@ -86,7 +86,7 @@ const Register = () => {
 
                                 <TextField
                                     name="phoneNumber"
-                                    label="شماره مبایل"
+                                    label="شماره موبایل"
                                     type="text"
                                     fullWidth
                                     margin="normal"
@@ -95,7 +95,7 @@ const Register = () => {
                                     onChange={inputChangeHandler}
                                 />
                                 <FormHelperText error={formError.phoneNumber}>
-                                    شماره مبایل خود را وارد کنید
+                                    شماره موبایل خود را وارد کنید
                                 </FormHelperText>
                             </Box>
 
