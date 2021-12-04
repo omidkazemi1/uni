@@ -53,17 +53,25 @@ exports.getAllUser = catchAsync(async (req, res) => {
 });
 
 exports.updateMe = catchAsync(async (req, res, next) => {
-  // 1) create error if user POSTs password data
-  if (req.body.password || req.body.passwordConfirm) {
-    return next(
-      new AppError(
-        "This route is not for password updates. please user /updateMyPassword.",
-        400
-      )
-    );
+  const { firstName, lastName } = req.body;
+
+  // 0) check firstName and lastName
+  if (!firstName || !lastName) {
+    return next(new AppError("please give firstName and lastName", 400));
   }
+
+  if (!firstName.trim() || !lastName.trim()) {
+    return next(new AppError("please give firstName and lastName", 400));
+  }
+
+  const fullName = `${firstName} ${lastName}`;
   // 2) filter req.body
-  const filteredBody = filterObj(req.body, "name", "email");
+  const filteredBody = filterObj(
+    { fullName, ...req.body },
+    "firstName",
+    "lastName",
+    "fullName"
+  );
   // 3) update user document
   const updatedUser = await User.findByIdAndUpdate(req.user.id, filteredBody, {
     new: true,

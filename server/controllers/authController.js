@@ -102,17 +102,58 @@ exports.teacherLogin = catchAsync(async (req, res, next) => {
   if (orginalCode !== code) {
     return next(new AppError("code is wrong", 403));
   }
-  // 4) if phoneNumber
-  if (!phoneNumber) {
-    return next(new AppError("please provide phoneNumber", 400));
-  }
-  // 5) check if user exists
+
+  // 4) check if user exists
   const user = await User.findOne({ phoneNumber });
   if (!user || user.role !== "teacher") {
     return next(new AppError("Incorrect phoneNumber", 401));
   }
 
-  // 6) if everything ok send token to client
+  // 5) if everything ok send token to client
+  createSendToken(user, 200, res);
+});
+
+exports.studentLogin = catchAsync(async (req, res, next) => {
+  let { nationalCode, phoneNumber, confirmCode: code } = req.body;
+
+  // 0) check code and phoneNumber and nationalCode
+  if (!phoneNumber || !code || !nationalCode) {
+    return next(
+      new AppError("please give phoneNumber, code and nationalCode", 400)
+    );
+  }
+
+  if (!phoneNumber.trim() || !code.trim() || !nationalCode.trim()) {
+    return next(
+      new AppError("please give phoneNumber, code and nationalCode", 400)
+    );
+  }
+  // 1) fa to eng phoneNumber and code
+  phoneNumber = digitsFaToEn(phoneNumber);
+  code = digitsFaToEn(code);
+  nationalCode = digitsFaToEn(nationalCode);
+
+  // 2) check code exist
+  const orginalCode = await redis.getAsync(phoneNumber);
+  if (!orginalCode) {
+    return next(new AppError("for this number there is no code", 404));
+  }
+
+  // 3) check code verfication
+  if (orginalCode !== code) {
+    return next(new AppError("code is wrong", 403));
+  }
+
+  // 4) check if user exists
+  const user = await User.findOne({
+    phoneNumber,
+    nationalCode,
+  });
+
+  if (!user || user.role !== "student") {
+    return next(new AppError("Incorrect phoneNumber and nationalCode", 401));
+  }
+
   createSendToken(user, 200, res);
 });
 

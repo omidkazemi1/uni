@@ -10,12 +10,18 @@ router.post("/login", authController.teacherLogin);
 router.get("/logout", authController.logout);
 router.post("/code", authController.createCode);
 
-router.get(
-  "/",
-  authController.protect,
-  authController.restrictTo("teacher"),
-  teacherController.showMe
-);
+router
+  .route("/")
+  .get(
+    authController.protect,
+    authController.restrictTo("teacher"),
+    teacherController.showMe
+  )
+  .patch(
+    authController.protect,
+    authController.restrictTo("teacher"),
+    teacherController.updateMe
+  );
 
 // *) class and student manage route
 router
