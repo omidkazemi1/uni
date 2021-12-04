@@ -7,6 +7,7 @@ import { Box } from "@mui/system";
 
 const Login = () => {
     const [formData, setFormData] = useState({ phoneNumber: "", confirmCode: "" });
+    const [formError, setFormError] = useState({ phoneNumber: false, confirmCode: false });
 
     const inputChangeHandler = event => {
         setFormData(prevState => ({
@@ -22,36 +23,39 @@ const Login = () => {
                     <Paper sx={{ padding: "20px" }}>
                         <FormStepper
                             formData={formData}
-                            fromTitle="Login"
+                            errorHandler={setFormError}
+                            fromTitle="ورود به حساب"
                             formAction="LOGIN"
                             inputChangeHandler={inputChangeHandler}>
                             <Box>
                                 <TextField
                                     name="phoneNumber"
-                                    label="Phone Number"
+                                    label="شماره موبایل"
                                     type="text"
                                     fullWidth
                                     margin="normal"
                                     value={formData.phoneNumber}
+                                    error={formError.phoneNumber}
                                     onChange={inputChangeHandler}
                                 />
-                                <FormHelperText id="my-helper-text">
-                                    Enter your phone number
+                                <FormHelperText error={formError.phoneNumber}>
+                                    شماره موبایل خود را وارد کنید
                                 </FormHelperText>
                             </Box>
 
                             <Box>
                                 <TextField
                                     name="confirmCode"
-                                    label="Confirm Code"
+                                    label="کد تأیید"
                                     type="text"
                                     fullWidth
                                     margin="normal"
                                     value={formData.confirmCode}
+                                    error={formError.confirmCode}
                                     onChange={inputChangeHandler}
                                 />
-                                <FormHelperText id="my-helper-text">
-                                    Enter sent code
+                                <FormHelperText error={formError.confirmCode}>
+                                    کد ارسال شده را وارد کنید
                                 </FormHelperText>
                             </Box>
                         </FormStepper>
