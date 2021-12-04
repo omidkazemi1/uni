@@ -2,7 +2,7 @@ import {
     AUTH_ERROR,
     AUTH_REQUEST,
     AUTH_RESPONSE,
-    ERROR_EMPTY,
+    AUTH_ERROR_EMPTY,
     LOGOUT_ERROR,
     LOGOUT_REQUEST,
     LOGOUT_RESPONSE
@@ -28,7 +28,7 @@ const auth = (state = initialState, action) => {
             return { ...state, user: null, loading: false };
         case LOGOUT_ERROR:
             return { ...state, error: action.payload, loading: false };
-        case ERROR_EMPTY:
+        case AUTH_ERROR_EMPTY:
             return { ...state, error: null };
         default:
             return state;
