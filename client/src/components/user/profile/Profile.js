@@ -1,4 +1,4 @@
-import { Button, Grid, Paper, TextField, Typography } from "@mui/material";
+import { Button, Grid, Paper, Stack, TextField, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { updateTeacher } from "../../../redux/actions/auth";
@@ -52,9 +52,11 @@ const Profile = () => {
 
     return (
         <>
-            <Typography variant="h3" my={4}>
-                پروفایل
-            </Typography>
+            <Stack direction="row" alignItems="center" justifyContent="space-between">
+                <Typography variant="h5" fontWeight="bold" my={4}>
+                    پروفایل
+                </Typography>
+            </Stack>
 
             <form onSubmit={submiteHandler}>
                 <Grid container py={3} justifyContent="center" component={Paper}>
