@@ -12,6 +12,7 @@ export const CHECK_CODE = "CHECK_CODE";
 // Class Constant's
 export const CLASS_REQUEST = "CLASS_REQUEST";
 export const CLASS_RESPONSE = "CLASS_RESPONSE";
+export const ADD_CLASS_RESPONSE = "ADD_CLASS_RESPONSE";
 export const CLASS_ERROR = "CLASS_ERROR";
 export const CLASS_ERROR_EMPTY = "CLASS_ERROR_EMPTY";
 

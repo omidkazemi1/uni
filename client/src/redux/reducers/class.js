@@ -1,4 +1,5 @@
 import {
+    ADD_CLASS_RESPONSE,
     CLASS_ERROR,
     CLASS_ERROR_EMPTY,
     CLASS_REQUEST,
@@ -6,7 +7,7 @@ import {
 } from "../../constants/actionTypes";
 
 const initialState = {
-    classDoc: null,
+    classDocs: [],
     loading: false,
     error: null
 };
@@ -16,7 +17,9 @@ const classes = (state = initialState, action) => {
         case CLASS_REQUEST:
             return { ...state, loading: true };
         case CLASS_RESPONSE:
-            return { ...state, classDoc: action.payload, loading: false };
+            return { ...state, classDocs: [...action.payload], loading: false };
+        case ADD_CLASS_RESPONSE:
+            return { ...state, classDocs: [...state.classDocs, action.payload], loading: false };
         case CLASS_ERROR:
             return { ...state, error: action.payload, loading: false };
         case CLASS_ERROR_EMPTY:

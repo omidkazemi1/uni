@@ -13,3 +13,4 @@ export const checkCode = formData => API.post("/api/v1/teachers/code/check", for
 
 // Class Api's
 export const getClasses = () => API.get("/api/v1/teachers/class");
+export const addClassesPost = formData => API.post("/api/v1/teachers/class", formData);
