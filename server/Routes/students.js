@@ -8,4 +8,11 @@ const studentController = require("../controllers/studentController");
 router.post("/login", authController.studentLogin);
 router.post("/code", authController.createCode);
 
+router.get(
+  "/class",
+  authController.protect,
+  authController.restrictTo("student"),
+  studentController.classList
+);
+
 module.exports = router;

@@ -202,6 +202,7 @@ exports.addClass = catchAsync(async (req, res, next) => {
     grade: req.body.grade,
     students: [],
     teacher: req.user._id,
+    description: req.body.description,
   });
 
   res.status(201).json({
@@ -248,7 +249,7 @@ exports.deleteClass = catchAsync(async (req, res, next) => {
 });
 
 exports.updateClass = catchAsync(async (req, res, next) => {
-  const filteredBody = filterObj(req.body, "name", "grade");
+  const filteredBody = filterObj(req.body, "name", "grade", "description");
 
   const updatedClass = await Class.findByIdAndUpdate(
     req.params.id,

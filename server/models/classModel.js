@@ -10,6 +10,7 @@ const classSchema = new mongoose.Schema({
     { type: mongoose.Schema.ObjectId, ref: "Student", required: true },
   ],
   teacher: { type: mongoose.Schema.ObjectId, ref: "Teacher", required: true },
+  description: String,
 });
 
 const Class = mongoose.model("Class", classSchema);
