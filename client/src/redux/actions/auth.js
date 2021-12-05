@@ -3,11 +3,22 @@ import {
     AUTH_ERROR,
     AUTH_REQUEST,
     AUTH_RESPONSE,
-    ERROR_EMPTY,
+    AUTH_ERROR_EMPTY,
     LOGOUT_ERROR,
     LOGOUT_REQUEST,
     LOGOUT_RESPONSE
 } from "../../constants/actionTypes";
+
+export const updateTeacher = formData => async dispatch => {
+    try {
+        dispatch({ type: AUTH_REQUEST });
+        const { data } = await api.updateTeacherPatch(formData);
+        dispatch({ type: AUTH_RESPONSE, payload: data.data.user });
+    } catch (error) {
+        console.log(error.response);
+        dispatch({ type: AUTH_ERROR, error: error.response });
+    }
+};
 
 export const auth = () => async dispatch => {
     try {
@@ -53,4 +64,4 @@ export const register = formData => async dispatch => {
     }
 };
 
-export const setErrorEmpty = () => ({ type: ERROR_EMPTY });
+export const setErrorEmpty = () => ({ type: AUTH_ERROR_EMPTY });
