@@ -3,7 +3,8 @@ import {
     CLASS_ERROR,
     CLASS_ERROR_EMPTY,
     CLASS_REQUEST,
-    CLASS_RESPONSE
+    CLASS_RESPONSE,
+    EDIT_CLASS_RESPONSE
 } from "../../constants/actionTypes";
 
 const initialState = {
@@ -19,7 +20,19 @@ const classes = (state = initialState, action) => {
         case CLASS_RESPONSE:
             return { ...state, classDocs: [...action.payload], loading: false };
         case ADD_CLASS_RESPONSE:
-            return { ...state, classDocs: [...state.classDocs, action.payload], loading: false };
+            return {
+                ...state,
+                classDocs: [...state.classDocs, action.payload],
+                loading: false
+            };
+        case EDIT_CLASS_RESPONSE:
+            return {
+                ...state,
+                classDocs: state.classDocs.map(classDoc =>
+                    classDoc._id === action.payload._id ? action.payload : classDoc
+                ),
+                loading: false
+            };
         case CLASS_ERROR:
             return { ...state, error: action.payload, loading: false };
         case CLASS_ERROR_EMPTY:

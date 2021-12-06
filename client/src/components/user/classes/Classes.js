@@ -1,8 +1,5 @@
 import {
     Button,
-    Card,
-    CardContent,
-    Chip,
     CircularProgress,
     Dialog,
     DialogActions,
@@ -16,15 +13,15 @@ import {
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getClasses, addClasses } from "../../../redux/actions/class";
+import { getClasses, addClasses, editClasses } from "../../../redux/actions/class";
 import { FaPlus } from "react-icons/fa";
-import { Box } from "@mui/system";
-import { Link } from "react-router-dom";
+import PostCard from "../../postCard/PostCard";
 
 const Classes = () => {
     const [dialogOpen, setDialogOpen] = useState(false);
     const [dialogFromData, setDialogFromData] = useState({ name: "", grade: "" });
     const [dialogFromError, setDialogFromError] = useState({ name: false, grade: false });
+    const [selectedClass, setSelectedClass] = useState(null);
     const dispatch = useDispatch();
     const { classDocs, loading } = useSelector(state => state.classes);
 
@@ -43,6 +40,8 @@ const Classes = () => {
 
     const handleDialogClose = () => {
         setDialogOpen(false);
+        setSelectedClass(null);
+        setDialogFromData({ name: "", grade: "" });
     };
 
     const handleDialogSabmit = event => {
@@ -57,8 +56,20 @@ const Classes = () => {
             setDialogFromError(prevState => ({ ...prevState, grade: true }));
         }
 
-        dispatch(addClasses({ ...dialogFromData }));
+        if (selectedClass) {
+            dispatch(editClasses(dialogFromData, selectedClass));
+        } else {
+            dispatch(addClasses({ ...dialogFromData }));
+        }
         handleDialogClose();
+        setDialogFromData({ name: "", grade: "" });
+    };
+
+    const handleEditClass = postId => {
+        setSelectedClass(postId);
+        const selectedClassDoc = classDocs.find(classDoc => classDoc._id === postId);
+        setDialogFromData({ name: selectedClassDoc.name, grade: selectedClassDoc.grade });
+        handleDialogOpen();
     };
 
     useEffect(() => {
@@ -82,7 +93,7 @@ const Classes = () => {
                 </Button>
 
                 <Dialog open={dialogOpen} maxWidth="sm" fullWidth onClose={handleDialogClose}>
-                    <DialogTitle>افزودن کلاس</DialogTitle>
+                    <DialogTitle>{selectedClass ? "ویرایش کلاس" : "افزودن کلاس"}</DialogTitle>
                     <form onSubmit={handleDialogSabmit}>
                         <DialogContent>
                             <TextField
@@ -121,54 +132,15 @@ const Classes = () => {
             </Stack>
 
             <Grid container spacing={4}>
-                {classDocs.map(classDoc => (
-                    <Grid key={classDoc._id} item xs={12} md={6} lg={4}>
-                        <Card variant="outlined">
-                            <CardContent>
-                                <Stack
-                                    direction="row"
-                                    alignItems="center"
-                                    justifyContent="space-between">
-                                    <Typography
-                                        sx={{ fontSize: 14 }}
-                                        color="text.secondary"
-                                        gutterBottom>
-                                        {classDoc.grade}
-                                    </Typography>
-                                    <Chip label={`${classDoc.students.length} دانش آموز`} />
-                                </Stack>
-
-                                <Typography variant="h4" mt={4}>
-                                    {classDoc.name}
-                                </Typography>
-                            </CardContent>
-
-                            <Stack
-                                direction="row"
-                                alignItems="center"
-                                justifyContent="space-between"
-                                p={2}>
-                                <Box>
-                                    <Button size="small">لیست دانش آموزان</Button>
-                                    <Button size="small" color="error">
-                                        حذف
-                                    </Button>
-                                </Box>
-
-                                <Box>
-                                    <Chip
-                                        clickable
-                                        component={Link}
-                                        to="/user/profile"
-                                        label="ویرایش"
-                                        color="warning"
-                                        variant="outlined"
-                                    />
-                                </Box>
-                            </Stack>
-                        </Card>
-                    </Grid>
-                ))}
+                {loading
+                    ? null
+                    : classDocs.map(classDoc => (
+                          <PostCard
+                              classDoc={classDoc}
+                              key={classDoc._id}
+                              handleEditClass={handleEditClass}
+                          />
+                      ))}
             </Grid>
         </>
     );
