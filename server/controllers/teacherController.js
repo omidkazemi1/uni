@@ -1,6 +1,7 @@
 const User = require("../models/userModel");
 const Class = require("../models/classModel");
 const AppError = require("../utils/appError");
+const APIFeatures = require("../utils/apiFeatures");
 const catchAsync = require("../utils/catchAsync");
 
 const filterObj = (obj, ...allowdFields) => {
@@ -118,7 +119,7 @@ exports.addStudent = catchAsync(async (req, res, next) => {
     phoneNumber,
     nationalCode,
     role: "student",
-  });
+  }).select("+class");
 
   if (!student) {
     student = await User.create({
@@ -163,7 +164,7 @@ exports.removeStudent = catchAsync(async (req, res, next) => {
   }
 
   // 4) find student by id
-  const student = await User.findById(studentId);
+  const student = await User.findById(studentId).select("+class");
 
   // 5) error if student doesnt exist
   if (!student) {
@@ -176,7 +177,6 @@ exports.removeStudent = catchAsync(async (req, res, next) => {
   removeStudentFromClass(classDoc.students, student._id);
   // 7) remove classId from classList in student
   removeClassFromStudent(student.class, classDoc._id);
-
   // 8) if student doesnt have any class remove student from DB
   if (student.class.length === 0) {
     await User.findByIdAndDelete(student._id);
@@ -214,12 +214,28 @@ exports.addClass = catchAsync(async (req, res, next) => {
 });
 
 exports.classList = catchAsync(async (req, res, next) => {
-  const classes = await Class.find({ teacher: req.user._id });
+  // const classes = await Class.find({ teacher: req.user._id });
+  const features = new APIFeatures(
+    Class.find({ teacher: req.user._id }),
+    req.query
+  ).paginate();
+
+  const classes = await features.query;
 
   res.status(200).json({
     status: "success",
     data: {
       classes,
+    },
+  });
+});
+
+exports.studentList = catchAsync(async (req, res, next) => {
+  const students = await User.find({ class: { $in: req.params.id } });
+  res.status(200).json({
+    status: "success",
+    data: {
+      students,
     },
   });
 });

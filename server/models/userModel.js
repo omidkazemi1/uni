@@ -13,7 +13,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, "لطفا نام خانوادگی خود را وارد کنید"],
   },
-  class: [{ type: mongoose.Schema.ObjectId, ref: "Class" }],
+  class: {
+    type: [{ type: mongoose.Schema.ObjectId, ref: "Class" }],
+    select: false,
+  },
   fullName: String,
   phoneNumber: {
     type: String,

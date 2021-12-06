@@ -24,6 +24,21 @@ router
   );
 
 // *) class and student manage route
+
+router.get(
+  "/class/:id/student",
+  authController.protect,
+  authController.restrictTo("teacher"),
+  teacherController.studentList
+);
+
+router.delete(
+  "/class/:classId/:studentId",
+  authController.protect,
+  authController.restrictTo("teacher"),
+  teacherController.removeStudent
+);
+
 router
   .route("/class/:id")
   .get(
@@ -41,13 +56,6 @@ router
     authController.restrictTo("teacher"),
     teacherController.updateClass
   );
-
-router.delete(
-  "/class/:classId/:studentId",
-  authController.protect,
-  authController.restrictTo("teacher"),
-  teacherController.removeStudent
-);
 
 router
   .route("/student")
