@@ -11,6 +11,7 @@ import NotFoundPage from "./components/notFountPage/NotFoundPage";
 import Dashboard from "./components/user/dashboard/Dashboard";
 import Exam from "./components/user/exam/Exam";
 import Notification from "./components/user/notification/Notification";
+import Students from "./components/students/Students";
 
 import "./assets/fonts/css/style.css";
 import { customTheme, RTL } from "./assets/theme";
@@ -29,6 +30,7 @@ const App = () => {
                         <Route path="user" element={<Dashboard />}>
                             <Route path="profile" element={<Profile />} />
                             <Route path="classes" element={<Classes />} />
+                            <Route path="classes/students/:classId" element={<Students />} />
                             <Route path="exam" element={<Exam />} />
                             <Route path="notification" element={<Notification />} />
                         </Route>

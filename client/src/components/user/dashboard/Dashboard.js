@@ -28,7 +28,6 @@ const Dashboard = props => {
     const [value, setValue] = useState("recents");
 
     const handleChange = (event, newValue) => {
-        console.log(newValue);
         setValue(newValue);
     };
 

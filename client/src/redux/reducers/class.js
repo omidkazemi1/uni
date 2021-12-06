@@ -4,7 +4,8 @@ import {
     CLASS_ERROR_EMPTY,
     CLASS_REQUEST,
     CLASS_RESPONSE,
-    EDIT_CLASS_RESPONSE
+    EDIT_CLASS_RESPONSE,
+    REMOVE_CLASS_RESPONSE
 } from "../../constants/actionTypes";
 
 const initialState = {
@@ -31,6 +32,12 @@ const classes = (state = initialState, action) => {
                 classDocs: state.classDocs.map(classDoc =>
                     classDoc._id === action.payload._id ? action.payload : classDoc
                 ),
+                loading: false
+            };
+        case REMOVE_CLASS_RESPONSE:
+            return {
+                ...state,
+                classDocs: state.classDocs.filter(classDoc => classDoc._id !== action.payload),
                 loading: false
             };
         case CLASS_ERROR:

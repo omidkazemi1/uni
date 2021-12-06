@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getClasses, addClasses, editClasses } from "../../../redux/actions/class";
+import { getClasses, addClasses, editClasses, removeClasses } from "../../../redux/actions/class";
 import { FaPlus } from "react-icons/fa";
 import PostCard from "../../postCard/PostCard";
 
@@ -65,11 +65,15 @@ const Classes = () => {
         setDialogFromData({ name: "", grade: "" });
     };
 
-    const handleEditClass = postId => {
-        setSelectedClass(postId);
-        const selectedClassDoc = classDocs.find(classDoc => classDoc._id === postId);
+    const handleEditClass = classId => {
+        setSelectedClass(classId);
+        const selectedClassDoc = classDocs.find(classDoc => classDoc._id === classId);
         setDialogFromData({ name: selectedClassDoc.name, grade: selectedClassDoc.grade });
         handleDialogOpen();
+    };
+
+    const handleRemoveClass = classId => {
+        dispatch(removeClasses(classId));
     };
 
     useEffect(() => {
@@ -139,6 +143,7 @@ const Classes = () => {
                               classDoc={classDoc}
                               key={classDoc._id}
                               handleEditClass={handleEditClass}
+                              handleRemoveClass={handleRemoveClass}
                           />
                       ))}
             </Grid>

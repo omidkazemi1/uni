@@ -5,7 +5,8 @@ import {
     CLASS_ERROR,
     CLASS_ERROR_EMPTY,
     ADD_CLASS_RESPONSE,
-    EDIT_CLASS_RESPONSE
+    EDIT_CLASS_RESPONSE,
+    REMOVE_CLASS_RESPONSE
 } from "../../constants/actionTypes";
 
 export const getClasses = () => async dispatch => {
@@ -13,9 +14,7 @@ export const getClasses = () => async dispatch => {
         dispatch({ type: CLASS_REQUEST });
         const { data } = await api.getClasses();
 
-        setTimeout(() => {
-            dispatch({ type: CLASS_RESPONSE, payload: data.data.classes });
-        }, 2000);
+        dispatch({ type: CLASS_RESPONSE, payload: data.data.classes });
     } catch (error) {
         console.log(error.response);
         dispatch({ type: CLASS_ERROR, payload: error.response });
@@ -41,6 +40,20 @@ export const editClasses = (formData, classId) => async dispatch => {
         dispatch({ type: EDIT_CLASS_RESPONSE, payload: data.data.class });
     } catch (error) {
         console.log(error.response);
+        dispatch({ type: CLASS_ERROR, payload: error.response });
+    }
+};
+
+export const removeClasses = classId => async dispatch => {
+    try {
+        dispatch({ type: CLASS_REQUEST });
+        const data = await api.removeClassesDelete(classId);
+
+        if (data.status === 204) {
+            dispatch({ type: REMOVE_CLASS_RESPONSE, payload: classId });
+        }
+    } catch (error) {
+        console.log(error.response, error);
         dispatch({ type: CLASS_ERROR, payload: error.response });
     }
 };

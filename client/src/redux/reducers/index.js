@@ -4,6 +4,7 @@ import storage from "redux-persist/lib/storage";
 
 import auth from "./auth";
 import classes from "./class";
+import student from "./students";
 
 const persistConfig = {
     key: "root",
@@ -11,6 +12,6 @@ const persistConfig = {
     whitelist: ["auth"]
 };
 
-const rootReducer = combineReducers({ auth, classes });
+const rootReducer = combineReducers({ auth, classes, student });
 
 export default persistReducer(persistConfig, rootReducer);

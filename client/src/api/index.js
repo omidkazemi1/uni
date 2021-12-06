@@ -16,3 +16,10 @@ export const getClasses = () => API.get("/api/v1/teachers/class");
 export const addClassesPost = formData => API.post("/api/v1/teachers/class", formData);
 export const editClassesPatch = (formData, classId) =>
     API.patch(`/api/v1/teachers/class/${classId}`, formData);
+export const removeClassesDelete = classId => API.delete(`/api/v1/teachers/class/${classId}`);
+
+// Student Api's
+export const getStudentsGet = classId => API.get(`/api/v1/teachers/class/${classId}/student`);
+export const addStudentPost = formData => API.post("/api/v1/teachers/student", formData);
+export const removeStudentDelete = (classId, studentId) =>
+    API.delete(`/teachers/class/${classId}/${studentId}`);

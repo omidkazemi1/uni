@@ -1,8 +1,9 @@
 import { Button, Card, CardContent, Chip, Grid, Stack, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
+import { Link } from "react-router-dom";
 
-const PostCard = ({ classDoc, handleEditClass }) => {
+const PostCard = ({ classDoc, handleEditClass, handleRemoveClass }) => {
     return (
         <Grid item xs={12} md={6} lg={4}>
             <Card variant="outlined">
@@ -25,8 +26,16 @@ const PostCard = ({ classDoc, handleEditClass }) => {
                     justifyContent="space-between"
                     p={2}>
                     <Box>
-                        <Button size="small">لیست دانش آموزان</Button>
-                        <Button size="small" color="error">
+                        <Button
+                            component={Link}
+                            to={`/user/classes/students/${classDoc._id}`}
+                            size="small">
+                            لیست دانش آموزان
+                        </Button>
+                        <Button
+                            onClick={() => handleRemoveClass(classDoc._id)}
+                            size="small"
+                            color="error">
                             حذف
                         </Button>
                     </Box>
