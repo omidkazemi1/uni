@@ -15,4 +15,11 @@ router.get(
   studentController.classList
 );
 
+router.get(
+  "/class/:id",
+  authController.protect,
+  authController.restrictTo("student"),
+  studentController.studentsList
+);
+
 module.exports = router;

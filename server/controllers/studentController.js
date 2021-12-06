@@ -15,8 +15,7 @@ exports.classList = catchAsync(async (req, res, next) => {
 });
 
 exports.studentsList = catchAsync(async (req, res, next) => {
-  const classDoc = await Class.findById(req.params._id).populate(["students"]);
-  const students = classDoc.students;
+  const students = await User.find({ class: { $in: req.params.id } });
 
   res.status(200).json({
     status: "success",
