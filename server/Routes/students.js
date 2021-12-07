@@ -26,7 +26,7 @@ router.get(
 router.get(
   "/exam/:examId",
   authController.protect,
-  authController.restrictTo("teacher"),
+  authController.restrictTo("student"),
   studentController.singleExam
 );
 
