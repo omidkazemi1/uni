@@ -78,4 +78,24 @@ router
     teacherController.classList
   );
 
+// exam routes
+router
+  .route("/exam")
+  .get(
+    authController.protect,
+    authController.restrictTo("teacher"),
+    teacherController.examList
+  )
+  .post(
+    authController.protect,
+    authController.restrictTo("teacher"),
+    teacherController.addExam
+  );
+
+router.delete(
+  "/exam/:examId",
+  authController.protect,
+  authController.restrictTo("teacher"),
+  teacherController.deleteExam
+);
 module.exports = router;
