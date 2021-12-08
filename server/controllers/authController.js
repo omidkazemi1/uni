@@ -2,6 +2,8 @@
 const jwt = require("jsonwebtoken");
 const { promisify } = require("util");
 const { digitsFaToEn } = require("@persian-tools/persian-tools");
+const { ObjectId } = require("mongoose").Types;
+
 const randomize = require("randomatic");
 const User = require("../models/userModel");
 const catchAsync = require("../utils/catchAsync");
@@ -210,4 +212,11 @@ exports.createCode = catchAsync(async (req, res, next) => {
   res.status(201).json({
     status: "success",
   });
+});
+
+exports.objectIdControll = catchAsync(async (id, next) => {
+  if (!ObjectId.isValid(id)) {
+    return next(new AppError("شناسه شما معتبر نمیباشد", 405));
+  }
+  next();
 });

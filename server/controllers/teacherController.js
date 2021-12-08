@@ -232,7 +232,7 @@ exports.classList = catchAsync(async (req, res, next) => {
 });
 
 exports.studentList = catchAsync(async (req, res, next) => {
-  const students = await User.find({ class: { $in: req.params.id } });
+  const students = await User.find({ class: { $in: req.params.classId } });
   res.status(200).json({
     status: "success",
     data: {
@@ -242,7 +242,7 @@ exports.studentList = catchAsync(async (req, res, next) => {
 });
 
 exports.showClass = catchAsync(async (req, res, next) => {
-  const singleClass = await Class.findById(req.params.id);
+  const singleClass = await Class.findById(req.params.classId);
 
   if (!singleClass) {
     return next(new AppError("the id belonging to class does not exist", 401));
@@ -257,7 +257,7 @@ exports.showClass = catchAsync(async (req, res, next) => {
 });
 
 exports.deleteClass = catchAsync(async (req, res, next) => {
-  await Class.findByIdAndDelete(req.params.id);
+  await Class.findByIdAndDelete(req.params.classId);
 
   res.status(204).json({
     status: "success",
@@ -269,7 +269,7 @@ exports.updateClass = catchAsync(async (req, res, next) => {
   const filteredBody = filterObj(req.body, "name", "grade", "description");
 
   const updatedClass = await Class.findByIdAndUpdate(
-    req.params.id,
+    req.params.classId,
     filteredBody,
     {
       new: true,
