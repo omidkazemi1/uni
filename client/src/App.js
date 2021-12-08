@@ -16,6 +16,7 @@ import Students from "./components/students/Students";
 import "./assets/fonts/css/style.css";
 import { customTheme, RTL } from "./assets/theme";
 import { ThemeProvider } from "@mui/material/styles";
+import AddExam from "./components/addExam/AddExam";
 
 const App = () => {
     return (
@@ -32,6 +33,7 @@ const App = () => {
                             <Route path="classes" element={<Classes />} />
                             <Route path="classes/students/:classId" element={<Students />} />
                             <Route path="exam" element={<Exam />} />
+                            <Route path="exam/add" element={<AddExam />} />
                             <Route path="notification" element={<Notification />} />
                         </Route>
                         <Route path="*" element={<NotFoundPage />} />

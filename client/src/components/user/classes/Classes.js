@@ -13,9 +13,14 @@ import {
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getClasses, addClasses, editClasses, removeClasses } from "../../../redux/actions/class";
+import {
+    getClasses,
+    addClasses,
+    editClasses,
+    removeClasses
+} from "../../../redux/actions/class";
 import { FaPlus } from "react-icons/fa";
-import PostCard from "../../postCard/PostCard";
+import ClassCard from "../../classCard/ClassCard";
 
 const Classes = () => {
     const [dialogOpen, setDialogOpen] = useState(false);
@@ -101,6 +106,7 @@ const Classes = () => {
                     <form onSubmit={handleDialogSabmit}>
                         <DialogContent>
                             <TextField
+                                size="small"
                                 name="name"
                                 value={dialogFromData.name}
                                 error={dialogFromError.name}
@@ -113,6 +119,7 @@ const Classes = () => {
                             </FormHelperText>
 
                             <TextField
+                                size="small"
                                 name="grade"
                                 value={dialogFromData.grade}
                                 error={dialogFromError.grade}
@@ -139,7 +146,7 @@ const Classes = () => {
                 {loading
                     ? null
                     : classDocs.map(classDoc => (
-                          <PostCard
+                          <ClassCard
                               classDoc={classDoc}
                               key={classDoc._id}
                               handleEditClass={handleEditClass}

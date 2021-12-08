@@ -3,7 +3,7 @@ import { Box } from "@mui/system";
 import React from "react";
 import { Link } from "react-router-dom";
 
-const PostCard = ({ classDoc, handleEditClass, handleRemoveClass }) => {
+const ClassCard = ({ classDoc, handleEditClass, handleRemoveClass }) => {
     return (
         <Grid item xs={12} md={6} lg={4}>
             <Card variant="outlined">
@@ -55,4 +55,4 @@ const PostCard = ({ classDoc, handleEditClass, handleRemoveClass }) => {
     );
 };
 
-export default PostCard;
+export default ClassCard;

@@ -22,4 +22,4 @@ export const removeClassesDelete = classId => API.delete(`/api/v1/teachers/class
 export const getStudentsGet = classId => API.get(`/api/v1/teachers/class/${classId}/student`);
 export const addStudentPost = formData => API.post("/api/v1/teachers/student", formData);
 export const removeStudentDelete = (classId, studentId) =>
-    API.delete(`/teachers/class/${classId}/${studentId}`);
+    API.delete(`/api/v1/teachers/class/${classId}/${studentId}`);
