@@ -1,5 +1,6 @@
 const User = require("../models/userModel");
 const Class = require("../models/classModel");
+const Exam = require("../models/examModel");
 const AppError = require("../utils/appError");
 const APIFeatures = require("../utils/apiFeatures");
 const catchAsync = require("../utils/catchAsync");
@@ -231,7 +232,7 @@ exports.classList = catchAsync(async (req, res, next) => {
 });
 
 exports.studentList = catchAsync(async (req, res, next) => {
-  const students = await User.find({ class: { $in: req.params.id } });
+  const students = await User.find({ class: { $in: req.params.classId } });
   res.status(200).json({
     status: "success",
     data: {
@@ -241,7 +242,7 @@ exports.studentList = catchAsync(async (req, res, next) => {
 });
 
 exports.showClass = catchAsync(async (req, res, next) => {
-  const singleClass = await Class.findById(req.params.id);
+  const singleClass = await Class.findById(req.params.classId);
 
   if (!singleClass) {
     return next(new AppError("the id belonging to class does not exist", 401));
@@ -256,7 +257,7 @@ exports.showClass = catchAsync(async (req, res, next) => {
 });
 
 exports.deleteClass = catchAsync(async (req, res, next) => {
-  await Class.findByIdAndDelete(req.params.id);
+  await Class.findByIdAndDelete(req.params.classId);
 
   res.status(204).json({
     status: "success",
@@ -268,7 +269,7 @@ exports.updateClass = catchAsync(async (req, res, next) => {
   const filteredBody = filterObj(req.body, "name", "grade", "description");
 
   const updatedClass = await Class.findByIdAndUpdate(
-    req.params.id,
+    req.params.classId,
     filteredBody,
     {
       new: true,
@@ -285,5 +286,53 @@ exports.updateClass = catchAsync(async (req, res, next) => {
     data: {
       class: updatedClass,
     },
+  });
+});
+
+exports.examList = catchAsync(async (req, res, next) => {
+  const exams = await Exam.find({ teacher: req.user._id });
+
+  res.status(200).json({
+    status: "success",
+    data: {
+      exams,
+    },
+  });
+});
+
+exports.addExam = catchAsync(async (req, res, next) => {
+  const newExam = await Exam.create({
+    name: req.body.name,
+    class: req.body.class,
+    date: req.body.date,
+    time: req.body.time,
+    expireTime: req.body.expireTime,
+    teacher: req.user._id,
+    questions: req.body.questions,
+  });
+
+  res.status(201).json({
+    status: "success",
+    data: {
+      exam: newExam,
+    },
+  });
+});
+
+exports.deleteExam = catchAsync(async (req, res, next) => {
+  const exam = await Exam.findById(req.params.examId);
+  const timeStamp = new Date(exam.date);
+  const nowDate = new Date();
+  if (timeStamp < nowDate) {
+    return next(
+      new AppError("you cant remove exam in or after exam date", 401)
+    );
+  }
+
+  await exam.remove();
+
+  res.status(204).json({
+    status: "success",
+    data: null,
   });
 });

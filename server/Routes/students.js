@@ -4,9 +4,18 @@ const router = express.Router();
 const authController = require("../controllers/authController");
 const studentController = require("../controllers/studentController");
 
+router.param("examId", (req, res, next) => {
+  authController.objectIdControll(req.params.examId, next);
+});
+
+router.param("classId", (req, res, next) => {
+  authController.objectIdControll(req.params.examId, next);
+});
+
 // *) auth route student
 router.post("/login", authController.studentLogin);
 router.post("/code", authController.createCode);
+router.get("/logout", authController.logout);
 
 router.get(
   "/class",
@@ -16,7 +25,21 @@ router.get(
 );
 
 router.get(
-  "/class/:id",
+  "/exam",
+  authController.protect,
+  authController.restrictTo("student"),
+  studentController.examList
+);
+
+router.get(
+  "/exam/:examId",
+  authController.protect,
+  authController.restrictTo("student"),
+  studentController.singleExam
+);
+
+router.get(
+  "/class/:classId",
   authController.protect,
   authController.restrictTo("student"),
   studentController.studentsList

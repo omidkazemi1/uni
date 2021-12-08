@@ -4,6 +4,18 @@ const router = express.Router();
 const teacherController = require("../controllers/teacherController");
 const authController = require("../controllers/authController");
 
+router.param("classId", (req, res, next) => {
+  authController.objectIdControll(req.params.classId, next);
+});
+
+router.param("studentId", (req, res, next) => {
+  authController.objectIdControll(req.params.studentId, next);
+});
+
+router.param("examId", (req, res, next) => {
+  authController.objectIdControll(req.params.examId, next);
+});
+
 // *) auth route teacher
 router.post("/signup", authController.teacherSignup);
 router.post("/login", authController.teacherLogin);
@@ -26,7 +38,7 @@ router
 // *) class and student manage route
 
 router.get(
-  "/class/:id/student",
+  "/class/:classId/student",
   authController.protect,
   authController.restrictTo("teacher"),
   teacherController.studentList
@@ -40,7 +52,7 @@ router.delete(
 );
 
 router
-  .route("/class/:id")
+  .route("/class/:classId")
   .get(
     authController.protect,
     authController.restrictTo("teacher"),
@@ -78,4 +90,24 @@ router
     teacherController.classList
   );
 
+// exam routes
+router
+  .route("/exam")
+  .get(
+    authController.protect,
+    authController.restrictTo("teacher"),
+    teacherController.examList
+  )
+  .post(
+    authController.protect,
+    authController.restrictTo("teacher"),
+    teacherController.addExam
+  );
+
+router.delete(
+  "/exam/:examId",
+  authController.protect,
+  authController.restrictTo("teacher"),
+  teacherController.deleteExam
+);
 module.exports = router;
