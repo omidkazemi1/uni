@@ -5,7 +5,7 @@ import { CgTrash } from "react-icons/cg";
 import { GrEdit } from "react-icons/gr";
 import { CgViewList } from "react-icons/cg";
 
-const QuestionCard = ({ question, index }) => {
+const QuestionCard = ({ question, index, handleRemove, handleEdit, handlePreview }) => {
     const [anchorEl, setAnchorEl] = useState(null);
 
     const handleOpenMenu = event => {
@@ -16,15 +16,17 @@ const QuestionCard = ({ question, index }) => {
         setAnchorEl(null);
     };
 
+    const handleClickMenuItem = action => action(index, handleCloseMenu())
+
     return (
         <>
             <Paper variant="outlined" sx={{ my: 3, p: 2 }}>
                 <Stack direction="row" justifyContent="space-between">
                     <Box>
-                        <Chip label={`سوال ${++index}`}>
-                            
-                        </Chip>
-                        <Typography variant="body2" mt={3}>{question.body}</Typography>
+                        <Chip label={`سوال ${index + 1}`}></Chip>
+                        <Typography variant="body2" mt={3}>
+                            {question.body}
+                        </Typography>
                     </Box>
 
                     <Box>
@@ -34,16 +36,16 @@ const QuestionCard = ({ question, index }) => {
                             anchorEl={anchorEl}
                             open={!!anchorEl}
                             onClose={handleCloseMenu}>
-                            <MenuItem onClick={handleCloseMenu}>
-                                <CgTrash />
+                            <MenuItem onClick={() => handleClickMenuItem(handleRemove)}>
+                                <CgTrash style={{ paddingLeft: '12px'}} />
                                 حذف
                             </MenuItem>
-                            <MenuItem onClick={handleCloseMenu}>
-                                <GrEdit />
+                            <MenuItem onClick={() => handleClickMenuItem(handleEdit)}>
+                                <GrEdit style={{ paddingLeft: '12px'}} />
                                 ویرایش
                             </MenuItem>
-                            <MenuItem onClick={handleCloseMenu}>
-                                <CgViewList />
+                            <MenuItem onClick={() => handleClickMenuItem(handlePreview)}>
+                                <CgViewList style={{ paddingLeft: '12px'}} />
                                 نمایش
                             </MenuItem>
                         </Menu>
