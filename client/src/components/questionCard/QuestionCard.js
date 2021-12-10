@@ -16,7 +16,7 @@ const QuestionCard = ({ question, index, handleRemove, handleEdit, handlePreview
         setAnchorEl(null);
     };
 
-    const handleClickMenuItem = action => action(index, handleCloseMenu())
+    const handleClickMenuItem = action => action(index, handleCloseMenu());
 
     return (
         <>
@@ -37,18 +37,19 @@ const QuestionCard = ({ question, index, handleRemove, handleEdit, handlePreview
                             open={!!anchorEl}
                             onClose={handleCloseMenu}>
                             <MenuItem onClick={() => handleClickMenuItem(handleRemove)}>
-                                <CgTrash style={{ paddingLeft: '12px'}} />
+                                <CgTrash style={{ paddingLeft: "12px" }} />
                                 حذف
                             </MenuItem>
                             <MenuItem onClick={() => handleClickMenuItem(handleEdit)}>
-                                <GrEdit style={{ paddingLeft: '12px'}} />
+                                <GrEdit style={{ paddingLeft: "12px" }} />
                                 ویرایش
                             </MenuItem>
                             <MenuItem onClick={() => handleClickMenuItem(handlePreview)}>
-                                <CgViewList style={{ paddingLeft: '12px'}} />
+                                <CgViewList style={{ paddingLeft: "12px" }} />
                                 نمایش
                             </MenuItem>
                         </Menu>
+                        ‍‍‍‍‍‍‍
                     </Box>
                 </Stack>
             </Paper>

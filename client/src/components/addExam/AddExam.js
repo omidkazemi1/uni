@@ -18,10 +18,11 @@ import {
     Typography
 } from "@mui/material";
 import MultiSelect from "../multiSelect/MultiSelect";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import QuestionCard from "../questionCard/QuestionCard";
 import { FaPlus } from "react-icons/fa";
 import { Box } from "@mui/system";
+import { addExam } from "../../redux/actions/exam";
 
 const AddExam = () => {
     const [examFormData, setExamFormData] = useState({
@@ -85,8 +86,10 @@ const AddExam = () => {
     const [questionDialogOpen, setQuestionDialogOpen] = useState(false);
     const [previewDialogOpen, setPreviewDialogOpen] = useState(false);
     const [selectedClasses, setSelectedClasses] = useState([]);
+    const [selectedClassesError, setSelectedClassesError] = useState([]);
     const [selectedQuestion, setSelectedQuestion] = useState(null);
     const { classDocs } = useSelector(state => state.classes);
+    const dispatch = useDispatch();
 
     const handleExamInput = event => {
         setExamFormData(prevState => ({
@@ -203,6 +206,32 @@ const AddExam = () => {
         setPreviewDialogOpen(true);
     };
 
+    const handleExamFromSubmit = event => {
+        event.preventDefault();
+
+        let hasError = false;
+        for (const input in examFormData) {
+            if (examFormData[input] === "") {
+                setExamFormError(prevState => ({ ...prevState, [input]: true }));
+                hasError = true;
+            }
+        }
+
+        if (!selectedClasses.length) {
+            hasError = true;
+            setSelectedClassesError(true);
+        }
+
+        if (!hasError) {
+            const examFrom = {
+                ...examFormData,
+                class: [...selectedClasses.map(classDoc => classDoc._id)],
+                questions: [...questionFormData]
+            };
+            dispatch(addExam(examFrom));
+        }
+    };
+
     return (
         <>
             <Stack direction="row" alignItems="center" justifyContent="space-between">
@@ -217,7 +246,7 @@ const AddExam = () => {
                 component={Paper}
                 py={3}
                 px={{ xs: 3, md: 0 }}>
-                <form>
+                <form onSubmit={handleExamFromSubmit}>
                     <Grid
                         container
                         justifyContent="center"
@@ -276,12 +305,12 @@ const AddExam = () => {
                             <MultiSelect
                                 label="زمان شروع"
                                 selectedValues={selectedClasses}
+                                error={selectedClassesError}
                                 values={classDocs}
-                                error={examFormError.duration}
                                 handler={handleSelectChange}
                                 onChange={handleExamInput}
                             />
-                            <FormHelperText error={examFormError.duration}>
+                            <FormHelperText error={selectedClassesError}>
                                 مدت زمان آزمون را وارد کنید
                             </FormHelperText>
                         </Grid>
@@ -318,7 +347,9 @@ const AddExam = () => {
 
                     <Grid container mt={3}>
                         <Grid item xs={12} md={6}>
-                            <Button variant="contained">ثبت آزمون</Button>
+                            <Button type="submit" variant="contained">
+                                ثبت آزمون
+                            </Button>
                         </Grid>
                     </Grid>
                 </form>
@@ -465,37 +496,51 @@ const AddExam = () => {
                 <DialogContent>
                     <Box my={3}>
                         <Typography variant="body1">متن سوال</Typography>
-                        <Typography variant="body2" color="text.secondary">{questionFormData.body}</Typography>
+                        <Typography variant="body2" color="text.secondary">
+                            {questionFormData.body}
+                        </Typography>
                     </Box>
                     <Divider />
                     <Box my={3}>
                         <Typography variant="body1">گزینه اول</Typography>
-                        <Typography variant="body2" color="text.secondary">{questionFormData.answer1}</Typography>
+                        <Typography variant="body2" color="text.secondary">
+                            {questionFormData.answer1}
+                        </Typography>
                     </Box>
                     <Divider />
                     <Box my={3}>
                         <Typography variant="body1">گزینه دوم</Typography>
-                        <Typography variant="body2" color="text.secondary">{questionFormData.answer2}</Typography>
+                        <Typography variant="body2" color="text.secondary">
+                            {questionFormData.answer2}
+                        </Typography>
                     </Box>
                     <Divider />
                     <Box my={3}>
                         <Typography variant="body1">گزینه سوم</Typography>
-                        <Typography variant="body2" color="text.secondary">{questionFormData.answer3}</Typography>
+                        <Typography variant="body2" color="text.secondary">
+                            {questionFormData.answer3}
+                        </Typography>
                     </Box>
                     <Divider />
                     <Box my={3}>
                         <Typography variant="body1">گزینه چهارم</Typography>
-                        <Typography variant="body2" color="text.secondary">{questionFormData.answer4}</Typography>
+                        <Typography variant="body2" color="text.secondary">
+                            {questionFormData.answer4}
+                        </Typography>
                     </Box>
                     <Divider />
                     <Box my={3}>
                         <Typography variant="body1">گزینه صحیح</Typography>
-                        <Typography variant="body2" color="text.secondary">{questionFormData.trueOption}</Typography>
+                        <Typography variant="body2" color="text.secondary">
+                            {questionFormData.trueOption}
+                        </Typography>
                     </Box>
                     <Divider />
                     <Box my={3}>
                         <Typography variant="body1">بارم سوال</Typography>
-                        <Typography variant="body2" color="text.secondary">{questionFormData.score}</Typography>
+                        <Typography variant="body2" color="text.secondary">
+                            {questionFormData.score}
+                        </Typography>
                     </Box>
                 </DialogContent>
                 <DialogActions>

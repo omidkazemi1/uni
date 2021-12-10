@@ -20,7 +20,7 @@ const FormStepper = ({ children, formData, errorHandler, formAction, fromTitle }
 
     useEffect(() => {
         dispatch(setErrorEmpty());
-        user && navigate("/", { replace: false });
+        user && navigate("/", { replace: true });
     }, [user, navigate, dispatch]);
 
     const {

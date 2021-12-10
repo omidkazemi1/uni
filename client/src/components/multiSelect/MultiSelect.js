@@ -9,13 +9,14 @@ import {
 } from "@mui/material";
 import React from "react";
 
-const MultiSelect = ({ selectedValues, values, handler, ...rest }) => {
+const MultiSelect = ({ selectedValues, values, handler, error, ...rest }) => {
     return (
         <>
             <FormControl fullWidth margin="normal">
-                <InputLabel>کلاس ها</InputLabel>
+                <InputLabel error={error}>کلاس ها</InputLabel>
                 <Select
                     {...rest}
+                    error={error}
                     multiple
                     value={selectedValues}
                     onChange={handler}
