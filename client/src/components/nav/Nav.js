@@ -16,6 +16,10 @@ import {
 } from "@mui/material";
 import { deepOrange } from "@mui/material/colors";
 import { HiOutlineMenu } from "react-icons/hi";
+import { MdPerson } from "react-icons/md";
+import { SiGoogleclassroom } from "react-icons/si";
+import { RiListCheck2 } from "react-icons/ri";
+import { IoMdExit } from "react-icons/io";
 
 function Nav() {
     const [anchorElNav, setAnchorElNav] = useState(null);
@@ -150,14 +154,30 @@ function Nav() {
                                     onClose={handleCloseUserMenu}>
                                     <MenuItem
                                         component={Link}
-                                        to="/user"
-                                        onClick={handleCloseNavMenu}>
-                                        داشبورد
+                                        to="/user/profile"
+                                        onClick={handleCloseUserMenu}>
+                                        <MdPerson size="20px" style={{ paddingLeft: '12px'}} />
+                                        پروفایل
+                                    </MenuItem>
+                                    <MenuItem
+                                        component={Link}
+                                        to="/user/classes"
+                                        onClick={handleCloseUserMenu}>
+                                        <SiGoogleclassroom size="20px" style={{ paddingLeft: '12px'}} />
+                                        کلاس های من
+                                    </MenuItem>
+                                    <MenuItem
+                                        component={Link}
+                                        to="/user/exam"
+                                        onClick={handleCloseUserMenu}>
+                                        <RiListCheck2 size="20px" style={{ paddingLeft: '12px'}} />
+                                        آزمون
                                     </MenuItem>
                                     <MenuItem
                                         component={Link}
                                         to="logout"
-                                        onClick={handleCloseNavMenu}>
+                                        onClick={handleCloseUserMenu}>
+                                        <IoMdExit size="20px" style={{ paddingLeft: '12px'}} />
                                         خروج
                                     </MenuItem>
                                 </Menu>

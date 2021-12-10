@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { FormHelperText, Grid, Paper, TextField } from "@mui/material";
 import { SnackbarProvider } from "notistack";
 
-import FormStepper from "../fromStepper/FromStepper";
+import FormStepper from "../formStepper/FormStepper";
 import { Box } from "@mui/system";
 
 const Login = () => {

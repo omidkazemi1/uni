@@ -36,9 +36,9 @@ export const removeStudent = (classId, studentId) => async dispatch => {
         dispatch({ type: STUDENT_REQUEST });
         const data = await api.removeStudentDelete(classId, studentId);
 
-        console.log(data);
+        console.log(data)
 
-        if (data.status === 204) {
+        if (data.status === 202) {
             dispatch({ type: REMOVE_STUDENT_RESPONSE, payload: studentId });
         }
     } catch (error) {
