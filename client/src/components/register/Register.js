@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { FormHelperText, Grid, Paper, TextField, Box } from "@mui/material";
 import { SnackbarProvider } from "notistack";
 
-import FormStepper from "../fromStepper/FromStepper";
+import FormStepper from "../formStepper/FormStepper";
 
 const Register = () => {
     const [formData, setFormData] = useState({
