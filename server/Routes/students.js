@@ -31,12 +31,26 @@ router.get(
   studentController.examList
 );
 
-router.get(
-  "/exam/:examId",
-  authController.protect,
-  authController.restrictTo("student"),
-  studentController.singleExam
-);
+router
+  .route("/exam")
+  .get(
+    authController.protect,
+    authController.restrictTo("student"),
+    studentController.examList
+  )
+  .post(
+    authController.protect,
+    authController.restrictTo("student"),
+    studentController.completeExam
+  );
+
+router
+  .route("/exam/:examId")
+  .get(
+    authController.protect,
+    authController.restrictTo("student"),
+    studentController.singleExam
+  );
 
 router.get(
   "/class/:classId",

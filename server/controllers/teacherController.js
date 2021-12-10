@@ -1,3 +1,4 @@
+/* eslint-disable no-await-in-loop */
 const User = require("../models/userModel");
 const Class = require("../models/classModel");
 const Exam = require("../models/examModel");
@@ -310,6 +311,12 @@ exports.addExam = catchAsync(async (req, res, next) => {
     teacher: req.user._id,
     questions: req.body.questions,
   });
+
+  for (let index = 0; index < req.body.class.length; index++) {
+    await Class.findByIdAndUpdate(req.body.class[index], {
+      $push: { exams: newExam._id },
+    });
+  }
 
   res.status(201).json({
     status: "success",

@@ -9,6 +9,14 @@ const classSchema = new mongoose.Schema({
   students: [
     { type: mongoose.Schema.ObjectId, ref: "Student", required: true },
   ],
+  exams: [
+    {
+      type: mongoose.Schema.ObjectId,
+      ref: "Exams",
+      required: true,
+      select: false,
+    },
+  ],
   teacher: { type: mongoose.Schema.ObjectId, ref: "Teacher", required: true },
   description: String,
 });
