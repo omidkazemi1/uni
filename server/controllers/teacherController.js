@@ -305,7 +305,7 @@ exports.addExam = catchAsync(async (req, res, next) => {
   const newExam = await Exam.create({
     name: req.body.name,
     class: req.body.class,
-    date: req.body.date,
+    startTime: req.body.startTime,
     duration: req.body.duration,
     teacher: req.user._id,
     questions: req.body.questions,
