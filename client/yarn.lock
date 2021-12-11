@@ -1241,6 +1241,13 @@
   "resolved" "https://registry.npmjs.org/@date-io/core/-/core-2.11.0.tgz"
   "version" "2.11.0"
 
+"@date-io/date-fns-jalali@^2.11.0":
+  "integrity" "sha512-YgWs9PzDp1p5iSvQ0N00+0h2YZlh5+Lt7hdHQI4TuwJPmKqdS0RAPdZUnbQmDlE8rqNu0WoeRQLkVjCorcNy5w=="
+  "resolved" "https://registry.npmjs.org/@date-io/date-fns-jalali/-/date-fns-jalali-2.11.0.tgz"
+  "version" "2.11.0"
+  dependencies:
+    "@date-io/core" "^2.11.0"
+
 "@date-io/date-fns@^2.11.0":
   "integrity" "sha512-mPQ71plBeFrArvBSHtjWMHXA89IUbZ6kuo2dsjlRC/1uNOybo91spIb+wTu03NxKTl8ut07s0jJ9svF71afpRg=="
   "resolved" "https://registry.npmjs.org/@date-io/date-fns/-/date-fns-2.11.0.tgz"
@@ -4469,6 +4476,11 @@
     "abab" "^2.0.3"
     "whatwg-mimetype" "^2.3.0"
     "whatwg-url" "^8.0.0"
+
+"date-fns-jalali@^2.13.0-0":
+  "integrity" "sha512-yjlI9O18Z6ryGNagryrLO8OQ+3rishM3+A0UOX2UX10cWMn2NTlQcQ+ywTEJvF5IJz0FwX/slt2nCcpyQ/c8gw=="
+  "resolved" "https://registry.npmjs.org/date-fns-jalali/-/date-fns-jalali-2.13.0-0.tgz"
+  "version" "2.13.0-0"
 
 "debug@^2.2.0":
   "integrity" "sha512-bC7ElrdJaJnPbAP+1EotYvqZsb3ecl5wi6Bfi6BJTUcNowp6cvspg0jXznRTKDjm/E7AdgFBVeAPVMNcKGsHMA=="
