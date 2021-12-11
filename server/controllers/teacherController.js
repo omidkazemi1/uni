@@ -306,7 +306,7 @@ exports.addExam = catchAsync(async (req, res, next) => {
     name: req.body.name,
     class: req.body.class,
     date: req.body.date,
-    expireTime: req.body.expireTime,
+    duration: req.body.duration,
     teacher: req.user._id,
     questions: req.body.questions,
   });

@@ -1,3 +1,4 @@
+/* eslint-disable no-plusplus */
 const mongoose = require("mongoose");
 const User = require("../models/userModel");
 const Class = require("../models/classModel");
@@ -5,6 +6,7 @@ const Exam = require("../models/examModel");
 const ExamLog = require("../models/examLogModel");
 const AppError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");
+const authController = require("./authController");
 
 exports.classList = catchAsync(async (req, res, next) => {
   const classes = await Class.find({ students: { $in: req.user._id } });
@@ -65,7 +67,7 @@ exports.examList = catchAsync(async (req, res, next) => {
             score: "$exam.score",
             class: "$class",
             questionLength: "$questionLength",
-            expireTime: "$exam.expireTime",
+            duration: "$exam.duration",
           },
         },
       },
@@ -100,8 +102,17 @@ exports.singleExam = catchAsync(async (req, res, next) => {
 exports.completeExam = catchAsync(async (req, res, next) => {
   const exam = await Exam.findById(req.body.exam);
   const student = await User.findById(req.user._id);
+  let score = 0;
+  for (let index = 0; index < exam.questions.length; index++) {
+    for (let j = 0; j < req.body.questions.length; j++) {
+      if (req.body.questions[j].questionId == exam.questions[index]._id) {
+        console.log(req.body.questions[j]);
+        console.log(exam.questions[index]);
+      }
+    }
+  }
 
-  const newExamLog = await ExamLog.create({
-    exam: req.body.exam,
-  });
+  //const  = await ExamLog.({
+  //  // exam: req.body.exam,
+  // });
 });

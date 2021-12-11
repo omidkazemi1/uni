@@ -45,7 +45,7 @@ const examSchema = new mongoose.Schema(
       type: String,
       required: [true, "لطفا تاریخ و زمان امتحان را وارد کنید"],
     },
-    expireTime: {
+    duration: {
       type: Number,
       required: [true, "لطفا زمان امتحان را وارد کنید "],
     },
