@@ -16,9 +16,9 @@ export const getExams = () => async dispatch => {
 
 export const addExam = formData => async dispatch => {
     try {
+        console.log(formData)
         dispatch({ type: EXAM_REQUEST });
         const { data } = await api.addExamPost(formData);
-
         dispatch({ type: ADD_EXAM_RESPONSE, payload: data.data.exam });
     } catch (error) {
         console.log(error.response);
