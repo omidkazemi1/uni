@@ -6,12 +6,6 @@ const ExamLog = require("../models/examLogModel");
 const AppError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");
 
-const test1 = (id) => {
-  console.log(id);
-
-  return true;
-};
-
 exports.classList = catchAsync(async (req, res, next) => {
   const classes = await Class.find({ students: { $in: req.user._id } });
 

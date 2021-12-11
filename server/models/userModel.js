@@ -4,52 +4,59 @@ const { digitsFaToEn } = require("@persian-tools/persian-tools");
 const regexPhoneNumber = new RegExp("^(\\+98|0)?9\\d{9}$");
 const regexNationalCode = new RegExp("^[0-9]{10}$");
 
-const userSchema = new mongoose.Schema({
-  firstName: {
-    type: String,
-    required: [true, "لطفا نام خود را وارد کنید "],
-  },
-  lastName: {
-    type: String,
-    required: [true, "لطفا نام خانوادگی خود را وارد کنید"],
-  },
-  class: {
-    type: [{ type: mongoose.Schema.ObjectId, ref: "Class" }],
-    select: false,
-  },
-  fullName: String,
-  phoneNumber: {
-    type: String,
-    unique: true,
-    validate: {
-      validator: function (phoneNumber) {
-        return regexPhoneNumber.test(digitsFaToEn(phoneNumber));
+const userSchema = new mongoose.Schema(
+  {
+    firstName: {
+      type: String,
+      required: [true, "لطفا نام خود را وارد کنید "],
+    },
+    lastName: {
+      type: String,
+      required: [true, "لطفا نام خانوادگی خود را وارد کنید"],
+    },
+    class: {
+      type: [{ type: mongoose.Schema.ObjectId, ref: "Class" }],
+      select: false,
+    },
+    fullName: String,
+    phoneNumber: {
+      type: String,
+      unique: true,
+      validate: {
+        validator: function (phoneNumber) {
+          return regexPhoneNumber.test(digitsFaToEn(phoneNumber));
+        },
+        message: "شماره تلفن متبر نیست",
       },
-      message: "شماره تلفن متبر نیست",
+    },
+    nationalCode: {
+      type: String,
+      unique: true,
+      required: [true, "لطفا کدملی خود را وارد کنید"],
+      validate: {
+        validator: function (nationalCode) {
+          return regexNationalCode.test(digitsFaToEn(nationalCode));
+        },
+        message: "کد ملی متبر نیست",
+      },
+    },
+    role: {
+      type: String,
+      enum: ["teacher", "student"],
+      default: "teacher",
+    },
+    active: {
+      type: Boolean,
+      default: true,
+      select: false,
     },
   },
-  nationalCode: {
-    type: String,
-    unique: true,
-    required: [true, "لطفا کدملی خود را وارد کنید"],
-    validate: {
-      validator: function (nationalCode) {
-        return regexNationalCode.test(digitsFaToEn(nationalCode));
-      },
-      message: "کد ملی متبر نیست",
-    },
-  },
-  role: {
-    type: String,
-    enum: ["teacher", "student"],
-    default: "teacher",
-  },
-  active: {
-    type: Boolean,
-    default: true,
-    select: false,
-  },
-});
+  {
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
+    timestamps: true,
+  }
+);
 
 // 1) pre find(any) say just active user
 userSchema.pre(/^find/, function (next) {

@@ -45,10 +45,6 @@ const examSchema = new mongoose.Schema(
       type: String,
       required: [true, "لطفا تاریخ و زمان امتحان را وارد کنید"],
     },
-    time: {
-      type: String,
-      required: [true, "لطفا تاریخ و زمان امتحان را وارد کنید"],
-    },
     expireTime: {
       type: Number,
       required: [true, "لطفا زمان امتحان را وارد کنید "],
@@ -58,6 +54,7 @@ const examSchema = new mongoose.Schema(
   {
     toJSON: { virtuals: true },
     toObject: { virtuals: true },
+    timestamps: true,
   }
 );
 
@@ -71,10 +68,4 @@ examSchema.pre("save", async function (next) {
   next();
 });
 
-examSchema.pre("save", async function (next) {
-  const date = `${this.date}T${this.time}:00.000Z`;
-  this.date = date;
-  this.time = undefined;
-  next();
-});
 module.exports = mongoose.model("Exam", examSchema);
