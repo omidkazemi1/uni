@@ -23,6 +23,7 @@ import QuestionCard from "../questionCard/QuestionCard";
 import { FaPlus } from "react-icons/fa";
 import { Box } from "@mui/system";
 import { addExam } from "../../redux/actions/exam";
+import JalaliDateTimePicker from "../jalaliDateTimePicker/JalaliDateTiemPicker";
 
 const AddExam = () => {
     const [examFormData, setExamFormData] = useState({
@@ -86,7 +87,7 @@ const AddExam = () => {
     const [questionDialogOpen, setQuestionDialogOpen] = useState(false);
     const [previewDialogOpen, setPreviewDialogOpen] = useState(false);
     const [selectedClasses, setSelectedClasses] = useState([]);
-    const [selectedClassesError, setSelectedClassesError] = useState([]);
+    const [selectedClassesError, setSelectedClassesError] = useState(false);
     const [selectedQuestion, setSelectedQuestion] = useState(null);
     const { classDocs } = useSelector(state => state.classes);
     const dispatch = useDispatch();
@@ -98,6 +99,15 @@ const AddExam = () => {
         }));
 
         setExamFormError(prevState => ({ ...prevState, [event.target.name]: false }));
+    };
+
+    const handleStartTimeChange = event => {
+        setExamFormData(prevState => ({
+            ...prevState,
+            startTime: event
+        }));
+        console.log(event)
+        setExamFormError(prevState => ({ ...prevState, startTime: false }));
     };
 
     const handleQuestionInput = event => {
@@ -114,6 +124,7 @@ const AddExam = () => {
             target: { value }
         } = event;
         setSelectedClasses(value);
+        setSelectedClassesError(false);
     };
 
     const handleDialogOpen = () => {
@@ -226,7 +237,7 @@ const AddExam = () => {
             const examFrom = {
                 ...examFormData,
                 class: [...selectedClasses.map(classDoc => classDoc._id)],
-                questions: [...questionFormData]
+                questions: { ...questionFormData }
             };
             dispatch(addExam(examFrom));
         }
@@ -270,7 +281,7 @@ const AddExam = () => {
                         </Grid>
 
                         <Grid item xs={12} sm={9} md={6} lg={6}>
-                            <TextField
+                            {/* <TextField
                                 name="startTime"
                                 label="زمان شروع"
                                 type="text"
@@ -279,6 +290,15 @@ const AddExam = () => {
                                 value={examFormData.startTime}
                                 error={examFormError.startTime}
                                 onChange={handleExamInput}
+                            /> */}
+                            <JalaliDateTimePicker
+                                name="startTime"
+                                label="زمان شروع"
+                                fullWidth
+                                margin="normal"
+                                value={examFormData.startTime}
+                                error={examFormError.startTime}
+                                setValue={handleStartTimeChange}
                             />
                             <FormHelperText error={examFormError.startTime}>
                                 زمان شروع آزمون را وارد کنید
@@ -288,7 +308,7 @@ const AddExam = () => {
                         <Grid item xs={12} sm={9} md={6} lg={6}>
                             <TextField
                                 name="duration"
-                                label="زمان شروع"
+                                label="مدت زمان امتحان"
                                 type="text"
                                 fullWidth
                                 margin="normal"
@@ -303,12 +323,11 @@ const AddExam = () => {
 
                         <Grid item xs={12} sm={9} md={6} lg={6}>
                             <MultiSelect
-                                label="زمان شروع"
+                                label="کلاس ها"
                                 selectedValues={selectedClasses}
                                 error={selectedClassesError}
                                 values={classDocs}
                                 handler={handleSelectChange}
-                                onChange={handleExamInput}
                             />
                             <FormHelperText error={selectedClassesError}>
                                 مدت زمان آزمون را وارد کنید
