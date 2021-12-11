@@ -17,6 +17,7 @@
     "axios": "^0.24.0",
     "axois": "^0.0.1-security",
     "date-fns-jalali": "^2.13.0-0",
+    "framer-motion": "4.1.17",
     "jss": "^10.8.2",
     "jss-rtl": "^0.3.0",
     "notistack": "^2.0.3",

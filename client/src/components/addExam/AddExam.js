@@ -25,6 +25,7 @@ import { Box } from "@mui/system";
 import { addExam } from "../../redux/actions/exam";
 import JalaliDateTimePicker from "../jalaliDateTimePicker/JalaliDateTiemPicker";
 import JalaliTimePicker from "../jalaliTimePicker/JalaliTimePicker";
+import { AnimatePresence } from "framer-motion";
 
 const AddExam = () => {
     const [examFormData, setExamFormData] = useState({
@@ -352,16 +353,18 @@ const AddExam = () => {
                         </Grid>
 
                         <Grid item xs={12}>
-                            {questions.map((question, index) => (
-                                <QuestionCard
-                                    key={index}
-                                    question={question}
-                                    index={index}
-                                    handleRemove={handleRemoveQuestion}
-                                    handleEdit={handleEditQuestion}
-                                    handlePreview={handlePreviewQuestion}
-                                />
-                            ))}
+                            <AnimatePresence>
+                                {questions.map((question, index) => (
+                                    <QuestionCard
+                                        key={index}
+                                        question={question}
+                                        index={index}
+                                        handleRemove={handleRemoveQuestion}
+                                        handleEdit={handleEditQuestion}
+                                        handlePreview={handlePreviewQuestion}
+                                    />
+                                ))}
+                            </AnimatePresence>
                         </Grid>
                     </Grid>
 

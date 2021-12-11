@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { CgTrash } from "react-icons/cg";
 import { GrEdit } from "react-icons/gr";
 import { CgViewList } from "react-icons/cg";
+import { motion } from "framer-motion";
 
 const QuestionCard = ({ question, index, handleRemove, handleEdit, handlePreview }) => {
     const [anchorEl, setAnchorEl] = useState(null);
@@ -20,7 +21,14 @@ const QuestionCard = ({ question, index, handleRemove, handleEdit, handlePreview
 
     return (
         <>
-            <Paper variant="outlined" sx={{ my: 3, p: 2 }}>
+            <Paper
+                component={motion.div}
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ delay: 0.2, duration: 0.3 }}
+                variant="outlined"
+                sx={{ my: 3, p: 2 }}>
                 <Stack direction="row" justifyContent="space-between">
                     <Box>
                         <Chip label={`سوال ${index + 1}`}></Chip>

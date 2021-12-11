@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link, Outlet } from "react-router-dom";
+import { motion } from "framer-motion";
 import {
     Drawer,
     List,
