@@ -1,23 +1,23 @@
 import React from "react";
-import DesktopDateTimePicker from "@mui/lab/DesktopDateTimePicker";
-import MobileDateTimePicker from "@mui/lab/MobileDateTimePicker";
+import DesktopTimePicker from "@mui/lab/DesktopTimePicker";
+import MobileTimePicker from "@mui/lab/MobileTimePicker";
 import { TextField } from "@mui/material";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import AdapterJalali from "@date-io/date-fns-jalali";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
-const JalaliDateTimePicker = ({ value, setValue, ...rest }) => {
+const JalaliTimePicker = ({ value, setValue, ...rest }) => {
     const isMoblieMediaQuery = useMediaQuery("(max-width:600px)");
 
     return (
         <>
             <LocalizationProvider dateAdapter={AdapterJalali}>
                 {isMoblieMediaQuery ? (
-                    <MobileDateTimePicker
+                    <MobileTimePicker
                         cancelText="لغو"
                         okText="تأیید"
                         ampmInClock={false}
-                        ampm={true}
+                        ampm={false}
                         minDateTime={Date.now()}
                         mask="____/__/__"
                         value={value}
@@ -30,9 +30,9 @@ const JalaliDateTimePicker = ({ value, setValue, ...rest }) => {
                         }}
                     />
                 ) : (
-                    <DesktopDateTimePicker
+                    <DesktopTimePicker
                         ampmInClock={false}
-                        ampm={true}
+                        ampm={false}
                         minDateTime={Date.now()}
                         mask="____/__/__"
                         value={value}
@@ -49,4 +49,4 @@ const JalaliDateTimePicker = ({ value, setValue, ...rest }) => {
     );
 };
 
-export default JalaliDateTimePicker;
+export default JalaliTimePicker;

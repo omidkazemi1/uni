@@ -24,6 +24,7 @@ import { FaPlus } from "react-icons/fa";
 import { Box } from "@mui/system";
 import { addExam } from "../../redux/actions/exam";
 import JalaliDateTimePicker from "../jalaliDateTimePicker/JalaliDateTiemPicker";
+import JalaliTimePicker from "../jalaliTimePicker/JalaliTimePicker";
 
 const AddExam = () => {
     const [examFormData, setExamFormData] = useState({
@@ -101,13 +102,24 @@ const AddExam = () => {
         setExamFormError(prevState => ({ ...prevState, [event.target.name]: false }));
     };
 
-    const handleStartTimeChange = event => {
+    const handleStartTimeChange = time => {
+        const isValid = time instanceof Date && !isNaN(time);
+
         setExamFormData(prevState => ({
             ...prevState,
-            startTime: event
+            startTime: isValid ? new Date(time).toISOString() : ""
         }));
-        console.log(event)
         setExamFormError(prevState => ({ ...prevState, startTime: false }));
+    };
+
+    const handleDurationChange = time => {
+        const isValid = time instanceof Date && !isNaN(time);
+
+        setExamFormData(prevState => ({
+            ...prevState,
+            duration: isValid ? new Date(time).toISOString() : ""
+        }));
+        setExamFormError(prevState => ({ ...prevState, duration: false }));
     };
 
     const handleQuestionInput = event => {
@@ -281,16 +293,6 @@ const AddExam = () => {
                         </Grid>
 
                         <Grid item xs={12} sm={9} md={6} lg={6}>
-                            {/* <TextField
-                                name="startTime"
-                                label="زمان شروع"
-                                type="text"
-                                fullWidth
-                                margin="normal"
-                                value={examFormData.startTime}
-                                error={examFormError.startTime}
-                                onChange={handleExamInput}
-                            /> */}
                             <JalaliDateTimePicker
                                 name="startTime"
                                 label="زمان شروع"
@@ -306,15 +308,14 @@ const AddExam = () => {
                         </Grid>
 
                         <Grid item xs={12} sm={9} md={6} lg={6}>
-                            <TextField
+                            <JalaliTimePicker
                                 name="duration"
                                 label="مدت زمان امتحان"
-                                type="text"
                                 fullWidth
                                 margin="normal"
                                 value={examFormData.duration}
                                 error={examFormError.duration}
-                                onChange={handleExamInput}
+                                setValue={handleDurationChange}
                             />
                             <FormHelperText error={examFormError.duration}>
                                 مدت زمان آزمون را وارد کنید
