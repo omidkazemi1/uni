@@ -5,21 +5,24 @@ import { ADD_EXAM_RESPONSE, EDIT_EXAM_RESPONSE, EXAM_ERROR, EXAM_ERROR_EMPTY, EX
 export const getExams = () => async dispatch => {
     try {
         dispatch({ type: EXAM_REQUEST });
-        const { data } = await api.getClasses();
+        const { data } = await api.getExamGet();
 
-        dispatch({ type: EXAM_RESPONSE, payload: data.data.classes });
+        console.log(data)
+
+        dispatch({ type: EXAM_RESPONSE, payload: data.data.exams });
     } catch (error) {
-        console.log(error.response);
+        console.log(error);
         dispatch({ type: EXAM_ERROR, payload: error.response });
     }
 };
 
-export const addExam = formData => async dispatch => {
+export const addExam = (formData, navigate) => async dispatch => {
     try {
         console.log(formData)
         dispatch({ type: EXAM_REQUEST });
         const { data } = await api.addExamPost(formData);
         dispatch({ type: ADD_EXAM_RESPONSE, payload: data.data.exam });
+        navigate("/user/exam", { replace: true });
     } catch (error) {
         console.log(error.response);
         dispatch({ type: EXAM_ERROR, payload: error.response });
@@ -37,13 +40,15 @@ export const editClasses = (formData, classId) => async dispatch => {
     }
 };
 
-export const removeClasses = classId => async dispatch => {
+export const removeExam = examId => async dispatch => {
     try {
         dispatch({ type: EXAM_REQUEST });
-        const data = await api.removeClassesDelete(classId);
+        const data = await api.removeExamDelete(examId);
+
+        console.log(data)
 
         if (data.status === 204) {
-            dispatch({ type: REMOVE_EXAM_RESPONSE, payload: classId });
+            dispatch({ type: REMOVE_EXAM_RESPONSE, payload: examId });
         }
     } catch (error) {
         console.log(error.response, error);

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
     Button,
     Dialog,
@@ -9,6 +9,7 @@ import {
     FormControl,
     FormHelperText,
     Grid,
+    IconButton,
     InputLabel,
     MenuItem,
     Paper,
@@ -21,11 +22,14 @@ import MultiSelect from "../multiSelect/MultiSelect";
 import { useDispatch, useSelector } from "react-redux";
 import QuestionCard from "../questionCard/QuestionCard";
 import { FaPlus } from "react-icons/fa";
+import { IoIosArrowBack } from 'react-icons/io'
 import { Box } from "@mui/system";
 import { addExam } from "../../redux/actions/exam";
 import JalaliDateTimePicker from "../jalaliDateTimePicker/JalaliDateTiemPicker";
-import JalaliTimePicker from "../jalaliTimePicker/JalaliTimePicker";
 import { AnimatePresence } from "framer-motion";
+import { Link, useNavigate } from "react-router-dom";
+import { getClasses } from "../../redux/actions/class";
+
 
 const AddExam = () => {
     const [examFormData, setExamFormData] = useState({
@@ -93,6 +97,7 @@ const AddExam = () => {
     const [selectedQuestion, setSelectedQuestion] = useState(null);
     const { classDocs } = useSelector(state => state.classes);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const handleExamInput = event => {
         setExamFormData(prevState => ({
@@ -111,16 +116,6 @@ const AddExam = () => {
             startTime: isValid ? new Date(time).toISOString() : ""
         }));
         setExamFormError(prevState => ({ ...prevState, startTime: false }));
-    };
-
-    const handleDurationChange = time => {
-        const isValid = time instanceof Date && !isNaN(time);
-
-        setExamFormData(prevState => ({
-            ...prevState,
-            duration: isValid ? new Date(time).toISOString() : ""
-        }));
-        setExamFormError(prevState => ({ ...prevState, duration: false }));
     };
 
     const handleQuestionInput = event => {
@@ -250,11 +245,15 @@ const AddExam = () => {
             const examFrom = {
                 ...examFormData,
                 class: [...selectedClasses.map(classDoc => classDoc._id)],
-                questions: { ...questionFormData }
+                questions: [...questions]
             };
-            dispatch(addExam(examFrom));
+            dispatch(addExam(examFrom, navigate));
         }
     };
+
+    useEffect(() => {
+        dispatch(getClasses());
+    }, [dispatch]);
 
     return (
         <>
@@ -262,6 +261,10 @@ const AddExam = () => {
                 <Typography variant="h5" fontWeight="bold" my={4}>
                     افزودن آزمون
                 </Typography>
+
+                <IconButton component={Link} to="/user/exam">
+                    <IoIosArrowBack /> 
+                </IconButton>
             </Stack>
 
             <Grid
@@ -309,14 +312,14 @@ const AddExam = () => {
                         </Grid>
 
                         <Grid item xs={12} sm={9} md={6} lg={6}>
-                            <JalaliTimePicker
+                            <TextField
                                 name="duration"
-                                label="مدت زمان امتحان"
+                                label="مدت زمان امتحان (دقیقه)"
                                 fullWidth
                                 margin="normal"
                                 value={examFormData.duration}
                                 error={examFormError.duration}
-                                setValue={handleDurationChange}
+                                onChange={handleExamInput}
                             />
                             <FormHelperText error={examFormError.duration}>
                                 مدت زمان آزمون را وارد کنید

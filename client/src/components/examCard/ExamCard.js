@@ -2,21 +2,34 @@ import { Button, Card, CardContent, Chip, Grid, Stack, Typography } from "@mui/m
 import { Box } from "@mui/system";
 import React from "react";
 import { Link } from "react-router-dom";
+import moment from "jalali-moment";
+import { motion } from "framer-motion";
 
-const ClassCard = ({ classDoc, handleEditClass, handleRemoveClass }) => {
+const ExamCard = ({ exam, handleRemoveExam }) => {
     return (
-        <Grid item xs={12} md={6} lg={4}>
+        <Grid
+            component={motion.div}
+            initial={{ y: 10, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.3 }}
+            item
+            xs={12}
+            md={6}
+            lg={4}>
             <Card variant="outlined">
                 <CardContent>
                     <Stack direction="row" alignItems="center" justifyContent="space-between">
                         <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-                            {classDoc.grade}
+                            {moment(exam.startTime)
+                                .locale("fa")
+                                .format("jD jMMMM jYYYY [ساعت] h:mm a")}
                         </Typography>
-                        <Chip label={`${classDoc.students.length} سوال`} />
+                        <Chip label={`${exam.questions.length} سوال`} />
                     </Stack>
 
                     <Typography variant="h4" mt={4}>
-                        {classDoc.name}
+                        {exam.name}
                     </Typography>
                 </CardContent>
 
@@ -28,15 +41,15 @@ const ClassCard = ({ classDoc, handleEditClass, handleRemoveClass }) => {
                     <Box>
                         <Button
                             component={Link}
-                            to={`/user/classes/students/${classDoc._id}`}
+                            to={`/user/exam/details/${exam._id}`}
                             size="small">
-                            لیست سوالات
+                            جزئیات
                         </Button>
                     </Box>
 
                     <Box>
                         <Button
-                            onClick={() => handleRemoveClass(classDoc._id)}
+                            onClick={() => handleRemoveExam(exam._id)}
                             size="small"
                             color="error">
                             حذف
@@ -48,4 +61,4 @@ const ClassCard = ({ classDoc, handleEditClass, handleRemoveClass }) => {
     );
 };
 
-export default ClassCard;
+export default ExamCard;

@@ -15,19 +15,19 @@ const examSchema = new mongoose.Schema(
       {
         body: { type: String, required: [true, "لطفا متن سوال را وارد کنید"] },
         answer1: {
-          type: Number,
+          type: String,
           required: [true, "گزینه اول را لطفا وارد کنید"],
         },
         answer2: {
-          type: Number,
+          type: String,
           required: [true, "گزینه دوم را لطفا وارد کنید"],
         },
         answer3: {
-          type: Number,
+          type: String,
           required: [true, "گزینه سوم را لطفا وارد کنید"],
         },
         answer4: {
-          type: Number,
+          type: String,
           required: [true, "گزینه چهارم را لطفا وارد کنید"],
         },
         trueOption: {
