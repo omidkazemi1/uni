@@ -3,6 +3,7 @@ import { FormHelperText, Grid, Paper, TextField, Box } from "@mui/material";
 import { SnackbarProvider } from "notistack";
 
 import FormStepper from "../formStepper/FormStepper";
+import { motion } from "framer-motion";
 
 const Register = () => {
     const [formData, setFormData] = useState({
@@ -20,7 +21,6 @@ const Register = () => {
         phoneNumber: false,
         confirmCode: false
     });
-
     const inputChangeHandler = event => {
         setFormData(prevState => ({
             ...prevState,
@@ -34,14 +34,19 @@ const Register = () => {
         <SnackbarProvider>
             <Grid container justifyContent="center" alignItems="center" marginTop="4rem">
                 <Grid item xs={12} sm={9} md={6} lg={4}>
-                    <Paper sx={{ padding: "20px" }}>
+                    <Paper sx={{ padding: "20px", overflow: "hidden" }}>
                         <FormStepper
                             formData={formData}
                             errorHandler={setFormError}
                             fromTitle="ثبت نام"
                             formAction="REGISTER"
                             inputChangeHandler={inputChangeHandler}>
-                            <Box>
+                            <Box
+                                layout
+                                component={motion.div}
+                                initial={{ y: 10, opacity: 0 }}
+                                animate={{ y: 0, opacity: 1 }}
+                                exit={{ y: 10, opacity: 0 }}>
                                 <TextField
                                     name="firstName"
                                     label="نام"
@@ -99,7 +104,12 @@ const Register = () => {
                                 </FormHelperText>
                             </Box>
 
-                            <Box>
+                            <Box
+                                layout
+                                component={motion.div}
+                                initial={{ y: 10, opacity: 0 }}
+                                animate={{ y: 0, opacity: 1 }}
+                                exit={{ y: 10, opacity: 0 }}>
                                 <TextField
                                     name="confirmCode"
                                     label="کد تأیید"

@@ -1,11 +1,22 @@
 import { Button, Card, CardContent, Chip, Grid, Stack, Typography } from "@mui/material";
 import { Box } from "@mui/system";
+import { motion } from "framer-motion";
 import React from "react";
 import { Link } from "react-router-dom";
 
 const ClassCard = ({ classDoc, handleEditClass, handleRemoveClass }) => {
     return (
-        <Grid item xs={12} md={6} lg={4}>
+        <Grid
+            component={motion.div}
+            layout
+            initial={{ y: 10, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.3 }}
+            item
+            xs={12}
+            md={6}
+            lg={4}>
             <Card variant="outlined">
                 <CardContent>
                     <Stack direction="row" alignItems="center" justifyContent="space-between">

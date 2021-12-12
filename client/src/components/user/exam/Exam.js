@@ -5,7 +5,7 @@ import { Button, CircularProgress, Grid, Stack, Typography } from "@mui/material
 import ExamCard from "../../examCard/ExamCard";
 import { Link } from "react-router-dom";
 import { FaPlus } from "react-icons/fa";
-import { AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 
 const Exam = () => {
     const { exams, loading } = useSelector(state => state.exam);
@@ -23,6 +23,9 @@ const Exam = () => {
         <>
             <Stack direction="row" alignItems="center" justifyContent="space-between">
                 <Typography
+                    component={motion.h5}
+                    initial={{ y: -50 }}
+                    animate={{ y: 0 }}
                     variant="h5"
                     fontWeight="bold"
                     my={4}

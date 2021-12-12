@@ -9,6 +9,7 @@ const ExamCard = ({ exam, handleRemoveExam }) => {
     return (
         <Grid
             component={motion.div}
+            layout
             initial={{ y: 10, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             exit={{ opacity: 0, y: -10 }}

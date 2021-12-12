@@ -21,6 +21,7 @@ import {
 } from "../../../redux/actions/class";
 import { FaPlus } from "react-icons/fa";
 import ClassCard from "../../classCard/ClassCard";
+import { AnimatePresence, motion } from "framer-motion";
 
 const Classes = () => {
     const [dialogOpen, setDialogOpen] = useState(false);
@@ -89,6 +90,9 @@ const Classes = () => {
         <>
             <Stack direction="row" alignItems="center" justifyContent="space-between">
                 <Typography
+                    component={motion.h5}
+                    initial={{ y: -50 }}
+                    animate={{ y: 0 }}
                     variant="h5"
                     fontWeight="bold"
                     my={4}
@@ -143,16 +147,18 @@ const Classes = () => {
             </Stack>
 
             <Grid container spacing={4}>
-                {loading
-                    ? null
-                    : classDocs.map(classDoc => (
-                          <ClassCard
-                              classDoc={classDoc}
-                              key={classDoc._id}
-                              handleEditClass={handleEditClass}
-                              handleRemoveClass={handleRemoveClass}
-                          />
-                      ))}
+                {loading ? null : (
+                    <AnimatePresence>
+                        {classDocs.map(classDoc => (
+                            <ClassCard
+                                classDoc={classDoc}
+                                key={classDoc._id}
+                                handleEditClass={handleEditClass}
+                                handleRemoveClass={handleRemoveClass}
+                            />
+                        ))}
+                    </AnimatePresence>
+                )}
             </Grid>
         </>
     );
