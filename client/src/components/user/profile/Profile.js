@@ -1,4 +1,5 @@
 import { Button, Grid, Paper, Stack, TextField, Typography } from "@mui/material";
+import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { updateTeacher } from "../../../redux/actions/auth";
@@ -53,12 +54,21 @@ const Profile = () => {
     return (
         <>
             <Stack direction="row" alignItems="center" justifyContent="space-between">
-                <Typography variant="h5" fontWeight="bold" my={4}>
+                <Typography
+                    component={motion.h5}
+                    initial={{ y: -50 }}
+                    animate={{ y: 0 }}
+                    variant="h5"
+                    fontWeight="bold"
+                    my={4}>
                     پروفایل
                 </Typography>
             </Stack>
 
-            <form onSubmit={submiteHandler}>
+            <motion.form
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                onSubmit={submiteHandler}>
                 <Grid container py={3} justifyContent="center" component={Paper}>
                     <Grid item xs={12} sm={9} md={6} lg={4} sx={{ mx: 3 }}>
                         <TextField
@@ -134,7 +144,7 @@ const Profile = () => {
                         </Button>
                     </Grid>
                 </Grid>
-            </form>
+            </motion.form>
         </>
     );
 };

@@ -7,6 +7,7 @@ import { useSnackbar } from "notistack";
 
 import * as api from "../../api";
 import { login, register, setErrorEmpty } from "../../redux/actions/auth";
+import { AnimatePresence, motion } from "framer-motion";
 
 const FormStepper = ({ children, formData, errorHandler, formAction, fromTitle }) => {
     const childrenArray = React.Children.toArray(children);
@@ -129,7 +130,7 @@ const FormStepper = ({ children, formData, errorHandler, formAction, fromTitle }
                 ))}
             </Stepper>
 
-            {currentChild}
+            <AnimatePresence exitBeforeEnter>{currentChild}</AnimatePresence>
 
             <Grid container spacing={2} marginTop="1rem">
                 {isLastStep() && (
@@ -148,6 +149,10 @@ const FormStepper = ({ children, formData, errorHandler, formAction, fromTitle }
                 {step > 0 ? (
                     <Grid item xs={6}>
                         <Button
+                            component={motion.button}
+                            initial={{ y: -10, opacity: 0 }}
+                            animate={{ y: 0, opacity: 1 }}
+                            exit={{ y: -10, opacity: 0 }}
                             variant="contained"
                             color="primary"
                             fullWidth

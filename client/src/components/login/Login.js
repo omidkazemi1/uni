@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import { FormHelperText, Grid, Paper, TextField } from "@mui/material";
+import { FormHelperText, Grid, Paper, TextField, Box } from "@mui/material";
 import { SnackbarProvider } from "notistack";
-
+import { motion } from "framer-motion";
 import FormStepper from "../formStepper/FormStepper";
-import { Box } from "@mui/system";
 
 const Login = () => {
     const [formData, setFormData] = useState({ phoneNumber: "", confirmCode: "" });
@@ -20,14 +19,18 @@ const Login = () => {
         <SnackbarProvider>
             <Grid container justifyContent="center" alignItems="center" height="100vh">
                 <Grid item xs={12} sm={9} md={6} lg={4}>
-                    <Paper sx={{ padding: "20px" }}>
+                    <Paper sx={{ padding: "20px", overflow: "hidden" }}>
                         <FormStepper
                             formData={formData}
                             errorHandler={setFormError}
                             fromTitle="ورود به حساب"
                             formAction="LOGIN"
                             inputChangeHandler={inputChangeHandler}>
-                            <Box>
+                            <Box
+                                component={motion.div}
+                                initial={{ y: 10, opacity: 0 }}
+                                animate={{ y: 0, opacity: 1 }}
+                                exit={{ y: 10, opacity: 0 }}>
                                 <TextField
                                     name="phoneNumber"
                                     label="شماره موبایل"
@@ -43,7 +46,11 @@ const Login = () => {
                                 </FormHelperText>
                             </Box>
 
-                            <Box>
+                            <Box
+                                component={motion.div}
+                                initial={{ y: 10, opacity: 0 }}
+                                animate={{ y: 0, opacity: 1 }}
+                                exit={{ y: 10, opacity: 0 }}>
                                 <TextField
                                     name="confirmCode"
                                     label="کد تأیید"

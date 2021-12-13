@@ -12,11 +12,12 @@ import Dashboard from "./components/user/dashboard/Dashboard";
 import Exam from "./components/user/exam/Exam";
 import Notification from "./components/user/notification/Notification";
 import Students from "./components/students/Students";
+import AddExam from "./components/addExam/AddExam";
+import ExamDetails from "./components/examDetails/ExamDetails";
 
 import "./assets/fonts/css/style.css";
 import { customTheme, RTL } from "./assets/theme";
 import { ThemeProvider } from "@mui/material/styles";
-import AddExam from "./components/addExam/AddExam";
 
 const App = () => {
     return (
@@ -34,6 +35,7 @@ const App = () => {
                             <Route path="classes/students/:classId" element={<Students />} />
                             <Route path="exam" element={<Exam />} />
                             <Route path="exam/add" element={<AddExam />} />
+                            <Route path="exam/details/:examId" element={<ExamDetails />} />
                             <Route path="notification" element={<Notification />} />
                         </Route>
                         <Route path="*" element={<NotFoundPage />} />
