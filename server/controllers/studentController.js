@@ -1,12 +1,10 @@
 /* eslint-disable no-plusplus */
-const mongoose = require("mongoose");
 const User = require("../models/userModel");
 const Class = require("../models/classModel");
 const Exam = require("../models/examModel");
 const ExamLog = require("../models/examLogModel");
 const AppError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");
-const authController = require("./authController");
 
 const findClass = (classesExam, classStudent) => {
   const classArray = classesExam.concat(classStudent);
