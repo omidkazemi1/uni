@@ -56,8 +56,8 @@ app.use((req, res, next) => {
 });
 
 // route
-app.use("/api/v1/students", studentRouter);
-app.use("/api/v1/teachers", teacherRouter);
+app.use("/api/v1/student", studentRouter);
+app.use("/api/v1/teacher", teacherRouter);
 
 app.all("*", (req, res, next) => {
   next(new AppError(`Cant find ${req.originalUrl} on this Server!`, 404));
