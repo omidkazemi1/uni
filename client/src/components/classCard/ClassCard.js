@@ -4,7 +4,9 @@ import { motion } from "framer-motion";
 import React from "react";
 import { Link } from "react-router-dom";
 
-const ClassCard = ({ classDoc, handleEditClass, handleRemoveClass }) => {
+const ClassCard = ({ classDoc, handleEditClass, handleRemoveClass, role }) => {
+    const isTeacher = Boolean(role === "teacher");
+
     return (
         <Grid
             component={motion.div}
@@ -43,22 +45,28 @@ const ClassCard = ({ classDoc, handleEditClass, handleRemoveClass }) => {
                             size="small">
                             لیست دانش آموزان
                         </Button>
-                        <Button
-                            onClick={() => handleRemoveClass(classDoc._id)}
-                            size="small"
-                            color="error">
-                            حذف
-                        </Button>
+                        {isTeacher && (
+                            <Button
+                                onClick={() => handleRemoveClass(classDoc._id)}
+                                size="small"
+                                color="error">
+                                حذف
+                            </Button>
+                        )}
                     </Box>
 
                     <Box>
-                        <Chip
-                            clickable
-                            onClick={() => handleEditClass(classDoc._id)}
-                            label="ویرایش"
-                            color="warning"
-                            variant="outlined"
-                        />
+                        {isTeacher ? (
+                            <Chip
+                                clickable
+                                onClick={() => handleEditClass(classDoc._id)}
+                                label="ویرایش"
+                                color="warning"
+                                variant="outlined"
+                            />
+                        ) : (
+                            <Chip label={classDoc.teacher} variant="outlined" />
+                        )}
                     </Box>
                 </Stack>
             </Card>

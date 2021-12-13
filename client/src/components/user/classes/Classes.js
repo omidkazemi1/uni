@@ -30,6 +30,9 @@ const Classes = () => {
     const [selectedClass, setSelectedClass] = useState(null);
     const dispatch = useDispatch();
     const { classDocs, loading } = useSelector(state => state.classes);
+    const {
+        user: { role }
+    } = useSelector(state => state.auth);
 
     const inputChangeHandler = event => {
         setDialogFromData(prevState => ({
@@ -83,8 +86,9 @@ const Classes = () => {
     };
 
     useEffect(() => {
-        dispatch(getClasses());
-    }, [dispatch]);
+        console.log(role)
+        dispatch(getClasses(role));
+    }, [dispatch, role]);
 
     return (
         <>
@@ -151,6 +155,7 @@ const Classes = () => {
                     <AnimatePresence>
                         {classDocs.map(classDoc => (
                             <ClassCard
+                                role={role}
                                 classDoc={classDoc}
                                 key={classDoc._id}
                                 handleEditClass={handleEditClass}

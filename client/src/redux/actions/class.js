@@ -9,10 +9,10 @@ import {
     REMOVE_CLASS_RESPONSE
 } from "../../constants/actionTypes";
 
-export const getClasses = () => async dispatch => {
+export const getClasses = role => async dispatch => {
     try {
         dispatch({ type: CLASS_REQUEST });
-        const { data } = await api.getClasses();
+        const { data } = await api.getClasses(role);
 
         dispatch({ type: CLASS_RESPONSE, payload: data.data.classes });
     } catch (error) {
