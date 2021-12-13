@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Link, Outlet } from "react-router-dom";
-import { motion } from "framer-motion";
 import {
     Drawer,
     List,
@@ -61,7 +60,12 @@ const Dashboard = props => {
                                     <ListItemAvatar>
                                         <Avatar>LG</Avatar>
                                     </ListItemAvatar>
-                                    <ListItemText primary="مکتب چی" secondary="داشبرد معلم" />
+                                    <ListItemText
+                                        primary="مکتب چی"
+                                        secondary={`داشبورد ${
+                                            user.role === "teacher" ? "معلم" : "دانش آموز"
+                                        }`}
+                                    />
                                 </ListItem>
                             </List>
 
@@ -96,7 +100,10 @@ const Dashboard = props => {
                                         <MdPerson />
                                     </Avatar>
                                 </ListItemAvatar>
-                                <ListItemText primary={user.fullName} secondary="معلم" />
+                                <ListItemText
+                                    primary={user.fullName}
+                                    secondary={user.role === "teacher" ? "معلم" : "دانش آموز"}
+                                />
                             </ListItem>
                         </List>
                     </Stack>
