@@ -17,7 +17,32 @@ const findClass = (classesExam, classStudent) => {
 };
 
 exports.classList = catchAsync(async (req, res, next) => {
-  const classes = await Class.find({ students: { $in: req.user._id } });
+  const user = await User.findById(req.user._id).select("+class");
+
+  const classes = await Class.aggregate([
+    { $match: { _id: { $in: user.class } } },
+    {
+      $lookup: {
+        from: "users",
+        localField: "teacher",
+        foreignField: "_id",
+        as: "teacherDoc",
+      },
+    },
+    {
+      $unwind: {
+        path: "$teacherDoc",
+      },
+    },
+    {
+      $project: {
+        name: "$name",
+        grade: "$grade",
+        numberOfStudent: { $size: "$students" },
+        teacher: "$teacherDoc.fullName",
+      },
+    },
+  ]);
 
   res.status(200).json({
     status: "success",
@@ -108,13 +133,27 @@ exports.singleExam = catchAsync(async (req, res, next) => {
 });
 
 exports.completeExam = catchAsync(async (req, res, next) => {
+  // 1) find examlog is exist
+  const oldExamLog = await ExamLog.find({
+    exam: req.body.exam,
+    student: req.user._id,
+  });
+
+  if (oldExamLog) {
+    return next(new AppError("You have already taken the exam", 403));
+  }
+
+  // 2) find exam with questions
   const exam = await Exam.findById(req.body.exam).select(
     "+questions.trueOption"
   );
 
+  // 3) find student
   const student = await User.findById(req.user._id).select("+class");
+  // 4) initialize variable
   const questions = [];
   let score = 0;
+  // 5) iteration questions for questions
   for (let index = 0; index < exam.questions.length; index++) {
     let status = false;
     for (let j = 0; j < req.body.questions.length; j++) {
@@ -154,9 +193,10 @@ exports.completeExam = catchAsync(async (req, res, next) => {
       questions.push(question);
     }
   }
-
+  // 5) find class
   const classId = findClass(exam.class, student.class);
 
+  // 6) add ExamLog
   const newExamLog = await ExamLog.create({
     exam: req.body.exam,
     student: req.user._id,
@@ -165,6 +205,7 @@ exports.completeExam = catchAsync(async (req, res, next) => {
     score,
   });
 
+  // 7) response
   res.status(200).json({
     status: "success",
     data: {
