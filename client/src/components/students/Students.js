@@ -236,9 +236,8 @@ const Students = () => {
                     </Typography>
                 </Grid>
             </Grid>
-            <Divider />
 
-            <Grid container spacing={4}>
+            <Grid container spacing={4} mt={1}>
                 {loading
                     ? null
                     : students.map(student => (

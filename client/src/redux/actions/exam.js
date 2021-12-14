@@ -2,12 +2,10 @@ import * as api from "../../api";
 import { ADD_EXAM_RESPONSE, EDIT_EXAM_RESPONSE, EXAM_ERROR, EXAM_ERROR_EMPTY, EXAM_REQUEST, EXAM_RESPONSE, REMOVE_EXAM_RESPONSE } from "../../constants/actionTypes";
 
 
-export const getExams = () => async dispatch => {
+export const getExams = (role) => async dispatch => {
     try {
         dispatch({ type: EXAM_REQUEST });
-        const { data } = await api.getExamGet();
-
-        console.log(data)
+        const { data } = await api.getExamsGet(role);
 
         dispatch({ type: EXAM_RESPONSE, payload: data.data.exams });
     } catch (error) {

@@ -26,6 +26,7 @@ export const removeStudentDelete = (classId, studentId) =>
     API.delete(`/api/v1/teacher/class/${classId}/${studentId}`);
 
 // Exam Api's
-export const getExamGet = formData => API.get("/api/v1/teacher/exam");
+export const getExamsGet = role => API.get(`/api/v1/${role}/exam`);
+export const getExamGet = examId => API.get(`/api/v1/student/exam/${examId}`);
 export const addExamPost = formData => API.post("/api/v1/teacher/exam", formData);
 export const removeExamDelete = examId => API.delete(`/api/v1/teacher/exam/${examId}`);

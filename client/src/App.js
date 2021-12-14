@@ -10,11 +10,12 @@ import Profile from "./components/user/profile/Profile";
 import Classes from "./components/user/classes/Classes";
 import NotFoundPage from "./components/notFountPage/NotFoundPage";
 import Dashboard from "./components/user/dashboard/Dashboard";
-import Exam from "./components/user/exam/Exam";
+import Exams from "./components/user/exams/Exams";
 import Notification from "./components/user/notification/Notification";
 import Students from "./components/students/Students";
 import AddExam from "./components/addExam/AddExam";
 import ExamDetails from "./components/examDetails/ExamDetails";
+import Exam from "./components/exam/Exam";
 
 import "./assets/fonts/css/style.css";
 import { customTheme, RTL } from "./assets/theme";
@@ -35,8 +36,9 @@ const App = () => {
                             <Route path="profile" element={<Profile />} />
                             <Route path="classes" element={<Classes />} />
                             <Route path="classes/students/:classId" element={<Students />} />
-                            <Route path="exam" element={<Exam />} />
+                            <Route path="exam" element={<Exams />} />
                             <Route path="exam/add" element={<AddExam />} />
+                            <Route path="exam/:examId" element={<Exam />} />
                             <Route path="exam/details/:examId" element={<ExamDetails />} />
                             <Route path="notification" element={<Notification />} />
                         </Route>

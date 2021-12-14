@@ -7,13 +7,16 @@ import { Link } from "react-router-dom";
 import { FaPlus } from "react-icons/fa";
 import { AnimatePresence, motion } from "framer-motion";
 
-const Exam = () => {
+const Exams = () => {
     const { exams, loading } = useSelector(state => state.exam);
+    const {
+        user: { role }
+    } = useSelector(state => state.auth);
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(getExams());
-    }, [dispatch]);
+        dispatch(getExams(role));
+    }, [dispatch, role]);
 
     const handleRemoveExam = classId => {
         dispatch(removeExam(classId));
@@ -49,7 +52,8 @@ const Exam = () => {
                         {exams.map(exam => (
                             <ExamCard
                                 exam={exam}
-                                key={exam._id}
+                                role={role}
+                                key={exam.id}
                                 handleRemoveExam={handleRemoveExam}
                             />
                         ))}
@@ -60,4 +64,4 @@ const Exam = () => {
     );
 };
 
-export default Exam;
+export default Exams;
