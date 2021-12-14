@@ -3,7 +3,8 @@ import { Routes, Route } from "react-router-dom";
 import Layout from "./components/layout/Layout";
 import Home from "./components/home/Home";
 import Logout from "./components/logout/Logout";
-import Login from "./components/login/Login";
+import TeacherLogin from "./components/teacherLogin/TeacherLogin";
+import StudentLogin from "./components/studentLogin/StudentLogin";
 import Register from "./components/register/Register";
 import Profile from "./components/user/profile/Profile";
 import Classes from "./components/user/classes/Classes";
@@ -27,7 +28,8 @@ const App = () => {
                     <Route path="/" element={<Layout />}>
                         <Route index element={<Home />} />
                         <Route path="logout" element={<Logout />} />
-                        <Route path="auth/login" element={<Login />} />
+                        <Route path="auth/login/teacher" element={<TeacherLogin />} />
+                        <Route path="auth/login/student" element={<StudentLogin />} />
                         <Route path="auth/register" element={<Register />} />
                         <Route path="user" element={<Dashboard />}>
                             <Route path="profile" element={<Profile />} />

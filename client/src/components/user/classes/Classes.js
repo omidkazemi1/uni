@@ -86,7 +86,7 @@ const Classes = () => {
     };
 
     useEffect(() => {
-        console.log(role)
+        console.log(role);
         dispatch(getClasses(role));
     }, [dispatch, role]);
 
@@ -105,9 +105,14 @@ const Classes = () => {
                     {loading && <CircularProgress size={25} sx={{ mx: 1 }} />}
                 </Typography>
 
-                <Button variant="outlined" onClick={handleDialogOpen} startIcon={<FaPlus />}>
-                    افزودن کلاس
-                </Button>
+                {role === "teacher" && (
+                    <Button
+                        variant="outlined"
+                        onClick={handleDialogOpen}
+                        startIcon={<FaPlus />}>
+                        افزودن کلاس
+                    </Button>
+                )}
 
                 <Dialog open={dialogOpen} maxWidth="sm" fullWidth onClose={handleDialogClose}>
                     <DialogTitle>{selectedClass ? "ویرایش کلاس" : "افزودن کلاس"}</DialogTitle>

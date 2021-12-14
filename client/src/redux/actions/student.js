@@ -8,10 +8,10 @@ import {
     STUDENT_ERROR_EMPTY
 } from "../../constants/actionTypes";
 
-export const getStudents = classId => async dispatch => {
+export const getStudents = (classId, role) => async dispatch => {
     try {
         dispatch({ type: STUDENT_REQUEST });
-        const { data } = await api.getStudentsGet(classId);
+        const { data } = await api.getStudentsGet(classId, role);
         dispatch({ type: STUDENT_RESPONSE, payload: data.data.students });
     } catch (error) {
         console.log(error.response);

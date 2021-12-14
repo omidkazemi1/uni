@@ -9,7 +9,14 @@ import * as api from "../../api";
 import { login, register, setErrorEmpty } from "../../redux/actions/auth";
 import { AnimatePresence, motion } from "framer-motion";
 
-const FormStepper = ({ children, formData, errorHandler, formAction, fromTitle }) => {
+const FormStepper = ({
+    children,
+    formData,
+    errorHandler,
+    formAction,
+    fromTitle,
+    role = "teacher"
+}) => {
     const childrenArray = React.Children.toArray(children);
     const [step, setStep] = useState(0);
     const [compeleteCountdown, setCompeleteCountdown] = useState(false);
@@ -73,7 +80,7 @@ const FormStepper = ({ children, formData, errorHandler, formAction, fromTitle }
 
         if (isLastStep()) {
             if (formAction === "LOGIN") {
-                dispatch(login(formData));
+                dispatch(login(formData, role));
             } else if (formAction === "REGISTER") {
                 dispatch(register(formData));
             }

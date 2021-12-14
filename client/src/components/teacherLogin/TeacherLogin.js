@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { FormHelperText, Grid, Paper, TextField, Box } from "@mui/material";
+import { FormHelperText, Grid, Paper, TextField, Box, Button } from "@mui/material";
 import { SnackbarProvider } from "notistack";
 import { motion } from "framer-motion";
 import FormStepper from "../formStepper/FormStepper";
+import { Link } from "react-router-dom";
 
 const Login = () => {
     const [formData, setFormData] = useState({ phoneNumber: "", confirmCode: "" });
@@ -23,7 +24,7 @@ const Login = () => {
                         <FormStepper
                             formData={formData}
                             errorHandler={setFormError}
-                            fromTitle="ورود به حساب"
+                            fromTitle="ورود معلمین"
                             formAction="LOGIN"
                             inputChangeHandler={inputChangeHandler}>
                             <Box
@@ -67,6 +68,9 @@ const Login = () => {
                             </Box>
                         </FormStepper>
                     </Paper>
+                        <Button component={Link} to="/auth/login/student" fullWidth sx={{ mt: 3}}>
+                            ورود دانش آموزان
+                        </Button>
                 </Grid>
             </Grid>
         </SnackbarProvider>

@@ -42,10 +42,10 @@ export const logout = () => async dispatch => {
     }
 };
 
-export const login = formData => async dispatch => {
+export const login = (formData, role) => async dispatch => {
     try {
         dispatch({ type: AUTH_REQUEST });
-        const { data } = await api.loginPost(formData);
+        const { data } = await api.loginPost(formData, role);
         dispatch({ type: AUTH_RESPONSE, payload: data.data.user });
     } catch (error) {
         console.log(error.response);

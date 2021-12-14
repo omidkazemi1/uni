@@ -186,7 +186,7 @@ function Nav() {
                             <>
                                 <Button
                                     component={Link}
-                                    to="auth/login"
+                                    to="auth/login/teacher"
                                     variant="outlined"
                                     sx={{ color: "white", marginRight: "1rem" }}>
                                     ورود

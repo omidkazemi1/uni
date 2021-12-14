@@ -25,7 +25,7 @@ const ClassCard = ({ classDoc, handleEditClass, handleRemoveClass, role }) => {
                         <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
                             {classDoc.grade}
                         </Typography>
-                        <Chip label={`${classDoc.students.length} دانش آموز`} />
+                        <Chip label={`${isTeacher ? classDoc.students.length : classDoc.numberOfStudent} دانش آموز`} />
                     </Stack>
 
                     <Typography variant="h4" mt={4}>

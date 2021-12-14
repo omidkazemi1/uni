@@ -22,14 +22,13 @@ import MultiSelect from "../multiSelect/MultiSelect";
 import { useDispatch, useSelector } from "react-redux";
 import QuestionCard from "../questionCard/QuestionCard";
 import { FaPlus } from "react-icons/fa";
-import { IoIosArrowBack } from 'react-icons/io'
+import { IoIosArrowBack } from "react-icons/io";
 import { Box } from "@mui/system";
 import { addExam } from "../../redux/actions/exam";
 import JalaliDateTimePicker from "../jalaliDateTimePicker/JalaliDateTiemPicker";
 import { AnimatePresence } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
 import { getClasses } from "../../redux/actions/class";
-
 
 const AddExam = () => {
     const [examFormData, setExamFormData] = useState({
@@ -98,6 +97,9 @@ const AddExam = () => {
     const { classDocs } = useSelector(state => state.classes);
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const {
+        user: { role }
+    } = useSelector(state => state.auth);
 
     const handleExamInput = event => {
         setExamFormData(prevState => ({
@@ -252,8 +254,8 @@ const AddExam = () => {
     };
 
     useEffect(() => {
-        dispatch(getClasses());
-    }, [dispatch]);
+        dispatch(getClasses(role));
+    }, [dispatch, role]);
 
     return (
         <>
@@ -263,7 +265,7 @@ const AddExam = () => {
                 </Typography>
 
                 <IconButton component={Link} to="/user/exam">
-                    <IoIosArrowBack /> 
+                    <IoIosArrowBack />
                 </IconButton>
             </Stack>
 

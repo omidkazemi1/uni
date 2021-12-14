@@ -33,6 +33,10 @@ const Students = () => {
         nationalCode: false,
         phoneNumber: false
     });
+    const {
+        user: { role }
+    } = useSelector(state => state.auth);
+
     const { classId } = useParams();
     const dispatch = useDispatch();
     const { students, loading } = useSelector(state => state.student);
@@ -85,8 +89,8 @@ const Students = () => {
     };
 
     useEffect(() => {
-        dispatch(getStudents(classId));
-    }, [dispatch, classId]);
+        dispatch(getStudents(classId, role));
+    }, [dispatch, classId, role]);
 
     return (
         <>
@@ -101,9 +105,14 @@ const Students = () => {
                     {loading && <CircularProgress size={25} sx={{ mx: 1 }} />}
                 </Typography>
 
-                <Button variant="outlined" onClick={handleDialogOpen} startIcon={<FaPlus />}>
-                    افزودن دانش آموز
-                </Button>
+                {role === "teacher" && (
+                    <Button
+                        variant="outlined"
+                        onClick={handleDialogOpen}
+                        startIcon={<FaPlus />}>
+                        افزودن دانش آموز
+                    </Button>
+                )}
 
                 <Dialog open={dialogOpen} maxWidth="sm" fullWidth onClose={handleDialogClose}>
                     <DialogTitle>افزودن دانش آموز</DialogTitle>

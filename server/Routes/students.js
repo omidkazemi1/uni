@@ -53,7 +53,7 @@ router
   );
 
 router.get(
-  "/class/:classId",
+  "/class/:classId/student",
   authController.protect,
   authController.restrictTo("student"),
   studentController.studentsList

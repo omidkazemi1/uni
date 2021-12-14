@@ -38,10 +38,10 @@ const Dashboard = props => {
                     className={classes.drawer}
                     variant="permanent"
                     sx={{
-                        width: 260,
+                        width: 270,
                         flexShrink: 0,
                         [`& .MuiDrawer-paper`]: {
-                            width: 260,
+                            width: 270,
                             boxSizing: "border-box"
                         },
                         display: { xs: "none", md: "block" }
