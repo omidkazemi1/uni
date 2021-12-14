@@ -1,12 +1,10 @@
 /* eslint-disable no-plusplus */
-const mongoose = require("mongoose");
 const User = require("../models/userModel");
 const Class = require("../models/classModel");
 const Exam = require("../models/examModel");
 const ExamLog = require("../models/examLogModel");
 const AppError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");
-const authController = require("./authController");
 
 const findClass = (classesExam, classStudent) => {
   const classArray = classesExam.concat(classStudent);
@@ -53,7 +51,9 @@ exports.classList = catchAsync(async (req, res, next) => {
 });
 
 exports.studentsList = catchAsync(async (req, res, next) => {
-  const students = await User.find({ class: { $in: req.params.classId } });
+  const students = await User.find({
+    class: { $in: req.params.classId },
+  }).select("fullName");
 
   res.status(200).json({
     status: "success",
@@ -118,10 +118,17 @@ exports.examList = catchAsync(async (req, res, next) => {
 });
 
 exports.singleExam = catchAsync(async (req, res, next) => {
-  const exam = await Exam.findById(req.params.examId);
+  let exam = await ExamLog.findOne({
+    exam: req.params.examId,
+    student: req.user._id,
+  });
 
   if (!exam) {
-    return next(new AppError("cant find exam!", 404));
+    exam = await Exam.findById(req.params.examId);
+
+    if (!exam) {
+      return next(new AppError("cant find exam!", 404));
+    }
   }
 
   res.status(200).json({

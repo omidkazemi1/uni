@@ -9,7 +9,7 @@ router.param("examId", (req, res, next) => {
 });
 
 router.param("classId", (req, res, next) => {
-  authController.objectIdControll(req.params.examId, next);
+  authController.objectIdControll(req.params.classId, next);
 });
 
 // *) auth route student
