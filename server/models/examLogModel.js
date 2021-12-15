@@ -9,34 +9,34 @@ const examLogSchema = new mongoose.Schema(
       {
         body: { type: String, required: [true, "لطفا متن سوال را وارد کنید"] },
         answer1: {
-          type: Number,
+          type: String,
           required: [true, "گزینه اول را لطفا وارد کنید"],
         },
         answer2: {
-          type: Number,
+          type: String,
           required: [true, "گزینه دوم را لطفا وارد کنید"],
         },
         answer3: {
-          type: Number,
+          type: String,
           required: [true, "گزینه سوم را لطفا وارد کنید"],
         },
         answer4: {
-          type: Number,
+          type: String,
           required: [true, "گزینه چهارم را لطفا وارد کنید"],
         },
         trueOption: {
-          type: Number,
+          type: String,
           required: [true, "لطفا گزینه درست را انتخاب کنید"],
           select: false,
         },
         score: {
-          type: Number,
+          type: String,
           required: [true, "لطفا بارم سوال را وارد کنید"],
         },
-        selectedOption: { type: Number, required: true },
+        selectedOption: { type: String, required: true },
       },
     ],
-    score: { type: Number, default: 0 },
+    score: { type: String, default: 0 },
   },
   {
     toJSON: { virtuals: true },

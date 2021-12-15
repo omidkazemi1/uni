@@ -1,6 +1,7 @@
 import {
     Button,
     CircularProgress,
+    Divider,
     FormControl,
     FormControlLabel,
     FormLabel,
@@ -11,15 +12,19 @@ import {
     Stack,
     Typography
 } from "@mui/material";
+import { Box } from "@mui/system";
 import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import * as api from "../../api";
 
 const Exam = () => {
     const { examId } = useParams();
     const [exam, setExam] = useState({});
     const [loading, setLoading] = useState(true);
+    const [answers, setAnswers] = useState({});
+    const [answersError, setAnswersError] = useState({});
 
     useEffect(() => {
         const getExam = async () => {
@@ -41,8 +46,61 @@ const Exam = () => {
     }, [examId]);
 
     useEffect(() => {
-        console.log(exam);
+        if (exam.questions) {
+            let answers = {};
+            exam.questions.forEach(question => (answers[question._id] = ""));
+            setAnswers(answers);
+
+            let answersError = {};
+            for (const key in answers) {
+                answersError[key] = false;
+            }
+            setAnswersError(answersError);
+        }
     }, [exam]);
+
+    const completeExam = async () => {
+        const formData = {
+            exam: examId,
+            questions: []
+        };
+
+        for (const key in answers) {
+            formData.questions.push({ question: key, selectedOption: answers[key] });
+        }
+
+        console.log(formData);
+
+        try {
+            setLoading(true);
+            const { data } = await api.completeExamPost(formData);
+            setLoading(false);
+            console.log(data);
+        } catch (error) {
+            console.log(error?.response);
+        }
+    };
+
+    const answerHandler = event => {
+        setAnswers(pervState => ({ ...pervState, [event.target.name]: event.target.value }));
+        setAnswersError(pervState => ({ ...pervState, [event.target.name]: false }));
+    };
+
+    const submitHandler = event => {
+        event.preventDefault();
+
+        let hasError = false;
+        for (const key in answers) {
+            if (answers[key] === "") {
+                setAnswersError(pervState => ({ ...pervState, [key]: true }));
+                hasError = true;
+            }
+        }
+
+        if (!hasError) {
+            completeExam();
+        }
+    };
 
     return (
         <>
@@ -54,26 +112,36 @@ const Exam = () => {
                     variant="h5"
                     fontWeight="bold"
                     my={4}>
-                    پروفایل
+                    {exam.name}
+                    {loading && <CircularProgress size={25} sx={{ mx: 1 }} />}
                 </Typography>
 
-                {loading && <CircularProgress size={25} sx={{ mx: 1 }} />}
+                <Box display="flex" alignItems="baseline">
+                    <Typography variant="body1" mx={1} noWrap>
+                        مدت زمان امتحان:
+                    </Typography>
+                    <Typography variant="body2" mx={1} noWrap>
+                        {exam.duration} دقیقه
+                    </Typography>
+                </Box>
             </Stack>
 
-            <form>
+            <form onSubmit={submitHandler}>
                 {!loading && (
                     <Grid container py={3} justifyContent="center" component={Paper} px={3}>
                         {exam.questions.map((question, index) => (
                             <Grid key={index} item xs={12}>
                                 <FormLabel>{`سوال ${index + 1}`}</FormLabel>
-                                <Typography variant="body1" mb={2}>{question.body}</Typography>
-                                <FormControl component="fieldset">
+                                <Typography variant="body1" mb={3}>
+                                    {question.body}
+                                </Typography>
+                                <FormControl
+                                    error={answersError[question._id]}
+                                    component="fieldset">
                                     <FormLabel component="legend">پاسخ ها</FormLabel>
-                                    <RadioGroup
-                                        aria-label="gender"
-                                        name="controlled-radio-buttons-group">
+                                    <RadioGroup onChange={answerHandler} name={question._id}>
                                         <FormControlLabel
-											variant="body1"
+                                            variant="body1"
                                             value="1"
                                             control={<Radio />}
                                             label={question.answer1}
@@ -95,11 +163,14 @@ const Exam = () => {
                                         />
                                     </RadioGroup>
                                 </FormControl>
+                                <Divider sx={{ my: 3 }} />
                             </Grid>
                         ))}
 
                         <Grid item xs={12}>
-                            <Button fullWidth>ثبت آزمون</Button>
+                            <Button type="submit" fullWidth>
+                                ثبت آزمون
+                            </Button>
                         </Grid>
                     </Grid>
                 )}

@@ -141,7 +141,7 @@ exports.singleExam = catchAsync(async (req, res, next) => {
 
 exports.completeExam = catchAsync(async (req, res, next) => {
   // 1) find examlog is exist
-  const oldExamLog = await ExamLog.find({
+  const oldExamLog = await ExamLog.findOne({
     exam: req.body.exam,
     student: req.user._id,
   });

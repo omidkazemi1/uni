@@ -37,13 +37,15 @@ const Exams = () => {
                     {loading && <CircularProgress size={25} sx={{ mx: 1 }} />}
                 </Typography>
 
-                <Button
-                    component={Link}
-                    to="/user/exam/add"
-                    variant="outlined"
-                    startIcon={<FaPlus />}>
-                    افزودن آزمون
-                </Button>
+                {role === "teacher" && (
+                    <Button
+                        component={Link}
+                        to="/user/exam/add"
+                        variant="outlined"
+                        startIcon={<FaPlus />}>
+                        افزودن آزمون
+                    </Button>
+                )}
             </Stack>
 
             <Grid container spacing={4}>
