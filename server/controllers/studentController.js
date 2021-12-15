@@ -166,7 +166,7 @@ exports.completeExam = catchAsync(async (req, res, next) => {
     for (let j = 0; j < req.body.questions.length; j++) {
       if (req.body.questions[j].question == exam.questions[index]._id) {
         if (
-          req.body.questions[j].selectedOption ===
+          req.body.questions[j].selectedOption ==
           exam.questions[index].trueOption
         ) {
           const question = {
@@ -179,10 +179,24 @@ exports.completeExam = catchAsync(async (req, res, next) => {
             score: exam.questions[index].score,
             selectedOption: req.body.questions[j].selectedOption,
           };
+
           questions.push(question);
           score += exam.questions[index].score;
           status = true;
         }
+      } else {
+        const question = {
+          body: exam.questions[index].body,
+          answer1: exam.questions[index].answer1,
+          answer2: exam.questions[index].answer2,
+          answer3: exam.questions[index].answer3,
+          answer4: exam.questions[index].answer4,
+          trueOption: exam.questions[index].trueOption,
+          score: exam.questions[index].score,
+          selectedOption: req.body.questions[j].selectedOption,
+        };
+        questions.push(question);
+        status = true;
       }
     }
 

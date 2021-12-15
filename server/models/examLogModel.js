@@ -33,7 +33,7 @@ const examLogSchema = new mongoose.Schema(
           type: String,
           required: [true, "لطفا بارم سوال را وارد کنید"],
         },
-        selectedOption: { type: String, required: true },
+        selectedOption: { type: String },
       },
     ],
     score: { type: String, default: 0 },

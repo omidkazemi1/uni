@@ -16,7 +16,6 @@ import { Box } from "@mui/system";
 import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useDispatch } from "react-redux";
 import * as api from "../../api";
 
 const Exam = () => {
@@ -35,6 +34,9 @@ const Exam = () => {
                         data: { exam }
                     }
                 } = await api.getExamGet(examId);
+
+                console.log(exam)
+                
                 setExam({ ...exam });
                 setLoading(false);
             } catch (error) {
@@ -68,8 +70,6 @@ const Exam = () => {
         for (const key in answers) {
             formData.questions.push({ question: key, selectedOption: answers[key] });
         }
-
-        console.log(formData);
 
         try {
             setLoading(true);

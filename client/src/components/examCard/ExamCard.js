@@ -8,6 +8,30 @@ import { motion } from "framer-motion";
 const ExamCard = ({ exam, handleRemoveExam, role }) => {
     const isTeacher = Boolean(role === "teacher");
 
+    const checkTime = () => {
+        const now = moment(Date.now());
+        const endTime = moment(exam.startTime).add(exam.duration, "minutes");
+        const startTime = moment(exam.startTime);
+        const isBetween = now.isBetween(startTime, endTime);
+        if (isBetween) {
+            return (
+                <Button component={Link} to={`/user/exam/${exam.id}`} size="small">
+                    شروع آزمون
+                </Button>
+            );
+        } else if (!isBetween && now.isSameOrAfter()) {
+            return (
+                <Button component={Link} to={`/user/exam/${exam.id}`} size="small">
+                    نتیجه آزمون
+                </Button>
+            );
+        } else if (!isBetween && now.isSameOrBefore()) {
+            <Button component={Link} to={`/user/exam/${exam.id}`} size="small">
+                آزمون هنوز شروع نشده
+            </Button>;
+        }
+    };
+
     const acions = () => {
         if (isTeacher) {
             return (
@@ -42,20 +66,7 @@ const ExamCard = ({ exam, handleRemoveExam, role }) => {
                     alignItems="center"
                     justifyContent="space-between"
                     p={2}>
-                    <Box>
-                        {moment(exam.startTime).isSameOrBefore() ? (
-                            <Button
-                                component={Link}
-                                to={`/user/exam/${exam.id}`}
-                                size="small">
-                                شروع آزمون
-                            </Button>
-                        ) : (
-                            <Button disabled size="small">
-                                هنوز شروع نشده
-                            </Button>
-                        )}
-                    </Box>
+                    <Box>{checkTime()}</Box>
                 </Stack>
             );
         }
