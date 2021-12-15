@@ -105,47 +105,6 @@ const ExamCard = ({ exam, handleRemoveExam, role }) => {
                 </CardContent>
 
                 {acions()}
-
-                {/* <Stack
-                    direction="row"
-                    alignItems="center"
-                    justifyContent="space-between"
-                    p={2}>
-                    <Box>
-                        {isTeacher && (
-                            <Button
-                                component={Link}
-                                to={`/user/exam/details/${exam._id}`}
-                                size="small">
-                                جزئیات
-                            </Button>
-                        )}
-
-                        {moment(exam.startTime).isBefore() ? (
-                            <Button
-                                component={Link}
-                                to={`/user/exam/${exam._id}`}
-                                size="small">
-                                شروع آزمون
-                            </Button>
-                        ) : (
-                            <Button disabled size="small">
-                                هنوز شروع نشده
-                            </Button>
-                        )}
-                    </Box>
-
-                    {isTeacher && (
-                        <Box>
-                            <Button
-                                onClick={() => handleRemoveExam(exam._id)}
-                                size="small"
-                                color="error">
-                                حذف
-                            </Button>
-                        </Box>
-                    )}
-                </Stack> */}
             </Card>
         </Grid>
     );
