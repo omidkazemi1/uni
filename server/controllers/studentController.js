@@ -183,20 +183,20 @@ exports.completeExam = catchAsync(async (req, res, next) => {
           questions.push(question);
           score += exam.questions[index].score;
           status = true;
+        } else {
+          const question = {
+            body: exam.questions[index].body,
+            answer1: exam.questions[index].answer1,
+            answer2: exam.questions[index].answer2,
+            answer3: exam.questions[index].answer3,
+            answer4: exam.questions[index].answer4,
+            trueOption: exam.questions[index].trueOption,
+            score: exam.questions[index].score,
+            selectedOption: req.body.questions[j].selectedOption,
+          };
+          questions.push(question);
+          status = true;
         }
-      } else {
-        const question = {
-          body: exam.questions[index].body,
-          answer1: exam.questions[index].answer1,
-          answer2: exam.questions[index].answer2,
-          answer3: exam.questions[index].answer3,
-          answer4: exam.questions[index].answer4,
-          trueOption: exam.questions[index].trueOption,
-          score: exam.questions[index].score,
-          selectedOption: req.body.questions[j].selectedOption,
-        };
-        questions.push(question);
-        status = true;
       }
     }
 
