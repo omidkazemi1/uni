@@ -115,7 +115,7 @@ exports.examList = catchAsync(async (req, res, next) => {
       student: req.user._id,
     });
 
-    listExams[index].compelted = examLog ? true : false;
+    listExams[index].completed = examLog ? true : false;
   }
 
   res.status(200).json({
