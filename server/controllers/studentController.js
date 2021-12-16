@@ -109,6 +109,15 @@ exports.examList = catchAsync(async (req, res, next) => {
 
   const listExams = exams[0].exams;
 
+  for (let index = 0; index < listExams.length; index++) {
+    const examLog = await ExamLog.findOne({
+      exam: listExams[index].id,
+      student: req.user._id,
+    });
+
+    listExams[index].compelted = examLog ? true : false;
+  }
+
   res.status(200).json({
     status: "success",
     data: {
