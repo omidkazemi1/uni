@@ -6,6 +6,7 @@ import {
     FormControlLabel,
     FormLabel,
     Grid,
+    Grow,
     Paper,
     Radio,
     RadioGroup,
@@ -16,7 +17,9 @@ import { Box } from "@mui/system";
 import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router";
 import * as api from "../../api";
+import { useSnackbar } from "notistack";
 
 const Exam = () => {
     const { examId } = useParams();
@@ -24,6 +27,8 @@ const Exam = () => {
     const [loading, setLoading] = useState(true);
     const [answers, setAnswers] = useState({});
     const [answersError, setAnswersError] = useState({});
+    const { enqueueSnackbar } = useSnackbar();
+    const navigate = useNavigate();
 
     useEffect(() => {
         const getExam = async () => {
@@ -73,9 +78,17 @@ const Exam = () => {
 
         try {
             setLoading(true);
-            const { data } = await api.completeExamPost(formData);
+            const response = await api.completeExamPost(formData);
+            if (response.status === 200) {
+                enqueueSnackbar("آزمون شما ثبت شد، موفق باشید:)", {
+                    variant: "success",
+                    anchorOrigin: { vertical: "bottom", horizontal: "left" },
+                    TransitionComponent: Grow
+                });
+                navigate('/user/exam')
+            }
+
             setLoading(false);
-            console.log(data);
         } catch (error) {
             console.log(error?.response);
         }

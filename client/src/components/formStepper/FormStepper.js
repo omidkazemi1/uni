@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useTimer } from "use-timer";
 import { useSnackbar } from "notistack";
-
 import * as api from "../../api";
 import { login, register, setErrorEmpty } from "../../redux/actions/auth";
 import { AnimatePresence, motion } from "framer-motion";

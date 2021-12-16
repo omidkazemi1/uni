@@ -6,6 +6,7 @@ import ExamCard from "../../examCard/ExamCard";
 import { Link } from "react-router-dom";
 import { FaPlus } from "react-icons/fa";
 import { AnimatePresence, motion } from "framer-motion";
+import { SnackbarProvider } from "notistack";
 
 const Exams = () => {
     const { exams, loading } = useSelector(state => state.exam);
@@ -23,7 +24,7 @@ const Exams = () => {
     };
 
     return (
-        <>
+        <SnackbarProvider>
             <Stack direction="row" alignItems="center" justifyContent="space-between">
                 <Typography
                     component={motion.h5}
@@ -62,7 +63,7 @@ const Exams = () => {
                     </AnimatePresence>
                 )}
             </Grid>
-        </>
+        </SnackbarProvider>
     );
 };
 
