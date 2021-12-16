@@ -1,7 +1,9 @@
 /* eslint-disable no-await-in-loop */
+const mongoose = require("mongoose");
 const User = require("../models/userModel");
 const Class = require("../models/classModel");
 const Exam = require("../models/examModel");
+const ExamLog = require("../models/examLogModel");
 const AppError = require("../utils/appError");
 const APIFeatures = require("../utils/apiFeatures");
 const catchAsync = require("../utils/catchAsync");
@@ -342,3 +344,62 @@ exports.deleteExam = catchAsync(async (req, res, next) => {
     data: null,
   });
 });
+
+exports.listStudentExam = catchAsync(async (req, res, next) => {
+  // const exam = await Exam.findOne({ _id: req.params.examId });
+  const examLogs = await ExamLog.aggregate([
+    { $match: { exam: mongoose.Types.ObjectId(req.params.examId) } },
+    {
+      $lookup: {
+        from: "classes",
+        localField: "class",
+        foreignField: "_id",
+        as: "class",
+      },
+    },
+    {
+      $unwind: { path: "$class" },
+    },
+    {
+      $lookup: {
+        from: "users",
+        localField: "student",
+        foreignField: "_id",
+        as: "student",
+      },
+    },
+    {
+      $unwind: { path: "$student" },
+    },
+    {
+      $lookup: {
+        from: "exams",
+        localField: "exam",
+        foreignField: "_id",
+        as: "exam",
+      },
+    },
+    {
+      $unwind: { path: "$exam" },
+    },
+    {
+      $group: {
+        _id: "$class._id",
+        className: { $first: "$class.name" },
+        exams: {
+          $push: {
+            studentName: "$student.fullName",
+            studentId: "$student._id",
+            score: "$score",
+          },
+        },
+      },
+    },
+  ]);
+
+  res.status(200).json({
+    examLogs,
+  });
+});
+
+exports.studentExam = catchAsync(async (req, res, next) => {});

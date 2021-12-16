@@ -130,7 +130,7 @@ exports.singleExam = catchAsync(async (req, res, next) => {
   let exam = await ExamLog.findOne({
     exam: req.params.examId,
     student: req.user._id,
-  });
+  }).populate(["exam"]);
 
   if (!exam) {
     exam = await Exam.findById(req.params.examId);

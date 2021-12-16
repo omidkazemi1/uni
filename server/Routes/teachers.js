@@ -110,4 +110,11 @@ router.delete(
   authController.restrictTo("teacher"),
   teacherController.deleteExam
 );
+
+router.get(
+  "/exam/student/:examId",
+  authController.protect,
+  authController.restrictTo("teacher"),
+  teacherController.listStudentExam
+);
 module.exports = router;
