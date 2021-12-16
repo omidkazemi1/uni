@@ -19,7 +19,6 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router";
 import * as api from "../../api";
-import { useSnackbar } from "notistack";
 
 const Exam = () => {
     const { examId } = useParams();
@@ -27,7 +26,6 @@ const Exam = () => {
     const [loading, setLoading] = useState(true);
     const [answers, setAnswers] = useState({});
     const [answersError, setAnswersError] = useState({});
-    const { enqueueSnackbar } = useSnackbar();
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -39,8 +37,6 @@ const Exam = () => {
                         data: { exam }
                     }
                 } = await api.getExamStudentGet(examId);
-
-                console.log(exam);
 
                 setExam({ ...exam });
                 setLoading(false);
@@ -79,13 +75,9 @@ const Exam = () => {
         try {
             setLoading(true);
             const response = await api.completeExamPost(formData);
+            console.log(response.status);
             if (response.status === 200) {
-                enqueueSnackbar("آزمون شما ثبت شد، موفق باشید:)", {
-                    variant: "success",
-                    anchorOrigin: { vertical: "bottom", horizontal: "left" },
-                    TransitionComponent: Grow
-                });
-                navigate('/user/exam')
+                navigate("/user/exam", { replace: true });
             }
 
             setLoading(false);

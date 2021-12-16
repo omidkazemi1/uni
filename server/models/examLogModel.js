@@ -27,7 +27,6 @@ const examLogSchema = new mongoose.Schema(
         trueOption: {
           type: String,
           required: [true, "لطفا گزینه درست را انتخاب کنید"],
-          select: false,
         },
         score: {
           type: String,

@@ -54,6 +54,8 @@ const ExamCard = ({ exam, handleRemoveExam, role }) => {
 const CardActions = ({ isTeacher, handleRemoveExam, exam }) => {
     const [examDuration, setExamDuration] = useState("");
 
+    console.log(exam.completed);
+
     useEffect(() => {
         const checkTime = () => {
             const now = moment(Date.now());
@@ -75,18 +77,15 @@ const CardActions = ({ isTeacher, handleRemoveExam, exam }) => {
 
     let studentActions = null;
 
-    if (examDuration === "between") {
+    if (examDuration === "between" && !exam.completed) {
         studentActions = (
             <Button component={Link} to={`/user/exam/${exam.id}`} size="small">
                 شروع آزمون
             </Button>
         );
-    } else if (examDuration === "before") {
+    } else if (examDuration === "before" || exam.completed) {
         studentActions = (
-            <Button
-                component={Link}
-                to={`/user/exam/details/${exam.id}/student`}
-                size="small">
+            <Button component={Link} to={`/user/exam/details/${exam.id}/student`} size="small">
                 نتیجه آزمون
             </Button>
         );
@@ -102,10 +101,7 @@ const CardActions = ({ isTeacher, handleRemoveExam, exam }) => {
         return (
             <Stack direction="row" alignItems="center" justifyContent="space-between" p={2}>
                 <Box>
-                    <Button
-                        component={Link}
-                        to={`/user/exam/details/${exam.id}`}
-                        size="small">
+                    <Button component={Link} to={`/user/exam/details/${exam.id}`} size="small">
                         جزئیات
                     </Button>
                 </Box>

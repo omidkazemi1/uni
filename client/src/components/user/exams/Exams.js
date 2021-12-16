@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { getExams, removeExam } from "../../../redux/actions/exam";
 import { Button, CircularProgress, Grid, Stack, Typography } from "@mui/material";
 import ExamCard from "../../examCard/ExamCard";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { FaPlus } from "react-icons/fa";
 import { AnimatePresence, motion } from "framer-motion";
 import { SnackbarProvider } from "notistack";
@@ -18,6 +18,10 @@ const Exams = () => {
     useEffect(() => {
         dispatch(getExams(role));
     }, [dispatch, role]);
+
+    useEffect(() => {
+        console.log(exams);
+    }, [exams]);
 
     const handleRemoveExam = classId => {
         dispatch(removeExam(classId));
