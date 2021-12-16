@@ -33,10 +33,10 @@ const Exam = () => {
                     data: {
                         data: { exam }
                     }
-                } = await api.getExamGet(examId);
+                } = await api.getExamStudentGet(examId);
 
-                console.log(exam)
-                
+                console.log(exam);
+
                 setExam({ ...exam });
                 setLoading(false);
             } catch (error) {

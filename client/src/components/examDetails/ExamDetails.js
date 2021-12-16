@@ -4,18 +4,39 @@ import { IoIosArrowBack } from "react-icons/io";
 import { Link, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import moment from "jalali-moment";
+import * as api from "../../api";
 
 const ExamDetails = () => {
     const [exam, setExam] = useState({});
-    const [examClasses, setExamClasses] = useState([]);
     const [loading, setLoading] = useState(true);
     const { examId } = useParams();
     const { exams } = useSelector(state => state.exam);
-    const { classDocs } = useSelector(state => state.classes);
 
     useEffect(() => {
-		
+        console.log(exam);
     }, [loading, examId, exams]);
+
+    useEffect(() => {
+        const getExam = async () => {
+            try {
+                setLoading(true);
+                const {
+                    data: {
+                        data: { exam }
+                    }
+                } = await api.getExamStudentGet(examId);
+
+                console.log(exam);
+
+                setExam({ ...exam });
+                setLoading(false);
+            } catch (error) {
+                console.log(error, error.response);
+            }
+        };
+
+        getExam();
+    }, [examId]);
 
     return (
         <>
@@ -35,37 +56,18 @@ const ExamDetails = () => {
                 component={Paper}
                 py={3}
                 px={{ xs: 3, md: 0 }}>
+                <Grid item xs={12} md={6}>
+                    <Box display="flex" alignItems="baseline">
+                        <Typography variant="body1" noWrap>
+                            نام آزمون:
+                        </Typography>
+                        <Typography variant="body2" mx={1} noWrap>
+                            {exam.duration} دقیقه
+                        </Typography>
+                    </Box>
+                </Grid>
 
-                <Box my={3}>
-                    <Typography variant="body1">نام آزمون</Typography>
-                    <Typography variant="body2" color="text.secondary">
-                        {exam.name}
-                    </Typography>
-                </Box>
-                <Divider />
-                <Box my={3}>
-                    <Typography variant="body1">تاریخ شروع</Typography>
-                    <Typography variant="body2" color="text.secondary">
-                        {moment(exam.startTime)
-                            .locale("fa")
-                            .format("jD jMMMM jYYYY [ساعت] h:mm a")}
-                    </Typography>
-                </Box>
-                <Divider />
-                <Box my={3}>
-                    <Typography variant="body1">مدت امتحان</Typography>
-                    <Typography variant="body2" color="text.secondary">
-                        {exam.duration}
-                    </Typography>
-                </Box>
-                <Divider />
-                <Box my={3}>
-                    <Typography variant="body1">کلاس ها</Typography>
-                    <Typography variant="body2" color="text.secondary">
-                        {/* {classes.join(", ")} */}
-                    </Typography>
-                </Box>
-                <Divider />
+                <Grid item xs={12} md={6}></Grid>
             </Grid>
         </>
     );

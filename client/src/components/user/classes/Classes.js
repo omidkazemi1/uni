@@ -86,7 +86,6 @@ const Classes = () => {
     };
 
     useEffect(() => {
-        console.log(role);
         dispatch(getClasses(role));
     }, [dispatch, role]);
 

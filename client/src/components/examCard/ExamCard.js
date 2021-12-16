@@ -4,73 +4,10 @@ import React from "react";
 import { Link } from "react-router-dom";
 import moment from "jalali-moment";
 import { motion } from "framer-motion";
+import { useEffect, useState } from "react/cjs/react.development";
 
 const ExamCard = ({ exam, handleRemoveExam, role }) => {
     const isTeacher = Boolean(role === "teacher");
-
-    const checkTime = () => {
-        const now = moment(Date.now());
-        const endTime = moment(exam.startTime).add(exam.duration, "minutes");
-        const startTime = moment(exam.startTime);
-        const isBetween = now.isBetween(startTime, endTime);
-        if (isBetween) {
-            return (
-                <Button component={Link} to={`/user/exam/${exam.id}`} size="small">
-                    شروع آزمون
-                </Button>
-            );
-        } else if (!isBetween && now.isSameOrAfter()) {
-            return (
-                <Button component={Link} to={`/user/exam/${exam.id}`} size="small">
-                    نتیجه آزمون
-                </Button>
-            );
-        } else if (!isBetween && now.isSameOrBefore()) {
-            <Button component={Link} to={`/user/exam/${exam.id}`} size="small">
-                آزمون هنوز شروع نشده
-            </Button>;
-        }
-    };
-
-    const acions = () => {
-        if (isTeacher) {
-            return (
-                <Stack
-                    direction="row"
-                    alignItems="center"
-                    justifyContent="space-between"
-                    p={2}>
-                    <Box>
-                        <Button
-                            component={Link}
-                            to={`/user/exam/details/${exam._id}`}
-                            size="small">
-                            جزئیات
-                        </Button>
-                    </Box>
-
-                    <Box>
-                        <Button
-                            onClick={() => handleRemoveExam(exam._id)}
-                            size="small"
-                            color="error">
-                            حذف
-                        </Button>
-                    </Box>
-                </Stack>
-            );
-        } else {
-            return (
-                <Stack
-                    direction="row"
-                    alignItems="center"
-                    justifyContent="space-between"
-                    p={2}>
-                    <Box>{checkTime()}</Box>
-                </Stack>
-            );
-        }
-    };
 
     return (
         <Grid
@@ -104,10 +41,92 @@ const ExamCard = ({ exam, handleRemoveExam, role }) => {
                     </Typography>
                 </CardContent>
 
-                {acions()}
+                <CardActions
+                    isTeacher={isTeacher}
+                    handleRemoveExam={handleRemoveExam}
+                    exam={exam}
+                />
             </Card>
         </Grid>
     );
+};
+
+const CardActions = ({ isTeacher, handleRemoveExam, exam }) => {
+    const [examDuration, setExamDuration] = useState("");
+
+    useEffect(() => {
+        const checkTime = () => {
+            const now = moment(Date.now());
+            const endTime = moment(exam.startTime).add(exam.duration, "minutes");
+            const startTime = moment(exam.startTime);
+            const isBetween = now.isBetween(startTime, endTime);
+
+            if (isBetween) {
+                setExamDuration("between");
+            } else if (!isBetween && endTime.isSameOrBefore()) {
+                setExamDuration("before");
+            } else if (!isBetween && endTime.isSameOrAfter()) {
+                setExamDuration("after");
+            }
+        };
+
+        checkTime();
+    }, [exam.duration, exam.startTime]);
+
+    let studentActions = null;
+
+    if (examDuration === "between") {
+        studentActions = (
+            <Button component={Link} to={`/user/exam/${exam.id}`} size="small">
+                شروع آزمون
+            </Button>
+        );
+    } else if (examDuration === "before") {
+        studentActions = (
+            <Button
+                component={Link}
+                to={`/user/exam/details/${exam.id}/student`}
+                size="small">
+                نتیجه آزمون
+            </Button>
+        );
+    } else {
+        studentActions = (
+            <Button disabled size="small">
+                آزمون هنوز شروع نشده
+            </Button>
+        );
+    }
+
+    if (isTeacher) {
+        return (
+            <Stack direction="row" alignItems="center" justifyContent="space-between" p={2}>
+                <Box>
+                    <Button
+                        component={Link}
+                        to={`/user/exam/details/${exam.id}`}
+                        size="small">
+                        جزئیات
+                    </Button>
+                </Box>
+
+                <Box>
+                    <Button
+                        onClick={() => handleRemoveExam(exam.id)}
+                        size="small"
+                        color="error">
+                        حذف
+                    </Button>
+                </Box>
+            </Stack>
+        );
+    } else {
+        return (
+            <Stack direction="row" alignItems="center" justifyContent="space-between" p={2}>
+                {studentActions}
+            </Stack>
+        );
+    }
 };
 
 export default ExamCard;

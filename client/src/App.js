@@ -39,7 +39,7 @@ const App = () => {
                             <Route path="exam" element={<Exams />} />
                             <Route path="exam/add" element={<AddExam />} />
                             <Route path="exam/:examId" element={<Exam />} />
-                            <Route path="exam/details/:examId" element={<ExamDetails />} />
+                            <Route path="exam/details/:examId/student" element={<ExamDetails />} />
                             <Route path="notification" element={<Notification />} />
                         </Route>
                         <Route path="*" element={<NotFoundPage />} />
