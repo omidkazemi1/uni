@@ -414,7 +414,7 @@ exports.studentExam = catchAsync(async (req, res, next) => {
   const examLogs = await ExamLog.findOne({
     exam: req.params.examId,
     student: req.params.studentId,
-  }).populate(["exam"]);
+  }).populate(["exam", "student"]);
 
   // const examLogs = await ExamLog.aggregate([
   //   {
