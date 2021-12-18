@@ -386,7 +386,7 @@ exports.listStudentExam = catchAsync(async (req, res, next) => {
       $group: {
         _id: "$class._id",
         className: { $first: "$class.name" },
-        exams: {
+        students: {
           $push: {
             studentName: "$student.fullName",
             studentId: "$student._id",
