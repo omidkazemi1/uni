@@ -117,4 +117,12 @@ router.get(
   authController.restrictTo("teacher"),
   teacherController.listStudentExam
 );
+
+router.get(
+  "/exam/:examId/:studentId",
+  authController.protect,
+  authController.restrictTo("teacher"),
+  teacherController.studentExam
+);
+
 module.exports = router;

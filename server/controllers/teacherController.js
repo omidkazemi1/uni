@@ -331,6 +331,7 @@ exports.deleteExam = catchAsync(async (req, res, next) => {
   const exam = await Exam.findById(req.params.examId);
   const timeStamp = new Date(exam.date);
   const nowDate = new Date();
+
   if (timeStamp < nowDate) {
     return next(
       new AppError("you cant remove exam in or after exam date", 401)
@@ -397,7 +398,29 @@ exports.listStudentExam = catchAsync(async (req, res, next) => {
     },
   ]);
 
+  const exam = await Exam.findById(req.params.examId).select([
+    "name",
+    "duration",
+    "startTime",
+  ]);
+
   res.status(200).json({
+    exam,
+    examLogs,
+  });
+});
+
+exports.studentExam = catchAsync(async (req, res, next) => {
+  const examLogs = await ExamLog.findOne({
+    exam: req.params.examId,
+    student: req.params.studentId,
+  });
+
+  if (!examLogs) {
+    return next(new AppError("cant find examLog student", 404));
+  }
+
+  res.status().json({
     examLogs,
   });
 });
