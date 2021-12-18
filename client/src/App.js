@@ -14,8 +14,10 @@ import Exams from "./components/user/exams/Exams";
 import Notification from "./components/user/notification/Notification";
 import Students from "./components/students/Students";
 import AddExam from "./components/addExam/AddExam";
-import ExamDetails from "./components/examDetails/ExamDetails";
+import ExamDetailsStudent from "./components/examDetailsStudent/ExamDetailsStudent";
+import ExamDetailsTeacher from "./components/examDetailsTeacher/ExamDetailsTeacher";
 import Exam from "./components/exam/Exam";
+import StudentExamLog from "./components/studentExamLog/StudentExamLog";
 
 import "./assets/fonts/css/style.css";
 import { customTheme, RTL } from "./assets/theme";
@@ -39,7 +41,18 @@ const App = () => {
                             <Route path="exam" element={<Exams />} />
                             <Route path="exam/add" element={<AddExam />} />
                             <Route path="exam/:examId" element={<Exam />} />
-                            <Route path="exam/details/:examId/student" element={<ExamDetails />} />
+                            <Route
+                                path="exam/details/:examId/student"
+                                element={<ExamDetailsStudent />}
+                            />
+                            <Route
+                                path="exam/details/:examId/teacher"
+                                element={<ExamDetailsTeacher />}
+                            />
+                            <Route
+                                path="exam/details/student/:examId/:studentId/teacher"
+                                element={<StudentExamLog />}
+                            />
                             <Route path="notification" element={<Notification />} />
                         </Route>
                         <Route path="*" element={<NotFoundPage />} />

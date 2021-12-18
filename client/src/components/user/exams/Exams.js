@@ -38,7 +38,7 @@ const Exams = () => {
                     fontWeight="bold"
                     my={4}
                     sx={{ display: "flex", alignItems: "center" }}>
-                    لیست آزمون
+                    لیست آزمون ها
                     {loading && <CircularProgress size={25} sx={{ mx: 1 }} />}
                 </Typography>
 

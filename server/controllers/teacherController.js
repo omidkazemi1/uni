@@ -478,6 +478,6 @@ exports.studentExam = catchAsync(async (req, res, next) => {
   }
 
   res.status(200).json({
-    examLogs,
+    examLog: examLogs[0],
   });
 });
