@@ -59,35 +59,7 @@ const AddExam = () => {
         trueOption: false,
         score: false
     });
-    const [questions, setQuestions] = useState([
-        {
-            answer1: "شسی بشسی بشسی ",
-            answer2: "شسیبشسیب",
-            answer3: "شسیبشسب",
-            answer4: "شسیب شسی ب",
-            body: "1",
-            score: "2",
-            trueOption: 2
-        },
-        {
-            answer1: "شسی بشسی بشسی ",
-            answer2: "شسیبشسیب",
-            answer3: "شسیبشسب",
-            answer4: "شسیب شسی ب",
-            body: "2",
-            score: "2",
-            trueOption: 2
-        },
-        {
-            answer1: "شسی بشسی بشسی ",
-            answer2: "شسیبشسیب",
-            answer3: "شسیبشسب",
-            answer4: "شسیب شسی ب",
-            body: "3",
-            score: "2",
-            trueOption: 2
-        }
-    ]);
+    const [questions, setQuestions] = useState([]);
 
     const [questionDialogOpen, setQuestionDialogOpen] = useState(false);
     const [previewDialogOpen, setPreviewDialogOpen] = useState(false);

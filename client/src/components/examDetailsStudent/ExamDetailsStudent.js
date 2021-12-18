@@ -74,23 +74,30 @@ const ExamDetails = () => {
                                 نام آزمون:
                             </Typography>
                             <Typography variant="body2" mx={1} noWrap>
-                                {exam.name}
+                                {exam.exam.name}
                             </Typography>
                         </Box>
                     </Grid>
 
-                    <Grid item xs={12} md={6}>
+                    <Grid
+                        item
+                        xs={12}
+                        md={6}
+                        display="flex"
+                        justifyContent={{ xs: "flex-start", md: "flex-end" }}>
                         <Box display="flex" alignItems="baseline">
                             <Typography variant="body1" noWrap>
                                 نمره:
                             </Typography>
                             <Typography variant="body2" mx={1} noWrap>
-                                {exam.score}
+                                {exam.score} از {exam.exam.score}
                             </Typography>
                         </Box>
                     </Grid>
 
-                    <Divider />
+                    <Grid item xs={12}>
+                        <Divider />
+                    </Grid>
 
                     {exam.answers.map((answer, index) => (
                         <Grid item xs={12} md={12} key={index}>
@@ -121,7 +128,7 @@ const ExamDetails = () => {
                                     {answer.selectedOption}
                                 </Typography>
                             </FormControl>
-                            <Divider />
+                            {index !== exam.answers.length - 1 && <Divider />}
                         </Grid>
                     ))}
                 </Grid>
