@@ -411,67 +411,67 @@ exports.listStudentExam = catchAsync(async (req, res, next) => {
 });
 
 exports.studentExam = catchAsync(async (req, res, next) => {
-  const examLogs = await ExamLog.findOne({
-    exam: req.params.examId,
-    student: req.params.studentId,
-  }).populate(["exam", "student"]);
+  // const examLogs = await ExamLog.findOne({
+  //   exam: req.params.examId,
+  //   student: req.params.studentId,
+  // }).populate(["exam", "student"]);
 
-  // const examLogs = await ExamLog.aggregate([
-  //   {
-  //     $match: { exam: mongoose.Types.ObjectId(req.params.examId) },
-  //   },
-  //   {
-  //     $match: { student: mongoose.Types.ObjectId(req.params.studentId) },
-  //   },
-  //   {
-  //     $lookup: {
-  //       from: "exams",
-  //       localField: "exam",
-  //       foreignField: "_id",
-  //       as: "exam",
-  //     },
-  //   },
-  //   {
-  //     $lookup: {
-  //       from: "classes",
-  //       localField: "class",
-  //       foreignField: "_id",
-  //       as: "class",
-  //     },
-  //   },
-  //   {
-  //     $lookup: {
-  //       from: "users",
-  //       localField: "student",
-  //       foreignField: "_id",
-  //       as: "student",
-  //     },
-  //   },
-  //   {
-  //     $unwind: {
-  //       path: "$exam",
-  //     },
-  //   },
-  //   {
-  //     $unwind: {
-  //       path: "$student",
-  //     },
-  //   },
-  //   {
-  //     $unwind: {
-  //       path: "$class",
-  //     },
-  //   },
-  //   {
-  //     $project: {
-  //       answers: "$answers",
-  //       score: "$score",
-  //       class: "$class.name",
-  //       student: "$student.fullName",
-
-  //     },
-  //   },
-  // ]);
+  const examLogs = await ExamLog.aggregate([
+    {
+      $match: { exam: mongoose.Types.ObjectId(req.params.examId) },
+    },
+    {
+      $match: { student: mongoose.Types.ObjectId(req.params.studentId) },
+    },
+    {
+      $lookup: {
+        from: "exams",
+        localField: "exam",
+        foreignField: "_id",
+        as: "exam",
+      },
+    },
+    {
+      $lookup: {
+        from: "classes",
+        localField: "class",
+        foreignField: "_id",
+        as: "class",
+      },
+    },
+    {
+      $lookup: {
+        from: "users",
+        localField: "student",
+        foreignField: "_id",
+        as: "student",
+      },
+    },
+    {
+      $unwind: {
+        path: "$exam",
+      },
+    },
+    {
+      $unwind: {
+        path: "$student",
+      },
+    },
+    {
+      $unwind: {
+        path: "$class",
+      },
+    },
+    {
+      $project: {
+        answers: "$answers",
+        score: "$score",
+        class: "$class.name",
+        student: "$student.fullName",
+        exam: "$exam",
+      },
+    },
+  ]);
 
   if (!examLogs) {
     return next(new AppError("cant find examLog student", 404));
