@@ -10,6 +10,18 @@ export const customTheme = createTheme({
     },
     shape: {
         borderRadius: 8
+    },
+    palette: {
+        primary: {
+            main: "#4b7ba8",
+            light: "#A5BDD3",
+            dark: "#2D4964"
+        },
+        secondary: {
+            main: "#f4ba11",
+            light: "#F7CE58",
+            dark: "#C3940D"
+        }
     }
 });
 

@@ -101,7 +101,7 @@ const Classes = () => {
                     my={4}
                     sx={{ display: "flex", alignItems: "center" }}>
                     کلاس های من
-                    {loading && <CircularProgress size={25} sx={{ mx: 1 }} />}
+                    {loading && <CircularProgress color="secondary" size={25} sx={{ mx: 1 }} />}
                 </Typography>
 
                 {role === "teacher" && (

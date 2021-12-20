@@ -47,7 +47,7 @@ const ExamDetails = () => {
             <Stack direction="row" alignItems="center" justifyContent="space-between">
                 <Typography variant="h5" fontWeight="bold" my={4}>
                     جزئیات آزمون
-                    {loading && <CircularProgress size={25} sx={{ mx: 1 }} />}
+                    {loading && <CircularProgress color="secondary" size={25} sx={{ mx: 1 }} />}
                 </Typography>
 
                 <IconButton component={Link} to="/user/exam">

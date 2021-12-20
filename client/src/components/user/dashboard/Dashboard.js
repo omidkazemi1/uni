@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useLocation } from "react-router-dom";
 import {
     Drawer,
     List,
@@ -20,16 +20,34 @@ import { RiListCheck2 } from "react-icons/ri";
 import ListItemLink from "../../listItemLink/ListItemLink";
 import { useSelector } from "react-redux";
 import useStyles from "./styles";
+import { useEffect } from "react/cjs/react.development";
 
 const Dashboard = props => {
     const { user } = useSelector(state => state.auth);
     const classes = useStyles();
+    const location = useLocation();
 
-    const [value, setValue] = useState("recents");
+    const [tab, setTab] = useState("");
 
     const handleChange = (event, newValue) => {
-        setValue(newValue);
+        setTab(newValue);
     };
+
+    useEffect(() => {
+        const { pathname } = location;
+        const route = pathname.split("/")[2];
+
+        switch (route) {
+            case "classes":
+                setTab("classes");
+                break;
+            case "profile":
+                setTab("profile");
+                break;
+            default:
+                setTab("exam");
+        }
+    }, []);
 
     return (
         <>
@@ -122,31 +140,31 @@ const Dashboard = props => {
                     padding: 0,
                     bottom: 0,
                     left: 0,
-                    background: theme => theme.palette.warning.light,
+                    background: theme => theme.palette.secondary.main,
                     width: "100%",
                     display: { xs: "flex", md: "none" }
                 }}
-                value={value}
+                value={tab}
                 onChange={handleChange}>
                 <BottomNavigationAction
                     component={Link}
                     to="/user/profile"
                     label="پروفایل"
-                    value="recents"
+                    value="profile"
                     icon={<MdPerson size="35px" />}
                 />
                 <BottomNavigationAction
                     component={Link}
                     to="/user/classes"
                     label="کلاس های من"
-                    value="favorites"
+                    value="classes"
                     icon={<SiGoogleclassroom size="35px" />}
                 />
                 <BottomNavigationAction
                     component={Link}
                     to="/user/exam"
                     label="آزمون"
-                    value="nearby"
+                    value="exam"
                     icon={<RiListCheck2 size="35px" />}
                 />
             </BottomNavigation>

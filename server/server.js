@@ -14,6 +14,7 @@ const app = require("./app");
 //   "<PASSWORD>",
 //   process.env.DATABASE_PASSWORD
 // );
+
 mongoose
   .connect(process.env.DATABASE_LOCAL, {
     useCreateIndex: true,

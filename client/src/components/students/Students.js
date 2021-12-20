@@ -5,7 +5,6 @@ import {
     DialogActions,
     DialogContent,
     DialogTitle,
-    Divider,
     FormHelperText,
     Grid,
     Stack,
@@ -102,7 +101,7 @@ const Students = () => {
                     my={4}
                     sx={{ display: "flex", alignItems: "center" }}>
                     لیست دانش آموزان
-                    {loading && <CircularProgress size={25} sx={{ mx: 1 }} />}
+                    {loading && <CircularProgress color="secondary" size={25} sx={{ mx: 1 }} />}
                 </Typography>
 
                 {role === "teacher" && (

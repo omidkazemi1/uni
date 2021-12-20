@@ -13,15 +13,12 @@ import {
 import React, { useEffect, useState } from "react";
 import { IoIosArrowBack } from "react-icons/io";
 import { Link, useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
-import moment from "jalali-moment";
 import * as api from "../../api";
 
 const ExamDetails = () => {
     const [exam, setExam] = useState({});
     const [loading, setLoading] = useState(true);
     const { examId } = useParams();
-    const { exams } = useSelector(state => state.exam);
 
     useEffect(() => {}, [loading]);
 
@@ -52,7 +49,7 @@ const ExamDetails = () => {
             <Stack direction="row" alignItems="center" justifyContent="space-between">
                 <Typography variant="h5" fontWeight="bold" my={4}>
                     جزئیات آزمون
-                    {loading && <CircularProgress size={25} sx={{ mx: 1 }} />}
+                    {loading && <CircularProgress color="secondary" size={25} sx={{ mx: 1 }} />}
                 </Typography>
 
                 <IconButton component={Link} to="/user/exam">

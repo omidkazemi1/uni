@@ -69,81 +69,88 @@ const Profile = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 onSubmit={submiteHandler}>
-                <Grid container py={3} justifyContent="center" component={Paper}>
-                    <Grid item xs={12} sm={9} md={6} lg={4} sx={{ mx: 3 }}>
-                        <TextField
-                            name="firstName"
-                            label="نام"
-                            type="text"
-                            fullWidth
-                            margin="normal"
-                            value={formData.firstName}
-                            error={formError.firstName}
-                            onChange={inputChangeHandler}
-                        />
+                <Paper
+                    sx={{
+                        display: "flex",
+                        justifyContent: "center",
+                        py: 5,
+                        px: { xs: 3, md: 0 }
+                    }}>
+                    <Grid
+                        container
+                        justifyContent="center"
+                        rowSpacing={3}
+                        columnSpacing={{ xs: 2, sm: 2, md: 3 }}
+                        maxWidth="md">
+                        <Grid item xs={12} sm={9} md={6}>
+                            <TextField
+                                name="firstName"
+                                label="نام"
+                                type="text"
+                                fullWidth
+                                value={formData.firstName}
+                                error={formError.firstName}
+                                onChange={inputChangeHandler}
+                            />
+                        </Grid>
+                        <Grid item xs={12} sm={9} md={6}>
+                            <TextField
+                                name="lastName"
+                                label="نام خانوادگی"
+                                type="text"
+                                fullWidth
+                                value={formData.lastName}
+                                error={formError.lastName}
+                                onChange={inputChangeHandler}
+                            />
+                        </Grid>
+                        <Grid item xs={12} sm={9} md={6}>
+                            <TextField
+                                name="nationalCode"
+                                label="کد ملی"
+                                type="text"
+                                fullWidth
+                                value={formData.nationalCode}
+                                error={formError.nationalCode}
+                                onChange={inputChangeHandler}
+                                disabled
+                            />
+                        </Grid>
+                        <Grid item xs={12} sm={9} md={6}>
+                            <TextField
+                                name="phoneNumber"
+                                label="شماره موبایل"
+                                type="text"
+                                fullWidth
+                                value={formData.phoneNumber}
+                                error={formError.phoneNumber}
+                                onChange={inputChangeHandler}
+                                disabled
+                            />
+                        </Grid>
+                        <Grid item xs={6} sm={9} md={6}>
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                type="submit"
+                                fullWidth
+                                disabled={!changing}>
+                                ذخیره
+                            </Button>
+                        </Grid>
+                        <Grid item xs={6} sm={9} md={6}>
+                            <Button
+                                variant="contained"
+                                color="error"
+                                type="submit"
+                                fullWidth
+                                onClick={cancelButtonHandler}
+                                disabled={!changing}>
+                                لغو
+                            </Button>
+                        </Grid>
                     </Grid>
-                    <Grid item xs={12} sm={9} md={6} lg={4} sx={{ mx: 3 }}>
-                        <TextField
-                            name="lastName"
-                            label="نام خانوادگی"
-                            type="text"
-                            fullWidth
-                            margin="normal"
-                            value={formData.lastName}
-                            error={formError.lastName}
-                            onChange={inputChangeHandler}
-                        />
-                    </Grid>
-                    <Grid item xs={12} sm={9} md={6} lg={4} sx={{ mx: 3 }}>
-                        <TextField
-                            name="nationalCode"
-                            label="کد ملی"
-                            type="text"
-                            fullWidth
-                            margin="normal"
-                            value={formData.nationalCode}
-                            error={formError.nationalCode}
-                            onChange={inputChangeHandler}
-                            disabled
-                        />
-                    </Grid>
-                    <Grid item xs={12} sm={9} md={6} lg={4} sx={{ mx: 3 }}>
-                        <TextField
-                            name="phoneNumber"
-                            label="شماره موبایل"
-                            type="text"
-                            fullWidth
-                            margin="normal"
-                            value={formData.phoneNumber}
-                            error={formError.phoneNumber}
-                            onChange={inputChangeHandler}
-                            disabled
-                        />
-                    </Grid>
-
-                    <Grid item xs={12} sm={9} md={6} lg={4} sx={{ mx: 3 }} mt={3}>
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            type="submit"
-                            fullWidth
-                            disabled={!changing}>
-                            ذخیره
-                        </Button>
-                    </Grid>
-
-                    <Grid item xs={12} sm={9} md={6} lg={4} sx={{ mx: 3 }} mt={3}>
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            type="submit"
-                            fullWidth
-                            onClick={cancelButtonHandler}
-                            disabled={!changing}>
-                            لغو
-                        </Button>
-                    </Grid>
-                </Grid>
+                </Paper>
             </motion.form>
         </>
     );

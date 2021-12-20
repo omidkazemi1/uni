@@ -1,12 +1,7 @@
-import { Avatar, Button, Divider, Grid, Typography } from "@mui/material";
 import React from "react";
-import { useSelector } from "react-redux";
+import { Avatar, Button, Divider, Grid, Typography } from "@mui/material";
 
 const StudentCard = ({ student, handleRemoveStudent }) => {
-    const {
-        user: { role }
-    } = useSelector(state => state.auth);
-
     const stringToColor = string => {
         let hash = 0;
         let i;

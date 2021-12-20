@@ -1,0 +1,10 @@
+body {
+    margin: 0;
+    background: url("./../images/paper.png");
+    background-position: center;
+    background-attachment: local;
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 100vh;
+    overflow-x: hidden;
+}

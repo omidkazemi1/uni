@@ -6,7 +6,6 @@ import {
     FormControlLabel,
     FormLabel,
     Grid,
-    Grow,
     Paper,
     Radio,
     RadioGroup,
@@ -118,7 +117,7 @@ const Exam = () => {
                     fontWeight="bold"
                     my={4}>
                     {exam.name}
-                    {loading && <CircularProgress size={25} sx={{ mx: 1 }} />}
+                    {loading && <CircularProgress color="secondary" size={25} sx={{ mx: 1 }} />}
                 </Typography>
 
                 <Box display="flex" alignItems="baseline">

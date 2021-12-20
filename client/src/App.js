@@ -19,6 +19,7 @@ import ExamDetailsTeacher from "./components/examDetailsTeacher/ExamDetailsTeach
 import Exam from "./components/exam/Exam";
 import StudentExamLog from "./components/studentExamLog/StudentExamLog";
 
+import "./assets/styles/defaults.css"
 import "./assets/fonts/css/style.css";
 import { customTheme, RTL } from "./assets/theme";
 import { ThemeProvider } from "@mui/material/styles";

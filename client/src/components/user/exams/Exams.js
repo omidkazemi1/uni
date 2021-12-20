@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { getExams, removeExam } from "../../../redux/actions/exam";
 import { Button, CircularProgress, Grid, Stack, Typography } from "@mui/material";
 import ExamCard from "../../examCard/ExamCard";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { FaPlus } from "react-icons/fa";
 import { AnimatePresence, motion } from "framer-motion";
 import { SnackbarProvider } from "notistack";
@@ -18,10 +18,6 @@ const Exams = () => {
     useEffect(() => {
         dispatch(getExams(role));
     }, [dispatch, role]);
-
-    useEffect(() => {
-        console.log(exams);
-    }, [exams]);
 
     const handleRemoveExam = classId => {
         dispatch(removeExam(classId));
@@ -39,7 +35,9 @@ const Exams = () => {
                     my={4}
                     sx={{ display: "flex", alignItems: "center" }}>
                     لیست آزمون ها
-                    {loading && <CircularProgress size={25} sx={{ mx: 1 }} />}
+                    {loading && (
+                        <CircularProgress color="secondary" size={25} sx={{ mx: 1 }} />
+                    )}
                 </Typography>
 
                 {role === "teacher" && (

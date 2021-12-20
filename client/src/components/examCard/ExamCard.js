@@ -54,8 +54,6 @@ const ExamCard = ({ exam, handleRemoveExam, role }) => {
 const CardActions = ({ isTeacher, handleRemoveExam, exam }) => {
     const [examDuration, setExamDuration] = useState("");
 
-    console.log(exam.completed);
-
     useEffect(() => {
         const checkTime = () => {
             const now = moment(Date.now());
@@ -101,7 +99,10 @@ const CardActions = ({ isTeacher, handleRemoveExam, exam }) => {
         return (
             <Stack direction="row" alignItems="center" justifyContent="space-between" p={2}>
                 <Box>
-                    <Button component={Link} to={`/user/exam/details/${exam.id}/teacher`} size="small">
+                    <Button
+                        component={Link}
+                        to={`/user/exam/details/${exam.id}/teacher`}
+                        size="small">
                         جزئیات
                     </Button>
                 </Box>
