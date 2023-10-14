@@ -61,12 +61,12 @@ exports.teacherSignup = catchAsync(async (req, res, next) => {
   phoneNumber = digitsFaToEn(phoneNumber);
   code = digitsFaToEn(code);
 
-  const orginalCode = await redis.getAsync(phoneNumber);
-  if (!orginalCode) {
+  const originalCode = await redis.getAsync(phoneNumber);
+  if (!originalCode) {
     return next(new AppError("for this number there is no code", 404));
   }
 
-  if (orginalCode !== code) {
+  if (originalCode !== code) {
     return next(new AppError("code is wrong", 403));
   }
   const newUser = await User.create({
@@ -96,12 +96,12 @@ exports.teacherLogin = catchAsync(async (req, res, next) => {
   phoneNumber = digitsFaToEn(phoneNumber);
   code = digitsFaToEn(code);
   // 2) check code exist
-  const orginalCode = await redis.getAsync(phoneNumber);
-  if (!orginalCode) {
+  const originalCode = await redis.getAsync(phoneNumber);
+  if (!originalCode) {
     return next(new AppError("for this number there is no code", 404));
   }
-  // 3) check code verfication
-  if (orginalCode !== code) {
+  // 3) check code verification
+  if (originalCode !== code) {
     return next(new AppError("code is wrong", 403));
   }
 
@@ -136,13 +136,13 @@ exports.studentLogin = catchAsync(async (req, res, next) => {
   nationalCode = digitsFaToEn(nationalCode);
 
   // 2) check code exist
-  const orginalCode = await redis.getAsync(phoneNumber);
-  if (!orginalCode) {
+  const originalCode = await redis.getAsync(phoneNumber);
+  if (!originalCode) {
     return next(new AppError("for this number there is no code", 404));
   }
 
-  // 3) check code verfication
-  if (orginalCode !== code) {
+  // 3) check code verification
+  if (originalCode !== code) {
     return next(new AppError("code is wrong", 403));
   }
 
@@ -178,7 +178,7 @@ exports.protect = catchAsync(async (req, res, next) => {
       new AppError("You are not logged in! please log into to get access.", 401)
     );
   }
-  // 2) verfication token
+  // 2) verification token
   const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
 
   // 3) check if user still exist
@@ -214,7 +214,7 @@ exports.createCode = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.objectIdControll = catchAsync(async (id, next) => {
+exports.objectIdControl = catchAsync(async (id, next) => {
   if (!ObjectId.isValid(id)) {
     return next(new AppError("شناسه شما معتبر نمیباشد", 405));
   }

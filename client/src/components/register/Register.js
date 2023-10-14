@@ -32,7 +32,7 @@ const Register = () => {
 
     return (
         <SnackbarProvider>
-            <Grid container justifyContent="center" alignItems="center" marginTop="4rem">
+            <Grid container justifyContent="center" alignItems="center" py={4}>
                 <Grid item xs={12} sm={9} md={6} lg={4}>
                     <Paper sx={{ padding: "20px", overflow: "hidden" }}>
                         <FormStepper
@@ -57,9 +57,6 @@ const Register = () => {
                                     error={formError.firstName}
                                     onChange={inputChangeHandler}
                                 />
-                                <FormHelperText error={formError.firstName}>
-                                    نام خود را وارد کنید
-                                </FormHelperText>
 
                                 <TextField
                                     name="lastName"
@@ -71,9 +68,6 @@ const Register = () => {
                                     error={formError.lastName}
                                     onChange={inputChangeHandler}
                                 />
-                                <FormHelperText error={formError.lastName}>
-                                    نام خانوادگی خود را وارد کنید
-                                </FormHelperText>
 
                                 <TextField
                                     name="nationalCode"
@@ -85,9 +79,6 @@ const Register = () => {
                                     error={formError.nationalCode}
                                     onChange={inputChangeHandler}
                                 />
-                                <FormHelperText error={formError.nationalCode}>
-                                    کد ملی را وارد کنید
-                                </FormHelperText>
 
                                 <TextField
                                     name="phoneNumber"
@@ -99,9 +90,6 @@ const Register = () => {
                                     error={formError.phoneNumber}
                                     onChange={inputChangeHandler}
                                 />
-                                <FormHelperText error={formError.phoneNumber}>
-                                    شماره موبایل خود را وارد کنید
-                                </FormHelperText>
                             </Box>
 
                             <Box

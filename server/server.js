@@ -22,11 +22,11 @@ mongoose
     useFindAndModify: false,
     useUnifiedTopology: true,
   })
-  .then((connection) => console.log("connect to mongoose"));
+  .then(() => console.log("connect to mongoose"));
 
 // 3) listen on port
 const port = process.env.PORT || 3000;
 
 app.listen(port, () => {
-  console.log(`server is runnig in port: ${port}`);
+  console.log(`server is running in port: ${port}`);
 });

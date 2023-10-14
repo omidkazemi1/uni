@@ -5,15 +5,15 @@ const teacherController = require("../controllers/teacherController");
 const authController = require("../controllers/authController");
 
 router.param("classId", (req, res, next) => {
-  authController.objectIdControll(req.params.classId, next);
+  authController.objectIdControl(req.params.classId, next);
 });
 
 router.param("studentId", (req, res, next) => {
-  authController.objectIdControll(req.params.studentId, next);
+  authController.objectIdControl(req.params.studentId, next);
 });
 
 router.param("examId", (req, res, next) => {
-  authController.objectIdControll(req.params.examId, next);
+  authController.objectIdControl(req.params.examId, next);
 });
 
 // *) auth route teacher

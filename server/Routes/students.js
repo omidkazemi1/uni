@@ -5,11 +5,11 @@ const authController = require("../controllers/authController");
 const studentController = require("../controllers/studentController");
 
 router.param("examId", (req, res, next) => {
-  authController.objectIdControll(req.params.examId, next);
+  authController.objectIdControl(req.params.examId, next);
 });
 
 router.param("classId", (req, res, next) => {
-  authController.objectIdControll(req.params.classId, next);
+  authController.objectIdControl(req.params.classId, next);
 });
 
 // *) auth route student

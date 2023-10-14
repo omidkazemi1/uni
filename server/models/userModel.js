@@ -64,7 +64,7 @@ userSchema.pre(/^find/, function (next) {
   next();
 });
 
-// 2) make fullName feild with firstName and fullName
+// 2) make fullName field with firstName and fullName
 userSchema.pre("save", async function (next) {
   this.fullName = `${this.firstName} ${this.lastName}`;
   next();

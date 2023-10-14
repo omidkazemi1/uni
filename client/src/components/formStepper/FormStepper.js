@@ -159,7 +159,7 @@ const FormStepper = ({
                             initial={{ y: -10, opacity: 0 }}
                             animate={{ y: 0, opacity: 1 }}
                             exit={{ y: -10, opacity: 0 }}
-                            variant="contained"
+                            variant="outlined"
                             color="primary"
                             fullWidth
                             onClick={() => setStep(step => step - 1)}>
